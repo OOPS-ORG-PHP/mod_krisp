@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.1.1.1 2006-06-20 07:49:28 oops Exp $
+  $Id: php_krisp.c,v 1.2 2006-06-22 04:40:20 oops Exp $
 */
 
 /*
@@ -261,11 +261,11 @@ PHP_FUNCTION(krisp_search)
 	add_assoc_string (return_value, "netmask", isp.netmask, 1);
 	add_assoc_string (return_value, "network", isp.network, 1);
 	add_assoc_string (return_value, "broadcast", isp.broadcast, 1);
-	add_assoc_string (return_value, "icode", isp.serv, 1);
-	add_assoc_string (return_value, "iname", isp.org, 1);
+	add_assoc_string (return_value, "icode", isp.icode, 1);
+	add_assoc_string (return_value, "iname", isp.iname, 1);
 #ifdef HAVE_LIBGEOIP
-	add_assoc_string (return_value, "gcode", isp.code, 1);
-	add_assoc_string (return_value, "gname", isp.nation, 1);
+	add_assoc_string (return_value, "gcode", isp.gcode, 1);
+	add_assoc_string (return_value, "gname", isp.gname, 1);
 #endif
 }
 /* }}} */
