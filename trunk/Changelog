@@ -1,5 +1,12 @@
 PHP KRISP Extension Changelog
 
+* 1.0.1
+Thu Jun 22 2006
+--------------------------------------------------------------------------------
+by JoungKyun Kim <http://www.oops.org>
+	- changed name of isp structure member
+
+
 * 1.0.0
 Sun Jun 19 2006
 --------------------------------------------------------------------------------
