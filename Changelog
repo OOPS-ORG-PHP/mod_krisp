@@ -1,5 +1,16 @@
 PHP KRISP Extension Changelog
 
+* 1.1.0
+Thu Sep  7 2006
+--------------------------------------------------------------------------------
+by JoungKyun Kim <http://www.oops.org>
+	- update 1.1.0
+	- required over libkrisp 2.0.0
+	  if you have libkrisp 1.x, then use mod_krisp 1.0.x
+	- support several geoip extensions
+	  support GeoIPCity (if you have database)
+	  support GeoIPISP (if you have database)
+
 * 1.0.1
 Thu Jun 22 2006
 --------------------------------------------------------------------------------

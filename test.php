@@ -1,7 +1,8 @@
 #!/usr/bin/php
 <?
+if ( ! extension_loaded ('krisp') )
+	dl ('krisp.so');
 
-#dl ("../../../local/src/mycvs/php/mod_krisp/modules/krisp.so");
 $searches = array ('oops.org', 'kornet.net', 'yahoo.com');
 
 /*
@@ -37,8 +38,9 @@ foreach ( $searches as $v ) :
      *               broadcast,
      *               org,        // ISP code
      *               serv,       // ISP name
-     *               code,       // GeoIP nation code
-     *               nation,     // GeoIP nation name
+     *               gcode,      // GeoIP nation code
+     *               gname,      // GeoIP nation name
+     *               gcity,      // GeoIP nation name
      *             );
      */
 	$r = krisp_search ($c, $v);
