@@ -1,0 +1,12 @@
+* write original algorithm of libkrisp and php pure code
+Chilbong.Kim <http://linuxchannel.net>
+
+* write libkrisp
+JoungKyun.Kim <http://www.oops.org>
+
+* write libkrisp php extension
+JoungKyun.Kim <http://www.oops.org>
+
+* Special thanks
+SangJin.Park (kaien@neowiz.com)
+	- fixed resource free problems
