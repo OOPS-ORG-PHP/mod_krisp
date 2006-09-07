@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.3 2006-06-22 04:41:06 oops Exp $
+  $Id: php_krisp.h,v 1.4 2006-09-07 14:42:58 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -74,7 +74,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "1.0.1"
+#define BUILDNO "1.1.0"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -95,6 +95,7 @@ extern char dberr[1024];
 /* GeoIP extension start */
 #ifdef HAVE_LIBGEOIP
 #include <GeoIP.h>
+#include <GeoIPCity.h>
 #define INCLUDE_GEOIP_HEADER_OK
 #endif
 
@@ -112,15 +113,50 @@ typedef struct GeoIPTag {
 	int record_iter; /* used in GeoIP_next_record */
 } GeoIP;
 
-#define GEOIP_API
-GEOIP_API GeoIP* GeoIP_new(int flags);
-
 typedef enum {
 	GEOIP_STANDARD = 0,
 	GEOIP_MEMORY_CACHE = 1,
 	GEOIP_CHECK_CACHE = 2,
 	GEOIP_INDEX_CACHE = 4,
 } GeoIPOptions;
+
+typedef enum {
+	GEOIP_COUNTRY_EDITION     = 1,
+	GEOIP_REGION_EDITION_REV0 = 7,
+	GEOIP_CITY_EDITION_REV0   = 6,
+	GEOIP_ORG_EDITION         = 5,
+	GEOIP_ISP_EDITION         = 4,
+	GEOIP_CITY_EDITION_REV1   = 2,
+	GEOIP_REGION_EDITION_REV1 = 3,
+	GEOIP_PROXY_EDITION       = 8,
+	GEOIP_ASNUM_EDITION       = 9,
+	GEOIP_NETSPEED_EDITION    = 10,
+	GEOIP_DOMAIN_EDITION      = 11
+} GeoIPDBTypes;
+
+typedef struct GeoIPRecordTag {
+	char *country_code;
+	char *country_code3;
+	char *country_name;
+	char *region;
+	char *city;
+	char *postal_code;
+	float latitude;
+	float longitude;
+	int dma_code;
+	int area_code;
+} GeoIPRecord;
+
+#define GEOIP_API
+GEOIP_API GeoIP* GeoIP_new(int flags);
+GEOIP_API void GeoIP_delete(GeoIP* gi);
+GEOIP_API int GeoIP_id_by_name (GeoIP* gi, const char *host);
+GEOIP_API int GeoIP_db_avail(int type);
+GEOIP_API char *GeoIP_org_by_name (GeoIP* gi, const char *host);
+GeoIPRecord * GeoIP_record_by_name (GeoIP* gi, const char *host);
+void _GeoIP_setup_dbfilename (void);
+extern const char GeoIP_country_code[247][3];
+extern const char * GeoIP_country_name[247];
 #endif
 /* GeoIP extension end */
 
@@ -138,7 +174,9 @@ typedef struct db_argument {
 	char *          err;    /* vm error message */
 	const char **   rowdata;
 	const char **   colname;
-	GeoIP *         gi;     /* GeoIP resource */
+	GeoIP *         gid;     /* GeoIP country resource */
+	GeoIP *         gic;     /* GeoIP city resource */
+	GeoIP *         gip;     /* GeoIP isp resource */
 } KR_API;
 
 typedef struct netinfos {
@@ -152,6 +190,7 @@ typedef struct netinfos {
 #ifdef HAVE_LIBGEOIP
 	char            gcode[4];
 	char            gname[128];
+	char            gcity[64];
 #endif
 } KRNET_API;
 

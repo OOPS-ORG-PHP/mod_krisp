@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.2 2006-06-22 04:40:20 oops Exp $
+  $Id: php_krisp.c,v 1.3 2006-09-07 14:42:58 oops Exp $
 */
 
 /*
@@ -196,9 +196,28 @@ PHP_FUNCTION(krisp_open)
 	kr->db = (KR_API *) emalloc (sizeof (KR_API));
 
 #ifdef HAVE_LIBGEOIP
-	kr->db->gi = GeoIP_new (GEOIP_MEMORY_CACHE);
+	kr->db->gid = GeoIP_new (GEOIP_MEMORY_CACHE);
+
+	if ( kr->db->gid != NULL ) {
+		_GeoIP_setup_dbfilename();
+		if ( GeoIP_db_avail (GEOIP_CITY_EDITION_REV0) ) {
+			kr->db->gic = GeoIP_open_type (GEOIP_CITY_EDITION_REV0,
+											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
+		} else if (GeoIP_db_avail (GEOIP_CITY_EDITION_REV1) ) {
+			kr->db->gic = GeoIP_open_type (GEOIP_CITY_EDITION_REV1,
+											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
+		} else
+			kr->db->gic = NULL;
+		if ( GeoIP_db_avail (GEOIP_ISP_EDITION) ) {
+			kr->db->gic = GeoIP_open_type (GEOIP_ISP_EDITION,
+											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
+		} else
+			kr->db->gip = NULL;
+	}
 #else
-	kr->db->gi = NULL;
+	kr->db->gid = NULL;
+	kr->db->gic = NULL;
+	kr->db->gip = NULL;
 #endif
 
 	if ( kr_open (kr->db, df) ) {
@@ -266,6 +285,7 @@ PHP_FUNCTION(krisp_search)
 #ifdef HAVE_LIBGEOIP
 	add_assoc_string (return_value, "gcode", isp.gcode, 1);
 	add_assoc_string (return_value, "gname", isp.gname, 1);
+	add_assoc_string (return_value, "gcity", isp.gcity, 1);
 #endif
 }
 /* }}} */
