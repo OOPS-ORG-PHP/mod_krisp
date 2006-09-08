@@ -1,5 +1,12 @@
 PHP KRISP Extension Changelog
 
+* 1.1.1
+Sat Sep  9 2006
+--------------------------------------------------------------------------------
+by JoungKyun Kim <http://www.oops.org>
+	- fixed wrong use of GeoIP link
+
+
 * 1.1.0
 Thu Sep  7 2006
 --------------------------------------------------------------------------------
@@ -10,6 +17,7 @@ by JoungKyun Kim <http://www.oops.org>
 	- support several geoip extensions
 	  support GeoIPCity (if you have database)
 	  support GeoIPISP (if you have database)
+
 
 * 1.0.1
 Thu Jun 22 2006

@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.3 2006-09-07 14:42:58 oops Exp $
+  $Id: php_krisp.c,v 1.4 2006-09-08 16:32:27 oops Exp $
 */
 
 /*
@@ -118,9 +118,9 @@ PHP_MINFO_FUNCTION(krisp)
 	php_info_print_table_row(2, "SQLite", SQLITE_VERSION);
 	php_info_print_table_row(2, "GeoIP",
 #ifdef HAVE_LIBGEOIP
-			"enabled"
+			"Enabled"
 #else
-			"disabled"
+			"Disabled"
 #endif
 	);
 	php_info_print_table_end();
@@ -194,31 +194,6 @@ PHP_FUNCTION(krisp_open)
 
 	kr = (KRISP_API *) emalloc (sizeof (KRISP_API));
 	kr->db = (KR_API *) emalloc (sizeof (KR_API));
-
-#ifdef HAVE_LIBGEOIP
-	kr->db->gid = GeoIP_new (GEOIP_MEMORY_CACHE);
-
-	if ( kr->db->gid != NULL ) {
-		_GeoIP_setup_dbfilename();
-		if ( GeoIP_db_avail (GEOIP_CITY_EDITION_REV0) ) {
-			kr->db->gic = GeoIP_open_type (GEOIP_CITY_EDITION_REV0,
-											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
-		} else if (GeoIP_db_avail (GEOIP_CITY_EDITION_REV1) ) {
-			kr->db->gic = GeoIP_open_type (GEOIP_CITY_EDITION_REV1,
-											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
-		} else
-			kr->db->gic = NULL;
-		if ( GeoIP_db_avail (GEOIP_ISP_EDITION) ) {
-			kr->db->gic = GeoIP_open_type (GEOIP_ISP_EDITION,
-											GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
-		} else
-			kr->db->gip = NULL;
-	}
-#else
-	kr->db->gid = NULL;
-	kr->db->gic = NULL;
-	kr->db->gip = NULL;
-#endif
 
 	if ( kr_open (kr->db, df) ) {
 		strcpy (krerr, dberr);
