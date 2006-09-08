@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.5 2006-09-08 16:32:27 oops Exp $
+  $Id: php_krisp.h,v 1.6 2006-09-08 18:41:21 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -74,7 +74,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "1.1.0"
+#define BUILDNO "1.1.1"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -157,14 +157,14 @@ GeoIPRecord * GeoIP_record_by_name (GeoIP* gi, const char *host);
 void _GeoIP_setup_dbfilename (void);
 extern const char GeoIP_country_code[247][3];
 extern const char * GeoIP_country_name[247];
+#endif
+/* GeoIP extension end */
 
 typedef struct GeoIPvarTag {
 	GeoIP *         gid;
 	GeoIP *         gic;
 	GeoIP *         gip;
 } GeoIPvar;
-#endif
-/* GeoIP extension end */
 
 typedef struct db_argument {
 #if defined(HAVE_LIBSQLITE3)
