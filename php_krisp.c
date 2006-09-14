@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.4 2006-09-08 16:32:27 oops Exp $
+  $Id: php_krisp.c,v 1.5 2006-09-14 08:53:33 oops Exp $
 */
 
 /*
@@ -46,6 +46,14 @@ ZEND_DECLARE_MODULE_GLOBALS(krisp)
 
 /* True global resources - no need for thread safety here */
 static int le_krisp;
+#ifdef HAVE_LIBGEOIP
+/* set 1, search GeoIPCity database if enabled search GeoIPCity
+ *  * default value is 0 */
+extern short geocity;
+extern short geocity_type;
+extern short geoisp_type;
+extern short geo_type;
+#endif
 char krerr[1024] = { 0, };
 
 /* {{{ krisp_functions[]
@@ -101,6 +109,19 @@ static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 PHP_MINIT_FUNCTION(krisp)
 {
 	le_krisp = zend_register_list_destructors_ex(_close_krisp_link, NULL, "krisp link", module_number);
+
+#ifdef HAVE_LIBGEOIP
+	/* define geoip open method */
+	REGISTER_LONG_CONSTANT ("GEOIP_STANDARD",     GEOIP_STANDARD, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOIP_MEMORY_CACHE", GEOIP_MEMORY_CACHE, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOIP_CHECK_CACHE",  GEOIP_CHECK_CACHE, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOIP_INDEX_CACHE",  GEOIP_INDEX_CACHE, CONST_PERSISTENT | CONST_CS);
+
+	REGISTER_LONG_CONSTANT ("GEOCITY",          GEOCITY,          CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOIP_OPENTYPE",   GEOIP_OPENTYPE,   CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOISP_OPENTYPE",  GEOISP_OPENTYPE,  CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT ("GEOCITY_OPENTYPE", GEOCITY_OPENTYPE, CONST_PERSISTENT | CONST_CS);
+#endif
 }
 /* }}} */
 
@@ -156,6 +177,16 @@ PHP_FUNCTION(krisp_uversion)
 PHP_FUNCTION(krisp_open)
 {
 	zval **datafile;
+#ifdef HAVE_LIBGEOIP
+	zval **ipoint;
+	zval **geoopt;
+	zval *geoarr;
+	zval **tmp;
+	HashPosition pos;
+	char *keyn;
+	uint keyl;
+	ulong nkeyl;
+#endif
 	KRISP_API *kr;
 
 	struct stat f;
@@ -163,6 +194,62 @@ PHP_FUNCTION(krisp_open)
 	int r;
 
 	switch (ZEND_NUM_ARGS ()) {
+#ifdef HAVE_LIBGEOIP
+		case 2:
+			if ( zend_get_parameters_ex(2, &datafile, &geoopt) == FAILURE )
+				WRONG_PARAM_COUNT;
+
+			if ( Z_TYPE_PP (geoopt) != IS_ARRAY ) {
+				sprintf (krerr, "second argument is not array");
+				RETURN_FALSE;
+			}
+
+			SEPARATE_ZVAL (geoopt);
+			geoarr = *geoopt;
+			if ( zend_hash_num_elements (Z_ARRVAL_P(geoarr)) ) {
+				zend_hash_internal_pointer_reset_ex (Z_ARRVAL_P(geoarr), &pos);
+
+				while ( zend_hash_get_current_data_ex (Z_ARRVAL_P(geoarr), (void **) &tmp, &pos) == SUCCESS ) {
+					if ( (*tmp)->type != IS_LONG )
+						continue;
+
+					convert_to_long_ex (tmp)
+
+					switch (zend_hash_get_current_key_ex (Z_ARRVAL_P(geoarr), &keyn, &keyl, &nkeyl, 1, &pos)) {
+						case HASH_KEY_IS_STRING:
+							//php_printf ("#### [ %s ] => ", keyn);
+							if ( ! strcmp ("geocity", keyn) )
+								geocity = Z_LVAL_PP(tmp);
+							else if ( ! strcmp ("dopen", keyn) )
+								geo_type = Z_LVAL_PP(tmp);
+							else if ( ! strcmp ("iopen", keyn) )
+								geoisp_type = Z_LVAL_PP(tmp);
+							else if ( ! strcmp ("copen", keyn) )
+								geocity_type = Z_LVAL_PP(tmp);
+
+							break;
+						case  HASH_KEY_IS_LONG:
+							//php_printf ("#### [ %d ] => ", nkeyl);
+							if ( nkeyl == GEOCITY )
+								geocity = Z_LVAL_PP(tmp);
+							else if ( nkeyl == GEOIP_OPENTYPE )
+								geo_type = Z_LVAL_PP(tmp);
+							else if ( nkeyl == GEOISP_OPENTYPE )
+								geoisp_type = Z_LVAL_PP(tmp);
+							else if ( nkeyl == GEOCITY_OPENTYPE )
+								geocity_type = Z_LVAL_PP(tmp);
+
+							break;
+						default:
+							continue;
+					}
+
+					//php_printf ("#### %d\n", (*tmp)->value);
+					zend_hash_move_forward_ex(Z_ARRVAL_P(geoarr), &pos);
+				}
+			}
+			break;
+#endif
 		case 1:
 			if ( zend_get_parameters_ex(1, &datafile) == FAILURE )
 				WRONG_PARAM_COUNT;
@@ -260,7 +347,8 @@ PHP_FUNCTION(krisp_search)
 #ifdef HAVE_LIBGEOIP
 	add_assoc_string (return_value, "gcode", isp.gcode, 1);
 	add_assoc_string (return_value, "gname", isp.gname, 1);
-	add_assoc_string (return_value, "gcity", isp.gcity, 1);
+	if ( geocity && isp.gcity )
+		add_assoc_string (return_value, "gcity", isp.gcity, 1);
 #endif
 }
 /* }}} */

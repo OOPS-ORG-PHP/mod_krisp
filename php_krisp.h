@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.7 2006-09-13 13:47:27 oops Exp $
+  $Id: php_krisp.h,v 1.8 2006-09-14 08:53:33 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -97,6 +97,11 @@ extern char dberr[1024];
 #include <GeoIP.h>
 #include <GeoIPCity.h>
 #define INCLUDE_GEOIP_HEADER_OK
+
+#define GEOCITY				0
+#define	GEOIP_OPENTYPE		1
+#define GEOISP_OPENTYPE		2
+#define GEOCITY_OPENTYPE	3
 #endif
 
 #ifndef INCLUDE_GEOIP_HEADER_OK

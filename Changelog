@@ -1,5 +1,17 @@
 PHP KRISP Extension Changelog
 
+* 1.1.2
+Thu Sep 14 2006
+--------------------------------------------------------------------------------
+by JoungKyun Kim <http://www.oops.org>
+	- add second argument in kr_open function
+	  array : key
+	          (string) geocity => whether search GeoIPCity database. default 0
+	          (string) dopen   => GeoIP database open type.
+	          (string) iopen   => GeoIPISP database open type.
+	          (string) copen   => GeoIPCity database open type.
+
+
 * 1.1.1
 Sat Sep  9 2006
 --------------------------------------------------------------------------------
