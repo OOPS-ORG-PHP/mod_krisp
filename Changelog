@@ -1,5 +1,13 @@
 PHP KRISP Extension Changelog
 
+* 1.1.3
+
+Fri Oct 13 2006
+--------------------------------------------------------------------------------
+by JoungKyun Kim <http://www.oops.org>
+	- changed memory allocation to malloc from emalloc when krisp_open
+
+
 * 1.1.2
 Thu Sep 14 2006
 --------------------------------------------------------------------------------
