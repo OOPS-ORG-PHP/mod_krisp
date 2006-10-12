@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.5 2006-09-14 08:53:33 oops Exp $
+  $Id: php_krisp.c,v 1.6 2006-10-12 17:09:07 oops Exp $
 */
 
 /*
@@ -100,8 +100,8 @@ static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
 	KRISP_API *kr = (KRISP_API *)rsrc->ptr;
 	kr_close (kr->db);
-	efree (kr->db);
-	efree (kr);
+	free (kr->db);
+	free (kr);
 }
 
 /* {{{ PHP_MINIT_FUNCTION
@@ -279,13 +279,13 @@ PHP_FUNCTION(krisp_open)
 		RETURN_FALSE;
 	}
 
-	kr = (KRISP_API *) emalloc (sizeof (KRISP_API));
-	kr->db = (KR_API *) emalloc (sizeof (KR_API));
+	kr = (KRISP_API *) malloc (sizeof (KRISP_API));
+	kr->db = (KR_API *) malloc (sizeof (KR_API));
 
 	if ( kr_open (kr->db, df) ) {
 		strcpy (krerr, dberr);
-		efree (kr->db);
-		efree (kr);
+		free (kr->db);
+		free (kr);
 		RETURN_FALSE;
 	}
 
