@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.6 2006-10-12 17:09:07 oops Exp $
+  $Id: php_krisp.c,v 1.7 2006-10-13 04:54:15 oops Exp $
 */
 
 /*
@@ -347,8 +347,10 @@ PHP_FUNCTION(krisp_search)
 #ifdef HAVE_LIBGEOIP
 	add_assoc_string (return_value, "gcode", isp.gcode, 1);
 	add_assoc_string (return_value, "gname", isp.gname, 1);
-	if ( geocity && isp.gcity )
+	if ( geocity && isp.gcity ) {
+		add_assoc_string (return_value, "gregion", isp.gregion, 1);
 		add_assoc_string (return_value, "gcity", isp.gcity, 1);
+	}
 #endif
 }
 /* }}} */

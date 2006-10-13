@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.9 2006-10-12 17:08:39 oops Exp $
+  $Id: php_krisp.h,v 1.10 2006-10-13 04:54:15 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -200,6 +200,7 @@ typedef struct netinfos {
 	char            gcode[4];
 	char            gname[128];
 	char            gcity[64];
+	char            gregion[4];
 #endif
 } KRNET_API;
 
