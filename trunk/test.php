@@ -3,7 +3,7 @@
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
 
-$searches = array ('oops.org', 'kornet.net', 'yahoo.com');
+$searches = array ('oops.org', 'kornet.net', 'yahoo.com', 'kldp.org');
 
 /*
  * open krips database
@@ -35,7 +35,8 @@ $geoip = array ('geocity' => 1,
 				GEOIP_OPENTYPE => GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE,
 				GEOISP_OPENTYPE => GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE,
 				GEOCITY_OPENTYPE => GEOIP_MEMORY_CACHE | GEOIP_CHECK_CACHE);
-$c = krisp_open ("/usr/share/krisp/krisp.dat");
+#$c = krisp_open ("/usr/share/krisp/krisp.dat");
+$c = krisp_open ();
 
 if ( $c === FALSE ) {
     /*
