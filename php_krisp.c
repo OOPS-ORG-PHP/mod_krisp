@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.7 2006-10-13 04:54:15 oops Exp $
+  $Id: php_krisp.c,v 1.8 2006-11-25 21:14:23 oops Exp $
 */
 
 /*
@@ -190,7 +190,7 @@ PHP_FUNCTION(krisp_open)
 	KRISP_API *kr;
 
 	struct stat f;
-	char *df;
+	char *df = NULL;
 	int r;
 
 	switch (ZEND_NUM_ARGS ()) {
@@ -255,28 +255,27 @@ PHP_FUNCTION(krisp_open)
 				WRONG_PARAM_COUNT;
 
 			break;
+		case 0:
+			break;
 		default:
 				WRONG_PARAM_COUNT;
 	}
 
-	if ( Z_STRLEN_PP (datafile) == 0) {
-		sprintf (krerr, "length of datafile argument is 0");
-		RETURN_FALSE;
-	}
+	if ( ZEND_NUM_ARGS () > 0 && Z_STRLEN_PP (datafile) != 0) {
+		convert_to_string_ex(datafile);
+		df = Z_STRVAL_PP(datafile);
 
-	convert_to_string_ex(datafile);
-	df = Z_STRVAL_PP(datafile);
-
-	r = stat (df, &f);
+		r = stat (df, &f);
 	
-	if ( r == -1 ) {
-		sprintf (krerr, "datafile not found : %s", df);
-		RETURN_FALSE;
-	}
+		if ( r == -1 ) {
+			sprintf (krerr, "datafile not found : %s", df);
+			RETURN_FALSE;
+		}
 
-	if ( f.st_size < 1 ) {
-		sprintf (krerr, "datafile size is zero: %s", df);
-		RETURN_FALSE;
+		if ( f.st_size < 1 ) {
+			sprintf (krerr, "datafile size is zero: %s", df);
+			RETURN_FALSE;
+		}
 	}
 
 	kr = (KRISP_API *) malloc (sizeof (KRISP_API));
@@ -329,6 +328,7 @@ PHP_FUNCTION(krisp_search)
 
 	ZEND_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, -1, "KRISP database", le_krisp);
 
+	hostip = 1;
 	kr_search (&isp, kr->db);
 
 	if ( array_init (return_value) == FAILURE ) {
@@ -347,11 +347,11 @@ PHP_FUNCTION(krisp_search)
 #ifdef HAVE_LIBGEOIP
 	add_assoc_string (return_value, "gcode", isp.gcode, 1);
 	add_assoc_string (return_value, "gname", isp.gname, 1);
-	if ( geocity && isp.gcity ) {
-		add_assoc_string (return_value, "gregion", isp.gregion, 1);
-		add_assoc_string (return_value, "gcity", isp.gcity, 1);
-	}
 #endif
+	if ( strlen (isp.gcity) )
+		add_assoc_string (return_value, "gcity", isp.gcity, 1);
+	if ( strlen (isp.gregion) )
+		add_assoc_string (return_value, "gregion", isp.gregion, 1);
 }
 /* }}} */
 
