@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.8 2006-11-25 21:14:23 oops Exp $
+  $Id: php_krisp.c,v 1.9 2006-11-27 06:39:11 oops Exp $
 */
 
 /*
@@ -292,28 +292,38 @@ PHP_FUNCTION(krisp_open)
 }
 /* }}} */
 
-/* {{{ proto char krisp_search (struct ispinfo *, KR_API *)
+/* {{{ proto char krisp_search (resource, char *host [, bool hostip = 0])
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
-	zval **krisp_link, **host;
+	zval **krisp_link, **host, **hip;
 	KRISP_API *kr;
 
 	KRNET_API isp;
 	char *addr;
 
+	hostip = 0;
+
 	switch (ZEND_NUM_ARGS ()) {
+		case 3:
+			if ( zend_get_parameters_ex(3, &krisp_link, &hip) == FAILURE )
+				WRONG_PARAM_COUNT;
+
+			convert_to_long_ex (hip);
+			hostip = Z_LVAL_PP (hip);
+			break;
 		case 2:
 			if ( zend_get_parameters_ex(2, &krisp_link, &host) == FAILURE )
 				WRONG_PARAM_COUNT;
 
-			if ( Z_STRLEN_PP (host) == 0) {
-				sprintf (krerr, "length of host argument is 0");
-				RETURN_FALSE;
-			}
 			break;
 		default:
 				WRONG_PARAM_COUNT;
+	}
+
+	if ( Z_STRLEN_PP (host) == 0) {
+		sprintf (krerr, "length of host argument is 0");
+		RETURN_FALSE;
 	}
 
 	convert_to_string_ex(host);
@@ -328,7 +338,6 @@ PHP_FUNCTION(krisp_search)
 
 	ZEND_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, -1, "KRISP database", le_krisp);
 
-	hostip = 1;
 	kr_search (&isp, kr->db);
 
 	if ( array_init (return_value) == FAILURE ) {
