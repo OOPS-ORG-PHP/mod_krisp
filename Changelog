@@ -3,6 +3,10 @@ PHP KRISP Extension Changelog
 * 1.2.0
 --------------------------------------------------------------------------------
 
+Wed Nov 29 2006
+by JoungKyun Kim <http://www.oops.org>
+	- support userdb and changed hostip database usage
+
 Sun Nov 26 2006
 by JoungKyun Kim <http://www.oops.org>
 	- support hostip database

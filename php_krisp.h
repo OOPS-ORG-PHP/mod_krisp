@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.12 2006-11-25 21:15:55 oops Exp $
+  $Id: php_krisp.h,v 1.13 2006-11-28 20:17:21 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -174,11 +174,11 @@ typedef struct GeoIPvarTag {
 typedef struct db_argument {
 #if defined(HAVE_LIBSQLITE3)
 	sqlite3         *c;     /* db resource */
-	sqlite3         *h;     /* hostip db resource */
+	sqlite3         *h;     /* userdb db resource */
 	sqlite3_stmt    *vm;    /* sqlite vm */
 #else
 	sqlite          *c;     /* db resource */
-	sqlite3         *h;     /* hostip db resource */
+	sqlite3         *h;     /* userdb db resource */
 	sqlite_vm       *vm;    /* sqlite vm */
 #endif
 	int             r;      /* execute result code */
@@ -198,12 +198,10 @@ typedef struct netinfos {
 	char            broadcast[16];
 	char            icode[128];
 	char            iname[128];
-#ifdef HAVE_LIBGEOIP
-	char            gcode[4];
-	char            gname[128];
-#endif
-	char            gcity[64];
-	char            gregion[4];
+	char            ccode[4];
+	char            cname[128];
+	char            city[64];
+	char            region[4];
 } KRNET_API;
 
 typedef struct krisp_info {
@@ -211,14 +209,12 @@ typedef struct krisp_info {
 	int rsrc;
 } KRISP_API;
 
-extern short hostip;
-
 #define DBTYPE_KRISP  0
 #define DBTYPE_HOSTIP 1
 
 #define DBROOT "/usr/share/krisp"
 #define DBPATH DBROOT "/krisp.dat"
-#define DBHPATH DBROOT "/krisp-hostip.dat"
+#define DBHPATH DBROOT "/krisp-userdb.dat"
 
 #endif	/* PHP_KRISP_H */
 

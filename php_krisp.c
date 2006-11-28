@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.9 2006-11-27 06:39:11 oops Exp $
+  $Id: php_krisp.c,v 1.10 2006-11-28 20:17:21 oops Exp $
 */
 
 /*
@@ -292,26 +292,17 @@ PHP_FUNCTION(krisp_open)
 }
 /* }}} */
 
-/* {{{ proto char krisp_search (resource, char *host [, bool hostip = 0])
+/* {{{ proto char krisp_search (resource, char *host)
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
-	zval **krisp_link, **host, **hip;
+	zval **krisp_link, **host;
 	KRISP_API *kr;
 
 	KRNET_API isp;
 	char *addr;
 
-	hostip = 0;
-
 	switch (ZEND_NUM_ARGS ()) {
-		case 3:
-			if ( zend_get_parameters_ex(3, &krisp_link, &hip) == FAILURE )
-				WRONG_PARAM_COUNT;
-
-			convert_to_long_ex (hip);
-			hostip = Z_LVAL_PP (hip);
-			break;
 		case 2:
 			if ( zend_get_parameters_ex(2, &krisp_link, &host) == FAILURE )
 				WRONG_PARAM_COUNT;
@@ -353,14 +344,12 @@ PHP_FUNCTION(krisp_search)
 	add_assoc_string (return_value, "broadcast", isp.broadcast, 1);
 	add_assoc_string (return_value, "icode", isp.icode, 1);
 	add_assoc_string (return_value, "iname", isp.iname, 1);
-#ifdef HAVE_LIBGEOIP
-	add_assoc_string (return_value, "gcode", isp.gcode, 1);
-	add_assoc_string (return_value, "gname", isp.gname, 1);
-#endif
-	if ( strlen (isp.gcity) )
-		add_assoc_string (return_value, "gcity", isp.gcity, 1);
-	if ( strlen (isp.gregion) )
-		add_assoc_string (return_value, "gregion", isp.gregion, 1);
+	add_assoc_string (return_value, "ccode", isp.code, 1);
+	add_assoc_string (return_value, "cname", isp.name, 1);
+	if ( strlen (isp.city) )
+		add_assoc_string (return_value, "city", isp.city, 1);
+	if ( strlen (isp.region) )
+		add_assoc_string (return_value, "region", isp.region, 1);
 }
 /* }}} */
 
