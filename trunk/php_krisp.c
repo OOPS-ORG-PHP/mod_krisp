@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.10 2006-11-28 20:17:21 oops Exp $
+  $Id: php_krisp.c,v 1.11 2006-11-29 07:03:57 oops Exp $
 */
 
 /*
@@ -344,8 +344,8 @@ PHP_FUNCTION(krisp_search)
 	add_assoc_string (return_value, "broadcast", isp.broadcast, 1);
 	add_assoc_string (return_value, "icode", isp.icode, 1);
 	add_assoc_string (return_value, "iname", isp.iname, 1);
-	add_assoc_string (return_value, "ccode", isp.code, 1);
-	add_assoc_string (return_value, "cname", isp.name, 1);
+	add_assoc_string (return_value, "ccode", isp.ccode, 1);
+	add_assoc_string (return_value, "cname", isp.cname, 1);
 	if ( strlen (isp.city) )
 		add_assoc_string (return_value, "city", isp.city, 1);
 	if ( strlen (isp.region) )
