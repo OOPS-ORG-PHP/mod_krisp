@@ -1,5 +1,5 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.12 2010-06-18 13:35:54 oops Exp $
+$Id: Changelog,v 1.13 2010-06-18 13:43:51 oops Exp $
 
 * 2.0.0
 --------------------------------------------------------------------------------
@@ -7,6 +7,13 @@ $Id: Changelog,v 1.12 2010-06-18 13:35:54 oops Exp $
 Fri Jun 18 2010
 by JoungKyun.Kim <http://oops.org>
 	- changed link libkrisp library version. require over libkrisp 3.0.0
+	- add new function
+	  krisp_search_ex
+	  krisp_netmask
+	  krisp_network
+	  krisp_broadcast
+	  krisp_prefix2long
+	  krisp_long2prefix
 
 
 * 1.2.0
