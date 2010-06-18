@@ -1,5 +1,7 @@
 #!/usr/bin/php
 <?
+/* $Id: test.php,v 1.4.2.1 2010-06-18 13:28:10 oops Exp $ */
+
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
 
