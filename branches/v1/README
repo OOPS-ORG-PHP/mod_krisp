@@ -1,0 +1,4 @@
+$Id: README,v 1.1.2.1 2010-06-18 13:28:10 oops Exp $
+
+This branch is linking about libkrisp v2 branch (under libkrisp 3.0.0).
+If you will link over libkrisp 3.0.0, use head branch.
