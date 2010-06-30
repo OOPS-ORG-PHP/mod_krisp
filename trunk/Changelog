@@ -1,8 +1,12 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.13 2010-06-18 13:43:51 oops Exp $
+$Id: Changelog,v 1.14 2010-06-30 20:07:00 oops Exp $
 
 * 2.0.0
 --------------------------------------------------------------------------------
+
+Fri Jul  1 2010
+by JoungKyun.Kim <http://oops.org>
+	- enhanced build environment
 
 Fri Jun 18 2010
 by JoungKyun.Kim <http://oops.org>

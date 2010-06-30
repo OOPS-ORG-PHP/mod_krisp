@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?
-/* $Id: bench.php,v 1.1 2010-06-22 03:09:00 oops Exp $ */
+/* $Id: bench.php,v 1.2 2010-06-30 20:07:00 oops Exp $ */
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
@@ -13,7 +13,7 @@ function get_microtime($old, $new) {
 }
 
 function random_ip () {
-	return mt_rand (16777216, 4294967296);
+	return (mt_rand (8388608, 2147483647) * 2);
 }
 
 if ( $argc != 2 || $argv[1] == '-h' ) {
@@ -28,7 +28,8 @@ $t1 = microtime ();
 for ( $i=0; $i<$argv[1]; $i++ ) {
 	$v = random_ip ();
 	$v = long2ip ($v);
-	$r = krisp_search ($c, $v);
+	$r = krisp_search_ex ($c, $v);
+	#$r = krisp_search_ex ($c, $v, 'krisp');
 }
 
 $t2 = microtime ();
