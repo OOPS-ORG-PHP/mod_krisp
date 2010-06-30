@@ -1,4 +1,4 @@
-dnl $Id: config.m4,v 1.1.1.1 2006-06-20 07:49:28 oops Exp $
+dnl $Id: config.m4,v 1.2 2010-06-30 20:07:00 oops Exp $
 dnl config.m4 for extension krisp
 
 dnl Comments in this file start with the string 'dnl'.
@@ -66,6 +66,7 @@ if test "$PHP_KRISP" != "no"; then
 
 	KRISP_SHARED_LIBADD="$KRISP_LIBS"
 	PHP_SUBST(KRISP_SHARED_LIBADD)
+	PHP_SUBST(KRISP_PARAMETER)
 
 	dnl if php version is under 4.2.x, use PHP_EXTENSION
 	dnl bug over php 4.2.x, use PHP_NEW_EXTENSION
