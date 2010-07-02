@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.15 2010-07-02 18:42:47 oops Exp $
+  $Id: php_krisp.h,v 1.16 2010-07-02 18:46:34 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -50,7 +50,7 @@ PHP_FUNCTION(krisp_search_ex);
 PHP_FUNCTION(krisp_netmask);
 PHP_FUNCTION(krisp_network);
 PHP_FUNCTION(krisp_broadcast);
-PHP_FUNCTION(krisp_prefix2long);
+PHP_FUNCTION(krisp_prefix2mask);
 PHP_FUNCTION(krisp_mask2prefix);
 
 /* 

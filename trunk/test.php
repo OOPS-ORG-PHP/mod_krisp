@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?
-/* $Id: test.php,v 1.7 2010-07-02 18:42:47 oops Exp $ */
+/* $Id: test.php,v 1.8 2010-07-02 18:46:34 oops Exp $ */
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
@@ -59,6 +59,6 @@ $mask = '255.255.255.128';
 echo " * Given Mask : {$mask}\n";
 $prefix = krisp_mask2prefix ($mask);
 echo " * Prefix     : {$prefix}\n";
-$mask = long2ip (krisp_prefix2long ($prefix));
+$mask = long2ip (krisp_prefix2mask ($prefix));
 echo " * Mask       : {$mask}\n";
 ?>
