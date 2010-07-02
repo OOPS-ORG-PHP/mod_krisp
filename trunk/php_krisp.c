@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://oops.org>                              |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.12 2010-06-18 13:34:50 oops Exp $
+  $Id: php_krisp.c,v 1.13 2010-07-02 18:25:45 oops Exp $
 */
 
 /*
@@ -325,12 +325,14 @@ PHP_FUNCTION(krisp_search_ex)
 	}
 
 	if ( object_init (return_value) == FAILURE ) {
+		initStruct_ex (&isp, true);
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "Failure object initialize");
 		RETURN_FALSE;
 	}
 
 	MAKE_STD_ZVAL(dummy);
 	if ( array_init (dummy) == FAILURE ) {
+		initStruct_ex (&isp, true);
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "Failure array initialize");
 		RETURN_FALSE;
 	}
