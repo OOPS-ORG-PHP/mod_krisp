@@ -1,5 +1,5 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.15 2010-07-02 18:42:47 oops Exp $
+$Id: Changelog,v 1.16 2010-07-02 18:46:34 oops Exp $
 
 * 2.0.0
 --------------------------------------------------------------------------------
@@ -7,6 +7,7 @@ $Id: Changelog,v 1.15 2010-07-02 18:42:47 oops Exp $
 Sat Jul  3 2010
 by JoungKyun.Kim <http://oops.org>
 	- changed krisp_long2prefix to krisp_mask2prefix
+	- changed krisp_prefix2long to krisp_prefix2mask
 
 Fri Jul  1 2010
 by JoungKyun.Kim <http://oops.org>

@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://oops.org>                              |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.14 2010-07-02 18:42:47 oops Exp $
+  $Id: php_krisp.c,v 1.15 2010-07-02 18:46:34 oops Exp $
 */
 
 /*
@@ -62,7 +62,7 @@ function_entry krisp_functions[] = {
 	PHP_FE(krisp_netmask,			NULL)
 	PHP_FE(krisp_network,			NULL)
 	PHP_FE(krisp_broadcast,			NULL)
-	PHP_FE(krisp_prefix2long,		NULL)
+	PHP_FE(krisp_prefix2mask,		NULL)
 	PHP_FE(krisp_mask2prefix,		NULL)
 	{NULL, NULL, NULL}
 };
@@ -514,12 +514,13 @@ PHP_FUNCTION(krisp_broadcast)
 }
 /* }}} */
 
-/* {{{ proto long krisp_prefix2long (prefix)
+/* {{{ proto string krisp_prefix2mask (prefix)
  *  return unsigned long value for given network prefix */
-PHP_FUNCTION(krisp_prefix2long)
+PHP_FUNCTION(krisp_prefix2mask)
 {
 	zval **prefix_digit;
 	short prefix;
+	char rip[16];
 
 	switch (ZEND_NUM_ARGS ()) {
 		case 1:
@@ -534,7 +535,7 @@ PHP_FUNCTION(krisp_prefix2long)
 	convert_to_long_ex (prefix_digit);
 	prefix = Z_LVAL_PP(prefix_digit);
 
-	RETURN_LONG (kr_prefix2long (prefix));
+	RETURN_STRING (kr_long2ip_r (kr_prefix2long (prefix), rip), 1);
 }
 /* }}} */
 
