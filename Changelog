@@ -1,5 +1,5 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.17 2010-08-08 16:03:40 oops Exp $
+$Id: Changelog,v 1.18 2010-08-08 16:40:58 oops Exp $
 
 * 2.0.1
 --------------------------------------------------------------------------------
@@ -8,6 +8,7 @@ Mon Aug  9 2010
 by JoungKyun.Kim <http://oops.org>
 	- linked with over libkrisp 3.0.2
 	- removed unused geoip variables
+	- fix license to LGPL current and old versions
 
 
 * 2.0.0
