@@ -1,22 +1,20 @@
-/*
-  +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 2010 JoungKyun.Kim                                     |
-  +----------------------------------------------------------------------+
-  | This source file is subject to version 3.0 of the PHP license,       |
-  | that is bundled with this package in the file LICENSE, and is        |
-  | available at through the world-wide-web at                           |
-  | http://www.php.net/license/3_0.txt.                                  |
-  | If you did not receive a copy of the PHP license and are unable to   |
-  | obtain it through the world-wide-web, please send a note to          |
-  | license@php.net so we can mail you a copy immediately.               |
-  +----------------------------------------------------------------------+
-  | Author: JoungKyun.Kim <http://oops.org>                              |
-  +----------------------------------------------------------------------+
-
-  $Id: php_krisp.c,v 1.17 2010-08-08 16:33:01 oops Exp $
-*/
+/**
+ * Project: mod_krisp :: KRISP database php extension
+ * File:    krisp.c
+ *
+ * Copyright (c) 1997-2010 JoungKyun.Kim
+ *
+ * LICENSE: LGPL
+ *
+ * @category    Database
+ * @package     mod_krisp
+ * @author      JoungKyun.Kim <http://oops.org>
+ * @copyright   1997-2010 OOPS.org
+ * @license     LGPL
+ * @version     CVS: $Id: php_krisp.c,v 1.18 2010-08-08 16:40:58 oops Exp $
+ * @link        http://pear.oops.org/package/krisp
+ * @since       File available since release 0.0.1
+ */
 
 /*
  * PHP5 Korea IPS library module "krsip"
