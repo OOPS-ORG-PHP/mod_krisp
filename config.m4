@@ -1,4 +1,4 @@
-dnl $Id: config.m4,v 1.2 2010-06-30 20:07:00 oops Exp $
+dnl $Id: config.m4,v 1.3 2010-08-08 16:03:40 oops Exp $
 dnl config.m4 for extension krisp
 
 dnl Comments in this file start with the string 'dnl'.
@@ -39,10 +39,28 @@ if test "$PHP_KRISP" != "no"; then
 		AC_MSG_ERROR([can't find. specify --with-krisp=/path/krisp-config])
 	fi
 
-	KRISP_LIBS=$($KRISPCONFIG --libs)
+	LIBKRISP_MINIMAL_VERSION="3.0.2"
+	LIBKRISP_VERSION=$($KRISPCONFIG --version)
+	LIBKRISP_MAJOR=$(echo $LIBKRISP_VERSION | sed 's/\..*//g')
+	LIBKRISP_MINOR=$(echo $LIBKRISP_VERSION | sed 's/^[[0-9]]\+\.\([[0-9]]\+\)\.[[0-9]]\+$/\1/g')
+	LIBKRISP_PATCH=$(echo $LIBKRISP_VERSION | sed 's/^.*\.\([[0-9]]\+\)$/\1/g')
+
+	AC_MSG_CHECKING(check the libkrisp version)
+	if test -n "$LIBKRISP_VERSION"; then
+		if test $LIBKRISP_MAJOR -lt 3 ; then
+			AC_MSG_ERROR([Current is $LIBKRISP_VERSION. Requires over $LIBKRISP_MINIMAL_VERSION])
+		fi
+		if test $LIBKRISP_PATCH -lt 2 ; then
+			AC_MSG_ERROR([Current is $LIBKRISP_VERSION. Requires over $LIBKRISP_MINIMAL_VERSION])
+		fi
+		AC_MSG_RESULT([$LIBKRISP_VERSION])
+	else
+		AC_MSG_ERROR([Unknown libkrisp version. Requires over $LIBKRISP_MINIMAL_VERSION])
+	fi
+
+	KRISP_LIBS=$($KRISPCONFIG --link)
 	KRISP_DEFS=$($KRISPCONFIG --defs | sed 's/[ ]*-DHAVE_CONFIG_H[ ]*//g')
 	KRISP_SQLITE=$(echo "$KRISP_LIBS" | grep sqlite3)
-	KRISP_GEOIP=$(echo "$KRISP_LIBS" | grep GeoIP)
 
 	AC_MSG_CHECKING(check the sqlite version)
 	if test -n "$KRISP_SQLITE"; then
@@ -50,14 +68,6 @@ if test "$PHP_KRISP" != "no"; then
 		AC_MSG_RESULT([sqlite3])
 	else
 		AC_MSG_RESULT([sqlite2])
-	fi
-
-	AC_MSG_CHECKING(check the geoip support)
-	if test -n "$KRISP_GEOIP"; then
-		AC_DEFINE(HAVE_LIBGEOIP, 1,[ ])
-		AC_MSG_RESULT([yes])
-	else
-		AC_MSG_RESULT([no])
 	fi
 
 	if test -n "$KRISP_DEFS"; then
