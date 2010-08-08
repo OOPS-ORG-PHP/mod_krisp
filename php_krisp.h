@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.17 2010-08-08 16:03:40 oops Exp $
+  $Id: php_krisp.h,v 1.18 2010-08-08 16:05:32 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -78,7 +78,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.0.0"
+#define BUILDNO "2.0.1"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
