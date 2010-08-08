@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://oops.org>                              |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.c,v 1.15 2010-07-02 18:46:34 oops Exp $
+  $Id: php_krisp.c,v 1.16 2010-08-08 16:03:40 oops Exp $
 */
 
 /*
@@ -221,8 +221,8 @@ PHP_FUNCTION(krisp_search)
 	KRNET_API isp;
 	char rip[16];
 	char *addr;
-	ulong network;
-	ulong broadcast;
+	ulong networkv;
+	ulong broadcastv;
 
 	switch (ZEND_NUM_ARGS ()) {
 		case 2:
@@ -256,16 +256,16 @@ PHP_FUNCTION(krisp_search)
 		RETURN_FALSE;
 	}
 
-	network = kr_network (isp.start, isp.netmask);
-	broadcast = kr_broadcast (isp.start, isp.netmask);
+	networkv = network (isp.start, isp.netmask);
+	broadcastv = broadcast (isp.start, isp.netmask);
 
 	add_property_string (return_value, "host", addr, 1);
 	add_property_string (return_value, "ip", isp.ip, 1);
-	add_property_string (return_value, "start", kr_long2ip_r (isp.start, rip), 1);
-	add_property_string (return_value, "end", kr_long2ip_r (isp.end, rip), 1);
-	add_property_string (return_value, "netmask", kr_long2ip_r (isp.netmask, rip), 1);
-	add_property_string (return_value, "network", kr_long2ip_r (network, rip), 1);
-	add_property_string (return_value, "broadcast", kr_long2ip_r (broadcast, rip), 1);
+	add_property_string (return_value, "start", long2ip_r (isp.start, rip), 1);
+	add_property_string (return_value, "end", long2ip_r (isp.end, rip), 1);
+	add_property_string (return_value, "netmask", long2ip_r (isp.netmask, rip), 1);
+	add_property_string (return_value, "network", long2ip_r (networkv, rip), 1);
+	add_property_string (return_value, "broadcast", long2ip_r (broadcastv, rip), 1);
 	add_property_string (return_value, "icode", isp.icode, 1);
 	add_property_string (return_value, "iname", isp.iname, 1);
 	add_property_string (return_value, "ccode", isp.ccode, 1);
@@ -286,8 +286,8 @@ PHP_FUNCTION(krisp_search_ex)
 	char *addr;
 	char *table;
 	ulong netmask;
-	ulong network;
-	ulong broadcast;
+	ulong networkv;
+	ulong broadcastv;
 
 	switch (ZEND_NUM_ARGS ()) {
 		case 3:
@@ -339,17 +339,17 @@ PHP_FUNCTION(krisp_search_ex)
 		RETURN_FALSE;
 	}
 
-	netmask = kr_netmask (isp.start, isp.end);
-	network = kr_network (isp.start, netmask);
-	broadcast = kr_broadcast (isp.start, netmask);
+	netmask = guess_netmask (isp.start, isp.end);
+	networkv = network (isp.start, netmask);
+	broadcastv = broadcast (isp.start, netmask);
 
 	add_property_string (return_value, "host", addr, 1);
 	add_property_string (return_value, "ip", isp.ip, 1);
-	add_property_string (return_value, "start", kr_long2ip_r (isp.start, rip), 1);
-	add_property_string (return_value, "end", kr_long2ip_r (isp.end, rip), 1);
-	add_property_string (return_value, "netmask", kr_long2ip_r (netmask, rip), 1);
-	add_property_string (return_value, "network", kr_long2ip_r (network, rip), 1);
-	add_property_string (return_value, "broadcast", kr_long2ip_r (broadcast, rip), 1);
+	add_property_string (return_value, "start", long2ip_r (isp.start, rip), 1);
+	add_property_string (return_value, "end", long2ip_r (isp.end, rip), 1);
+	add_property_string (return_value, "netmask", long2ip_r (netmask, rip), 1);
+	add_property_string (return_value, "network", long2ip_r (networkv, rip), 1);
+	add_property_string (return_value, "broadcast", long2ip_r (broadcastv, rip), 1);
 	add_property_long (return_value, "size", isp.size);
 
 	{
@@ -428,21 +428,21 @@ PHP_FUNCTION(krisp_netmask)
 	if ( strchr (start, '.') == NULL )
 		lstart = (ulong) strtoul (start, NULL, 10);
 	else
-		lstart = kr_ip2long (start);
+		lstart = ip2long (start);
 
 	if ( strchr (end, '.') == NULL )
 		lend = (ulong) strtoul (end, NULL, 10);
 	else
-		lend = kr_ip2long (end);
+		lend = ip2long (end);
 
 	if ( object_init (return_value) == FAILURE ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "Failure object initialize");
 		RETURN_FALSE;
 	}
 
-	mask = kr_netmask (lstart, lend);
-	add_property_string (return_value, "mask", kr_long2ip_r (mask, rip), 1);
-	add_property_long (return_value, "prefix", kr_long2prefix (mask));
+	mask = guess_netmask (lstart, lend);
+	add_property_string (return_value, "mask", long2ip_r (mask, rip), 1);
+	add_property_long (return_value, "prefix", long2prefix (mask));
 }
 /* }}} */
 
@@ -484,17 +484,17 @@ static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool typ
 	if ( strchr (ip, '.') == NULL )
 		lip = (ulong) strtoul (ip, NULL, 10);
 	else
-		lip = kr_ip2long (ip);
+		lip = ip2long (ip);
 
 	if ( strchr (mask, '.') == NULL )
 		lmask = (ulong) strtoul (mask, NULL, 10);
 	else
-		lmask = kr_ip2long (mask);
+		lmask = ip2long (mask);
 
 	if ( type ) {
-		RETURN_STRING (kr_long2ip_r (kr_broadcast (lip, lmask), rip), 1);
+		RETURN_STRING (long2ip_r (broadcast (lip, lmask), rip), 1);
 	} else {
-		RETURN_STRING (kr_long2ip_r (kr_network (lip, lmask), rip), 1);
+		RETURN_STRING (long2ip_r (network (lip, lmask), rip), 1);
 	}
 } // }}}
 
@@ -535,7 +535,7 @@ PHP_FUNCTION(krisp_prefix2mask)
 	convert_to_long_ex (prefix_digit);
 	prefix = Z_LVAL_PP(prefix_digit);
 
-	RETURN_STRING (kr_long2ip_r (kr_prefix2long (prefix), rip), 1);
+	RETURN_STRING (long2ip_r (prefix2long (prefix), rip), 1);
 }
 /* }}} */
 
@@ -559,7 +559,7 @@ PHP_FUNCTION(krisp_mask2prefix)
 	convert_to_string_ex (mask_z);
 	mask = Z_STRVAL_PP(mask_z);
 
-	RETURN_LONG (kr_long2prefix (kr_ip2long (mask)));
+	RETURN_LONG (long2prefix (ip2long (mask)));
 }
 /* }}} */
 

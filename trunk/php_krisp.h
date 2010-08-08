@@ -15,7 +15,7 @@
   | Author: JoungKyun.Kim <http://www.oops.org>                          |
   +----------------------------------------------------------------------+
 
-  $Id: php_krisp.h,v 1.16 2010-07-02 18:46:34 oops Exp $
+  $Id: php_krisp.h,v 1.17 2010-08-08 16:03:40 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -87,6 +87,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
  * KRISP library header
  */
 
+#include <ipcalc.h>
 #include <krisp.h>
 
 typedef struct krisp_info {
