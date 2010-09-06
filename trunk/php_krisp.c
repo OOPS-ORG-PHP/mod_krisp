@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.18 2010-08-08 16:40:58 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.19 2010-09-06 04:07:16 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -45,6 +45,11 @@ static PHP_GINIT_FUNCTION(krisp);
 /* True global resources - no need for thread safety here */
 static int le_krisp;
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_krisp_open, 0, 0, 0)
+	ZEND_ARG_INFO(0, database)
+	ZEND_ARG_INFO(1, error)
+ZEND_END_ARG_INFO()
+
 /* {{{ krisp_functions[]
  *
  * Every user visible function must have an entry in krisp_functions[].
@@ -53,7 +58,7 @@ function_entry krisp_functions[] = {
 	PHP_FE(krisp_buildver,			NULL)
 	PHP_FE(krisp_version,			NULL)
 	PHP_FE(krisp_uversion,			NULL)
-	PHP_FE(krisp_open,				second_arg_force_ref)
+	PHP_FE(krisp_open,				arginfo_krisp_open)
 	PHP_FE(krisp_search,			NULL)
 	PHP_FE(krisp_search_ex,			NULL)
 	PHP_FE(krisp_close,				NULL)
@@ -161,45 +166,31 @@ PHP_FUNCTION(krisp_uversion)
  *  return krisp database open resource */
 PHP_FUNCTION(krisp_open)
 {
+	/*
 	zval **datafile = NULL;
 	zval **error = NULL;
+	*/
+	char *database = NULL;
+	int database_len;
+	zval *error = NULL;
 	KRISP_API *kr;
 
 	char *df = NULL;
 	char err[1024];
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 2:
-			if ( zend_get_parameters_ex(2, &datafile, &error) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "|sz", &database, &database_len, &error) == FAILURE )
+		return;
 
-			break;
-		case 1:
-			if ( zend_get_parameters_ex(1, &datafile) == FAILURE )
-				WRONG_PARAM_COUNT;
-
-			break;
-		case 0:
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	if ( ZEND_NUM_ARGS () > 0 ) {
-		convert_to_string_ex(datafile);
-		df = Z_STRVAL_PP(datafile);
-
-		if ( strlen (df) < 1 )
-			df = NULL;
-	}
+	if ( database != NULL && database_len < 1 )
+		database = NULL;
 
 	kr = (KRISP_API *) malloc (sizeof (KRISP_API));
 
-	if ( kr_open_safe (&kr->db, df, err) == false ) {
+	if ( kr_open_safe (&kr->db, database, err) == false ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "%s", err);
-		if ( ZEND_NUM_ARGS () == 2 ) {
-			zval_dtor (*error);
-			ZVAL_STRING (*error, err, 1);
+		if ( error != NULL ) {
+			zval_dtor (error);
+			ZVAL_STRING (error, err, 1);
 		}
 		free (kr);
 		RETURN_FALSE;
@@ -213,36 +204,28 @@ PHP_FUNCTION(krisp_open)
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
-	zval **krisp_link, **host;
+	zval *krisp_link;
+	char *host;
+	int host_len;
 	KRISP_API *kr;
 
 	KRNET_API isp;
 	char rip[16];
-	char *addr;
 	ulong networkv;
 	ulong broadcastv;
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 2:
-			if ( zend_get_parameters_ex(2, &krisp_link, &host) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs", &krisp_link, &host, &host_len) == FAILURE)
+		return;
 
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	if ( Z_STRLEN_PP (host) == 0) {
+	if ( host_len == 0) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length of host argument is 0");
 		RETURN_FALSE;
 	}
 
-	convert_to_string_ex(host);
-	addr = Z_STRVAL_PP(host);
-	SAFECPY_256 (isp.ip, addr);
+	SAFECPY_256 (isp.ip, host);
 	isp.verbose = false;
 
-	ZEND_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, -1, "KRISP database", le_krisp);
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 
 	if ( kr_search (&isp, kr->db) ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "%s", isp.err);
@@ -257,7 +240,7 @@ PHP_FUNCTION(krisp_search)
 	networkv = network (isp.start, isp.netmask);
 	broadcastv = broadcast (isp.start, isp.netmask);
 
-	add_property_string (return_value, "host", addr, 1);
+	add_property_string (return_value, "host", host, 1);
 	add_property_string (return_value, "ip", isp.ip, 1);
 	add_property_string (return_value, "start", long2ip_r (isp.start, rip), 1);
 	add_property_string (return_value, "end", long2ip_r (isp.end, rip), 1);
@@ -275,47 +258,40 @@ PHP_FUNCTION(krisp_search)
  *  return isp information array */
 PHP_FUNCTION(krisp_search_ex)
 {
-	zval **krisp_link, **host, **tablename;
+	zval *krisp_link;
+	char *host;
+	int host_len;
 	KRISP_API *kr;
 
 	KRNET_API_EX isp;
 	char rip[16];
 	zval *dummy = NULL;
-	char *addr;
 	char *table;
+	int table_len;
 	ulong netmask;
 	ulong networkv;
 	ulong broadcastv;
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 3:
-			if ( zend_get_parameters_ex(3, &krisp_link, &host, &tablename) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs|s", &krisp_link, &host, &host_len, &table, &table_len) == FAILURE )
+		return;
 
-			convert_to_string_ex (tablename);
-			table = Z_STRVAL_PP (tablename);
-			break;
-		case 2:
-			if ( zend_get_parameters_ex(2, &krisp_link, &host) == FAILURE )
-				WRONG_PARAM_COUNT;
-
-			table = "krisp";
-			break;
-		default:
-				WRONG_PARAM_COUNT;
+	if ( ZEND_NUM_ARGS () == 2 ) {
+		table = "krisp";
+		table_len = 5;
 	}
 
-	if ( Z_STRLEN_PP (host) == 0) {
+	if ( table_len == 0 )
+		table = "krisp";
+
+	if ( strlen (host) == 0) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length of host argument is 0");
 		RETURN_FALSE;
 	}
 
-	convert_to_string_ex(host);
-	addr = Z_STRVAL_PP(host);
-	SAFECPY_256 (isp.ip, addr);
+	SAFECPY_256 (isp.ip, host);
 	isp.verbose = false;
 
-	ZEND_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, -1, "KRISP database", le_krisp);
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 	kr->db->table = table;
 
 	if ( kr_search_ex (&isp, kr->db) ) {
@@ -341,7 +317,7 @@ PHP_FUNCTION(krisp_search_ex)
 	networkv = network (isp.start, netmask);
 	broadcastv = broadcast (isp.start, netmask);
 
-	add_property_string (return_value, "host", addr, 1);
+	add_property_string (return_value, "host", host, 1);
 	add_property_string (return_value, "ip", isp.ip, 1);
 	add_property_string (return_value, "start", long2ip_r (isp.start, rip), 1);
 	add_property_string (return_value, "end", long2ip_r (isp.end, rip), 1);
@@ -366,22 +342,15 @@ PHP_FUNCTION(krisp_search_ex)
  *  close krisp database */
 PHP_FUNCTION(krisp_close)
 {
-	zval **krisp_link;
+	zval *krisp_link;
 	KRISP_API *kr;
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 1:
-			if ( zend_get_parameters_ex(1, &krisp_link) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r", &krisp_link) == FAILURE )
+		return;
 
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 
-	ZEND_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, -1, "KRISP database", le_krisp);
-
-	zend_list_delete(Z_RESVAL_PP(krisp_link));
+	zend_list_delete(Z_RESVAL_P(krisp_link));
 }
 /* }}} */
 
@@ -389,39 +358,27 @@ PHP_FUNCTION(krisp_close)
  *  return netmask and prefix about given ip range */
 PHP_FUNCTION(krisp_netmask)
 {
-	zval **startip, **endip;
 	char rip[16];
 	char *start;
+	int start_len;
 	char *end;
+	char end_len;
 	ulong lstart;
 	ulong lend;
 	ulong mask;
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 2:
-			if ( zend_get_parameters_ex(2, &startip, &endip) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &start, &start_len, &end, &end_len) == FAILURE )
+		return;
 
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	if ( Z_STRLEN_PP (startip) == 0) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length that start address is 0");
+	if ( start_len == 0 ) {
+		php_error_docref (NULL TSRMLS_CC, E_WARNING, "start address is none");
 		RETURN_FALSE;
 	}
 
-	if ( Z_STRLEN_PP (endip) == 0) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length that end address is 0");
+	if ( end_len == 0 ) {
+		php_error_docref (NULL TSRMLS_CC, E_WARNING, "end address is none");
 		RETURN_FALSE;
 	}
-
-	convert_to_string_ex (startip);
-	start = Z_STRVAL_PP(startip);
-
-	convert_to_string_ex (endip);
-	end = Z_STRVAL_PP(endip);
 
 	if ( strchr (start, '.') == NULL )
 		lstart = (ulong) strtoul (start, NULL, 10);
@@ -446,38 +403,26 @@ PHP_FUNCTION(krisp_netmask)
 
 static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool type) // {{{
 {
-	zval **gip, **gmask;
 	char *ip;
+	int ip_len;
 	char *mask;
+	int mask_len;
 	ulong lip;
 	ulong lmask;
 	char rip[16];
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 2:
-			if ( zend_get_parameters_ex(2, &gip, &gmask) == FAILURE )
-				WRONG_PARAM_COUNT;
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &ip, &ip_len, &mask, &mask_len) == FAILURE )
+		return;
 
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	if ( Z_STRLEN_PP (gip) == 0) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length that IP address is 0");
+	if ( ip_len == 0) {
+		php_error_docref (NULL TSRMLS_CC, E_WARNING, "First argument (IP address) is none");
 		RETURN_FALSE;
 	}
 
-	if ( Z_STRLEN_PP (gmask) == 0) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length of network mask is 0");
+	if ( mask_len == 0) {
+		php_error_docref (NULL TSRMLS_CC, E_WARNING, "Second argument (Network mask) is none");
 		RETURN_FALSE;
 	}
-
-	convert_to_string_ex (gip);
-	ip = Z_STRVAL_PP(gip);
-
-	convert_to_string_ex (gmask);
-	mask = Z_STRVAL_PP(gmask);
 
 	if ( strchr (ip, '.') == NULL )
 		lip = (ulong) strtoul (ip, NULL, 10);
@@ -516,22 +461,11 @@ PHP_FUNCTION(krisp_broadcast)
  *  return unsigned long value for given network prefix */
 PHP_FUNCTION(krisp_prefix2mask)
 {
-	zval **prefix_digit;
 	short prefix;
 	char rip[16];
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 1:
-			if ( zend_get_parameters_ex(1, &prefix_digit) == FAILURE )
-				WRONG_PARAM_COUNT;
-
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	convert_to_long_ex (prefix_digit);
-	prefix = Z_LVAL_PP(prefix_digit);
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "l", &prefix) == FAILURE )
+		return;
 
 	RETURN_STRING (long2ip_r (prefix2long (prefix), rip), 1);
 }
@@ -541,21 +475,11 @@ PHP_FUNCTION(krisp_prefix2mask)
  *  return short network prefix for given long network mask */
 PHP_FUNCTION(krisp_mask2prefix)
 {
-	zval **mask_z;
 	char * mask;
+	int mask_len;
 
-	switch (ZEND_NUM_ARGS ()) {
-		case 1:
-			if ( zend_get_parameters_ex(1, &mask_z) == FAILURE )
-				WRONG_PARAM_COUNT;
-
-			break;
-		default:
-				WRONG_PARAM_COUNT;
-	}
-
-	convert_to_string_ex (mask_z);
-	mask = Z_STRVAL_PP(mask_z);
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "s", &mask, &mask_len) == FAILURE )
+		return;
 
 	RETURN_LONG (long2prefix (ip2long (mask)));
 }

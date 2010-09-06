@@ -1,5 +1,15 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.18 2010-08-08 16:40:58 oops Exp $
+$Id: Changelog,v 1.19 2010-09-06 04:07:16 oops Exp $
+
+* 2.0.2
+--------------------------------------------------------------------------------
+
+Mon Sep  6 2010
+by JoungKyun.Kim <http://oops.org>
+	- support over php 5.3
+	- fixed build error that undeclare 'second_arg_force_ref'
+	- chagend deprecated zend_get_parameters_ex to zend_parse_parameters
+
 
 * 2.0.1
 --------------------------------------------------------------------------------
