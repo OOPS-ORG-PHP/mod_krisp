@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.20 2010-09-06 05:25:01 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.21 2010-09-06 05:33:09 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -162,7 +162,6 @@ PHP_FUNCTION(krisp_open)
 	zval *error = NULL;
 	KRISP_API *kr;
 
-	char *df = NULL;
 	char err[1024];
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "|sz", &database, &database_len, &error) == FAILURE )
