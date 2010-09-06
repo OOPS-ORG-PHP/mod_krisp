@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.21 2010-09-06 05:33:09 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.22 2010-09-06 05:36:24 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -106,6 +106,7 @@ static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 PHP_MINIT_FUNCTION(krisp)
 {
 	le_krisp = zend_register_list_destructors_ex(_close_krisp_link, NULL, "krisp link", module_number);
+	return SUCCESS;
 }
 /* }}} */
 
