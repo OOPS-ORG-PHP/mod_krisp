@@ -1,5 +1,5 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.19 2010-09-06 04:07:16 oops Exp $
+$Id: Changelog,v 1.20 2010-09-06 05:25:01 oops Exp $
 
 * 2.0.2
 --------------------------------------------------------------------------------
@@ -9,6 +9,7 @@ by JoungKyun.Kim <http://oops.org>
 	- support over php 5.3
 	- fixed build error that undeclare 'second_arg_force_ref'
 	- chagend deprecated zend_get_parameters_ex to zend_parse_parameters
+	- remove global extension variable api for compat with 5.1
 
 
 * 2.0.1

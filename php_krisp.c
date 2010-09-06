@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.19 2010-09-06 04:07:16 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.20 2010-09-06 05:25:01 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -38,9 +38,8 @@
 #include "php_krisp.h"
 
 /* If you declare any globals in php_krisp.h uncomment this:
- */
 ZEND_DECLARE_MODULE_GLOBALS(krisp)
-static PHP_GINIT_FUNCTION(krisp);
+ */
 
 /* True global resources - no need for thread safety here */
 static int le_krisp;
@@ -87,25 +86,13 @@ zend_module_entry krisp_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
 	BUILDNO, /* Replace with version number for your extension */
 #endif
-	PHP_MODULE_GLOBALS(krisp),
-	PHP_GINIT(krisp),
-	NULL,
-	NULL,
-	STANDARD_MODULE_PROPERTIES_EX
+	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
 
 #ifdef COMPILE_DL_KRISP
 ZEND_GET_MODULE(krisp)
 #endif
-
-/* {{{ PHP_GINIT_FUNCTION
- */
-static PHP_GINIT_FUNCTION(krisp)
-{
-	memset (krisp_globals->err, 0, 1024);
-}
-/* }}} */
 
 static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {

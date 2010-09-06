@@ -1,5 +1,5 @@
 /*
- * $Id: php_krisp.h,v 1.19 2010-08-08 16:40:58 oops Exp $
+ * $Id: php_krisp.h,v 1.20 2010-09-06 05:25:01 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -42,9 +42,11 @@ PHP_FUNCTION(krisp_mask2prefix);
 	and END macros here:     
  */
 
+/*
 ZEND_BEGIN_MODULE_GLOBALS(krisp)
 	char err[1024];
 ZEND_END_MODULE_GLOBALS(krisp)
+*/
 
 /* In every utility function you add that needs to use variables 
    in php_krisp_globals, call TSRM_FETCH(); after declaring other 
