@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.23 2010-09-10 18:10:39 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.24 2010-09-10 18:24:33 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -96,9 +96,9 @@ zend_module_entry krisp_module_entry = {
 ZEND_GET_MODULE(krisp)
 #endif
 
-static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+static void _close_krisp_link(zend_rsrc_list_entry * rsrc TSRMLS_DC)
 {
-	KRISP_API *kr = (KRISP_API *)rsrc->ptr;
+	KRISP_API *	kr = (KRISP_API *) rsrc->ptr;
 	kr_close (&kr->db);
 	free (kr);
 }
@@ -107,7 +107,7 @@ static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
  */
 PHP_MINIT_FUNCTION(krisp)
 {
-	le_krisp = zend_register_list_destructors_ex(_close_krisp_link, NULL, "krisp link", module_number);
+	le_krisp = zend_register_list_destructors_ex (_close_krisp_link, NULL, "krisp link", module_number);
 	return SUCCESS;
 }
 /* }}} */
@@ -116,15 +116,15 @@ PHP_MINIT_FUNCTION(krisp)
  */
 PHP_MINFO_FUNCTION(krisp)
 {
-	php_info_print_table_start();
-	php_info_print_table_colspan_header(2, "krisp extension support");
-	php_info_print_table_row(2, "Summary", "Get Korea ISP Information");
-	php_info_print_table_row(2, "URL", "http://devel.oops.org/");
-	php_info_print_table_row(2, "Build version", BUILDNO);
-	php_info_print_table_row(2, "Library version", KRISP_VERSION);
-	php_info_print_table_colspan_header(2, "Library support");
-	php_info_print_table_row(2, "SQLite", SQLITE_VERSION);
-	php_info_print_table_end();
+	php_info_print_table_start ();
+	php_info_print_table_colspan_header (2, "krisp extension support");
+	php_info_print_table_row (2, "Summary", "Get Korea ISP Information");
+	php_info_print_table_row (2, "URL", "http://devel.oops.org/");
+	php_info_print_table_row (2, "Build version", BUILDNO);
+	php_info_print_table_row (2, "Library version", KRISP_VERSION);
+	php_info_print_table_colspan_header (2, "Library support");
+	php_info_print_table_row (2, "SQLite", SQLITE_VERSION);
+	php_info_print_table_end ();
 }
 /* }}} */
 
@@ -157,15 +157,15 @@ PHP_FUNCTION(krisp_uversion)
 PHP_FUNCTION(krisp_open)
 {
 	/*
-	zval **datafile = NULL;
-	zval **error = NULL;
+	zval **		datafile = NULL;
+	zval **		error = NULL;
 	*/
-	char *database = NULL;
-	int database_len;
-	zval *error = NULL;
-	KRISP_API *kr;
+	char *		database = NULL;
+	int			database_len;
+	zval *		error = NULL;
+	KRISP_API *	kr;
 
-	char err[1024];
+	char		err[1024];
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "|sz", &database, &database_len, &error) == FAILURE )
 		return;
@@ -185,7 +185,7 @@ PHP_FUNCTION(krisp_open)
 		RETURN_FALSE;
 	}
 
-	kr->rsrc = ZEND_REGISTER_RESOURCE(return_value, kr, le_krisp);
+	kr->rsrc = ZEND_REGISTER_RESOURCE (return_value, kr, le_krisp);
 }
 /* }}} */
 
@@ -193,20 +193,20 @@ PHP_FUNCTION(krisp_open)
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
-	zval *krisp_link;
-	char *host;
-	int host_len;
-	KRISP_API *kr;
+	zval *		krisp_link;
+	char *		host;
+	int			host_len;
+	KRISP_API *	kr;
 
-	KRNET_API isp;
-	char rip[16];
-	ulong networkv;
-	ulong broadcastv;
+	KRNET_API	isp;
+	char		rip[16];
+	ulong		networkv;
+	ulong		broadcastv;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs", &krisp_link, &host, &host_len) == FAILURE)
 		return;
 
-	if ( host_len == 0) {
+	if ( host_len == 0 ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "length of host argument is 0");
 		RETURN_FALSE;
 	}
@@ -247,19 +247,19 @@ PHP_FUNCTION(krisp_search)
  *  return isp information array */
 PHP_FUNCTION(krisp_search_ex)
 {
-	zval *krisp_link;
-	char *host;
-	int host_len;
-	KRISP_API *kr;
+	zval *			krisp_link;
+	char *			host;
+	int				host_len;
+	KRISP_API *		kr;
 
-	KRNET_API_EX isp;
-	char rip[16];
-	zval *dummy = NULL;
-	char *table;
-	int table_len;
-	ulong netmask;
-	ulong networkv;
-	ulong broadcastv;
+	KRNET_API_EX	isp;
+	char			rip[16];
+	zval *			dummy = NULL;
+	char *			table;
+	int				table_len;
+	ulong			netmask;
+	ulong			networkv;
+	ulong			broadcastv;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs|s", &krisp_link, &host, &host_len, &table, &table_len) == FAILURE )
 		return;
@@ -331,8 +331,8 @@ PHP_FUNCTION(krisp_search_ex)
  *  close krisp database */
 PHP_FUNCTION(krisp_close)
 {
-	zval *krisp_link;
-	KRISP_API *kr;
+	zval *		krisp_link;
+	KRISP_API *	kr;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r", &krisp_link) == FAILURE )
 		return;
@@ -347,14 +347,14 @@ PHP_FUNCTION(krisp_close)
  *  return netmask and prefix about given ip range */
 PHP_FUNCTION(krisp_netmask)
 {
-	char rip[16];
-	char *start;
-	int start_len;
-	char *end;
-	int end_len;
-	ulong lstart;
-	ulong lend;
-	ulong mask;
+	char	rip[16];
+	char *	start;
+	int		start_len;
+	char *	end;
+	int		end_len;
+	ulong	lstart;
+	ulong	lend;
+	ulong	mask;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &start, &start_len, &end, &end_len) == FAILURE )
 		return;
@@ -392,13 +392,13 @@ PHP_FUNCTION(krisp_netmask)
 
 static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool type) // {{{
 {
-	char *ip;
-	int ip_len;
-	char *mask;
-	int mask_len;
-	ulong lip;
-	ulong lmask;
-	char rip[16];
+	char *	ip;
+	int		ip_len;
+	char *	mask;
+	int		mask_len;
+	ulong	lip;
+	ulong	lmask;
+	char	rip[16];
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &ip, &ip_len, &mask, &mask_len) == FAILURE )
 		return;
@@ -450,8 +450,8 @@ PHP_FUNCTION(krisp_broadcast)
  *  return unsigned long value for given network prefix */
 PHP_FUNCTION(krisp_prefix2mask)
 {
-	short prefix;
-	char rip[16];
+	short	prefix;
+	char	rip[16];
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "l", &prefix) == FAILURE )
 		return;
@@ -464,8 +464,8 @@ PHP_FUNCTION(krisp_prefix2mask)
  *  return short network prefix for given long network mask */
 PHP_FUNCTION(krisp_mask2prefix)
 {
-	char * mask;
-	int mask_len;
+	char *	mask;
+	int		mask_len;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "s", &mask, &mask_len) == FAILURE )
 		return;
@@ -478,9 +478,9 @@ PHP_FUNCTION(krisp_mask2prefix)
  *  set krisp database mtime check interval */
 PHP_FUNCTION(krisp_set_mtime_interval)
 {
-	zval *krisp_link;
-	time_t sec;
-	KRISP_API *kr;
+	zval *		krisp_link;
+	time_t		sec;
+	KRISP_API *	kr;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rl", &krisp_link, &sec) == FAILURE )
 		return;
@@ -496,9 +496,9 @@ PHP_FUNCTION(krisp_set_mtime_interval)
  *  print libkrisp debug messages */
 PHP_FUNCTION(krisp_set_debug)
 {
-	zval *krisp_link;
-	zend_bool switches = true;
-	KRISP_API *kr;
+	zval *		krisp_link;
+	zend_bool	switches = true;
+	KRISP_API *	kr;
 
 	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r|l", &krisp_link, &switches) == FAILURE )
 		return;

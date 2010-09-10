@@ -1,5 +1,5 @@
 /*
- * $Id: php_krisp.h,v 1.22 2010-09-10 18:10:39 oops Exp $
+ * $Id: php_krisp.h,v 1.23 2010-09-10 18:24:33 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -79,8 +79,8 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #include <krisp.h>
 
 typedef struct krisp_info {
-	KR_API *db;
-	int rsrc;
+	KR_API *	db;
+	int			rsrc;
 } KRISP_API;
 
 #endif	/* PHP_KRISP_H */
