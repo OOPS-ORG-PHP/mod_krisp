@@ -1,4 +1,4 @@
-dnl $Id: config.m4,v 1.3 2010-08-08 16:03:40 oops Exp $
+dnl $Id: config.m4,v 1.4 2010-09-10 18:10:39 oops Exp $
 dnl config.m4 for extension krisp
 
 dnl Comments in this file start with the string 'dnl'.
@@ -39,7 +39,7 @@ if test "$PHP_KRISP" != "no"; then
 		AC_MSG_ERROR([can't find. specify --with-krisp=/path/krisp-config])
 	fi
 
-	LIBKRISP_MINIMAL_VERSION="3.0.2"
+	LIBKRISP_MINIMAL_VERSION="3.1.0"
 	LIBKRISP_VERSION=$($KRISPCONFIG --version)
 	LIBKRISP_MAJOR=$(echo $LIBKRISP_VERSION | sed 's/\..*//g')
 	LIBKRISP_MINOR=$(echo $LIBKRISP_VERSION | sed 's/^[[0-9]]\+\.\([[0-9]]\+\)\.[[0-9]]\+$/\1/g')
@@ -50,7 +50,7 @@ if test "$PHP_KRISP" != "no"; then
 		if test $LIBKRISP_MAJOR -lt 3 ; then
 			AC_MSG_ERROR([Current is $LIBKRISP_VERSION. Requires over $LIBKRISP_MINIMAL_VERSION])
 		fi
-		if test $LIBKRISP_PATCH -lt 2 ; then
+		if test $LIBKRISP_MINOR -lt 1 ; then
 			AC_MSG_ERROR([Current is $LIBKRISP_VERSION. Requires over $LIBKRISP_MINIMAL_VERSION])
 		fi
 		AC_MSG_RESULT([$LIBKRISP_VERSION])

@@ -1,5 +1,15 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.20 2010-09-06 05:25:01 oops Exp $
+$Id: Changelog,v 1.21 2010-09-10 18:10:39 oops Exp $
+
+* 2.1.0
+--------------------------------------------------------------------------------
+
+Sat Sep 11 2010
+by JoungKyun.Kim <http://oops.org>
+	- support over libkrisp 3.1.x
+	- add krisp_set_mtime_interval function
+	- add krisp_set_debug function
+
 
 * 2.0.2
 --------------------------------------------------------------------------------

@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.22 2010-09-06 05:36:24 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.23 2010-09-10 18:10:39 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -66,6 +66,8 @@ function_entry krisp_functions[] = {
 	PHP_FE(krisp_broadcast,			NULL)
 	PHP_FE(krisp_prefix2mask,		NULL)
 	PHP_FE(krisp_mask2prefix,		NULL)
+	PHP_FE(krisp_set_mtime_interval,	NULL)
+	PHP_FE(krisp_set_debug,			NULL)
 	{NULL, NULL, NULL}
 };
 /* }}} */
@@ -97,7 +99,7 @@ ZEND_GET_MODULE(krisp)
 static void _close_krisp_link(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
 	KRISP_API *kr = (KRISP_API *)rsrc->ptr;
-	kr_close (kr->db);
+	kr_close (&kr->db);
 	free (kr);
 }
 
@@ -209,10 +211,10 @@ PHP_FUNCTION(krisp_search)
 		RETURN_FALSE;
 	}
 
-	SAFECPY_256 (isp.ip, host);
-	isp.verbose = false;
-
 	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+
+	SAFECPY_256 (isp.ip, host);
+	isp.verbose = kr->db->verbose;
 
 	if ( kr_search (&isp, kr->db) ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "%s", isp.err);
@@ -349,7 +351,7 @@ PHP_FUNCTION(krisp_netmask)
 	char *start;
 	int start_len;
 	char *end;
-	char end_len;
+	int end_len;
 	ulong lstart;
 	ulong lend;
 	ulong mask;
@@ -469,6 +471,42 @@ PHP_FUNCTION(krisp_mask2prefix)
 		return;
 
 	RETURN_LONG (long2prefix (ip2long (mask)));
+}
+/* }}} */
+
+/* {{{ proto void krisp_set_mtime_interval (resoruce, sec)
+ *  set krisp database mtime check interval */
+PHP_FUNCTION(krisp_set_mtime_interval)
+{
+	zval *krisp_link;
+	time_t sec;
+	KRISP_API *kr;
+
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rl", &krisp_link, &sec) == FAILURE )
+		return;
+
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+	kr->db->db_time_stamp_interval = sec;
+
+	RETURN_TRUE;
+}
+/* }}} */
+
+/* {{{ proto void krisp_set_debug (resoruce[, switch = true])
+ *  print libkrisp debug messages */
+PHP_FUNCTION(krisp_set_debug)
+{
+	zval *krisp_link;
+	zend_bool switches = true;
+	KRISP_API *kr;
+
+	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r|l", &krisp_link, &switches) == FAILURE )
+		return;
+
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+	kr->db->verbose = switches;
+
+	RETURN_TRUE;
 }
 /* }}} */
 

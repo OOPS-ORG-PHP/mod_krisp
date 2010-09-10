@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?
-/* $Id: test.php,v 1.9 2010-08-08 15:58:35 oops Exp $ */
+/* $Id: test.php,v 1.10 2010-09-10 18:10:39 oops Exp $ */
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
@@ -24,6 +24,9 @@ if ( $c === false ) {
 	echo "ERROR: {$err}\n";
 	return 1;
 }
+
+#krisp_set_mtime_interval ($c, 0);
+#krisp_set_debug ($c);
 
 foreach ( $searches as $v ) {
     /*
