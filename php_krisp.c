@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.24 2010-09-10 18:24:33 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.25 2010-09-10 18:32:00 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -369,15 +369,8 @@ PHP_FUNCTION(krisp_netmask)
 		RETURN_FALSE;
 	}
 
-	if ( strchr (start, '.') == NULL )
-		lstart = (ulong) strtoul (start, NULL, 10);
-	else
-		lstart = ip2long (start);
-
-	if ( strchr (end, '.') == NULL )
-		lend = (ulong) strtoul (end, NULL, 10);
-	else
-		lend = ip2long (end);
+	lstart = krisp_format_convert (start);
+	lend   = krisp_format_convert (end);
 
 	if ( object_init (return_value) == FAILURE ) {
 		php_error_docref (NULL TSRMLS_CC, E_WARNING, "Failure object initialize");
@@ -413,21 +406,15 @@ static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool typ
 		RETURN_FALSE;
 	}
 
-	if ( strchr (ip, '.') == NULL )
-		lip = (ulong) strtoul (ip, NULL, 10);
-	else
-		lip = ip2long (ip);
+	lip   = krisp_format_convert (ip);
+	lmask = krisp_format_convert (mask);
 
-	if ( strchr (mask, '.') == NULL )
-		lmask = (ulong) strtoul (mask, NULL, 10);
-	else
-		lmask = ip2long (mask);
-
-	if ( type ) {
-		RETURN_STRING (long2ip_r (broadcast (lip, lmask), rip), 1);
-	} else {
-		RETURN_STRING (long2ip_r (network (lip, lmask), rip), 1);
-	}
+	RETURN_STRING (
+			type ?
+				long2ip_r (broadcast (lip, lmask), rip) :
+				long2ip_r (network (lip, lmask), rip),
+			1
+	);
 } // }}}
 
 /* {{{ proto string krisp_network (ip, mask)
@@ -509,6 +496,16 @@ PHP_FUNCTION(krisp_set_debug)
 	RETURN_TRUE;
 }
 /* }}} */
+
+/*
+ * Internal APIs
+ */
+
+ulong krisp_format_convert (char * v) {
+	if ( strchr (v, '.') == NULL )
+		return (ulong) strtoul (v, NULL, 10);
+	return ip2long (v);
+}
 
 /*
  * Local variables:
