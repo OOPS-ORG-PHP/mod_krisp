@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?
-/* $Id: bench.php,v 1.2 2010-06-30 20:07:00 oops Exp $ */
+/* $Id: bench.php,v 1.3 2010-09-10 18:10:39 oops Exp $ */
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');
@@ -22,6 +22,8 @@ if ( $argc != 2 || $argv[1] == '-h' ) {
 }
 
 $c = krisp_open ();
+# don't check database mtime
+krisp_set_mtime_interval ($c, 0);
 
 $t1 = microtime ();
 
@@ -37,5 +39,4 @@ $t2 = microtime ();
 krisp_close ($c);
 
 printf ("Execute time: %f sec\n", get_microtime ($t1, $t2));
-
 ?>
