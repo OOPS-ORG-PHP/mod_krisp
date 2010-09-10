@@ -1,5 +1,5 @@
 /*
- * $Id: php_krisp.h,v 1.23 2010-09-10 18:24:33 oops Exp $
+ * $Id: php_krisp.h,v 1.24 2010-09-10 18:32:00 oops Exp $
 */
 
 #ifndef PHP_KRISP_H
@@ -82,6 +82,8 @@ typedef struct krisp_info {
 	KR_API *	db;
 	int			rsrc;
 } KRISP_API;
+
+ulong krisp_format_convert (char *);
 
 #endif	/* PHP_KRISP_H */
 
