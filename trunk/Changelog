@@ -1,5 +1,13 @@
 PHP KRISP Extension Changelog
-$Id: Changelog,v 1.22 2010-09-10 18:35:38 oops Exp $
+$Id: Changelog,v 1.23 2010-09-10 19:07:26 oops Exp $
+
+* 2.1.1
+--------------------------------------------------------------------------------
+
+Sat Sep 11 2010
+by JoungKyun.Kim <http://oops.org>
+	- changed interanl api to krisp_format_convert
+
 
 * 2.1.0
 --------------------------------------------------------------------------------
