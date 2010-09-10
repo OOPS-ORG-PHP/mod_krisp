@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.25 2010-09-10 18:32:00 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.26 2010-09-10 19:07:26 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -501,7 +501,7 @@ PHP_FUNCTION(krisp_set_debug)
  * Internal APIs
  */
 
-ulong krisp_format_convert (char * v) {
+KR_LOCAL_API ulong krisp_format_convert (char * v) {
 	if ( strchr (v, '.') == NULL )
 		return (ulong) strtoul (v, NULL, 10);
 	return ip2long (v);
