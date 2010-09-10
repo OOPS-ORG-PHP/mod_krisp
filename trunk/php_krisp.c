@@ -11,7 +11,7 @@
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   1997-2010 OOPS.org
  * @license     LGPL
- * @version     CVS: $Id: php_krisp.c,v 1.26 2010-09-10 19:07:26 oops Exp $
+ * @version     CVS: $Id: php_krisp.c,v 1.27 2010-09-10 20:00:44 oops Exp $
  * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
@@ -277,10 +277,10 @@ PHP_FUNCTION(krisp_search_ex)
 		RETURN_FALSE;
 	}
 
-	SAFECPY_256 (isp.ip, host);
-	isp.verbose = false;
-
 	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+
+	SAFECPY_256 (isp.ip, host);
+	isp.verbose = kr->db->verbose;
 	kr->db->table = table;
 
 	if ( kr_search_ex (&isp, kr->db) ) {
