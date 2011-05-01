@@ -1,5 +1,5 @@
 /*
- * $Id: php_krisp.h,v 1.25 2010-09-10 19:07:26 oops Exp $
+ * $Id$
 */
 
 #ifndef PHP_KRISP_H
