@@ -7,8 +7,8 @@ $Id$
 
 Mon Feb 27 2012
 by JoungKyun.Kim <http://oops.org>
-	- start 2.1.1 tree
 	- changed header value with krisp-config --cppflags on config.m4
+	- fixed libkrisp link error
 
 
 * 2.1.0
