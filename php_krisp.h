@@ -83,7 +83,7 @@ typedef struct krisp_info {
 	int			rsrc;
 } KRISP_API;
 
-KR_LOCAL_API ulong krisp_format_convert (char *);
+ulong krisp_format_convert (char *);
 
 #endif	/* PHP_KRISP_H */
 
