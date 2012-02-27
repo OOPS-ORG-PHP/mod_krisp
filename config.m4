@@ -58,7 +58,7 @@ if test "$PHP_KRISP" != "no"; then
 		AC_MSG_ERROR([Unknown libkrisp version. Requires over $LIBKRISP_MINIMAL_VERSION])
 	fi
 
-	KRISP_LIBS=$($KRISPCONFIG --link)
+	KRISP_LIBS=$($KRISPCONFIG --link-ld)
 	KRISP_DEFS=$($KRISPCONFIG --cppflags | sed 's/[ ]*-DHAVE_CONFIG_H[ ]*//g')
 	KRISP_SQLITE=$(echo "$KRISP_LIBS" | grep sqlite3)
 
