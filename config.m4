@@ -59,7 +59,7 @@ if test "$PHP_KRISP" != "no"; then
 	fi
 
 	KRISP_LIBS=$($KRISPCONFIG --link)
-	KRISP_DEFS=$($KRISPCONFIG --defs | sed 's/[ ]*-DHAVE_CONFIG_H[ ]*//g')
+	KRISP_DEFS=$($KRISPCONFIG --cppflags | sed 's/[ ]*-DHAVE_CONFIG_H[ ]*//g')
 	KRISP_SQLITE=$(echo "$KRISP_LIBS" | grep sqlite3)
 
 	AC_MSG_CHECKING(check the sqlite version)
@@ -71,7 +71,7 @@ if test "$PHP_KRISP" != "no"; then
 	fi
 
 	if test -n "$KRISP_DEFS"; then
-		KRISP_PARAMETER="$KRISP_PARAMETER $($KRISPCONFIG --defs | sed 's/-DHAVE_CONFIG_H//g')"
+		KRISP_PARAMETER="$KRISP_PARAMETER $($KRISPCONFIG --cppflags | sed 's/-DHAVE_CONFIG_H//g')"
 	fi
 
 	KRISP_SHARED_LIBADD="$KRISP_LIBS"
