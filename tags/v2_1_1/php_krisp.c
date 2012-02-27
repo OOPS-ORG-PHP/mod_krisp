@@ -501,7 +501,7 @@ PHP_FUNCTION(krisp_set_debug)
  * Internal APIs
  */
 
-KR_LOCAL_API ulong krisp_format_convert (char * v) {
+ulong krisp_format_convert (char * v) {
 	if ( strchr (v, '.') == NULL )
 		return (ulong) strtoul (v, NULL, 10);
 	return ip2long (v);
