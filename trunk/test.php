@@ -1,5 +1,5 @@
 #!/usr/bin/php
-<?
+<?php
 /* $Id$ */
 
 if ( ! extension_loaded ('krisp') )
