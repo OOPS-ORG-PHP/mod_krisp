@@ -53,7 +53,7 @@ ZEND_END_ARG_INFO()
  *
  * Every user visible function must have an entry in krisp_functions[].
  */
-function_entry krisp_functions[] = {
+const zend_function_entry krisp_functions[] = {
 	PHP_FE(krisp_buildver,			NULL)
 	PHP_FE(krisp_version,			NULL)
 	PHP_FE(krisp_uversion,			NULL)
