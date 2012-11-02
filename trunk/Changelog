@@ -8,6 +8,7 @@ $Id$
 Fri Nov  2 2012
 by JoungKyun.Kim <http://oops.org>
 	- support PHP 5.4
+	- OOP suport KRISP::(__construct,search,searchEx,close,mtimeInterval,debug)
 
 
 * 2.1.1
