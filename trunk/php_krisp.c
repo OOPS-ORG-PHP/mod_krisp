@@ -717,6 +717,11 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 
 		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
+
+		if ( ! kr || kr->db == NULL ) {
+			php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
+			RETURN_FALSE;
+		}
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rl", &krisp_link, &sec) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
@@ -726,11 +731,6 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 		ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 	}
 	KRISP_RESTORE_ERROR_HANDLING;
-
-	if ( ! kr || kr->db == NULL ) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
-		RETURN_FALSE;
-	}
 
 	kr->db->db_time_stamp_interval = sec;
 
@@ -759,6 +759,11 @@ PHP_FUNCTION(krisp_set_debug)
 
 		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
+
+		if ( ! kr || kr->db == NULL ) {
+			php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
+			RETURN_FALSE;
+		}
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r|l", &krisp_link, &switches) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
@@ -768,11 +773,6 @@ PHP_FUNCTION(krisp_set_debug)
 		ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 	}
 	KRISP_RESTORE_ERROR_HANDLING;
-
-	if ( ! kr || kr->db == NULL ) {
-		php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
-		RETURN_FALSE;
-	}
 
 	kr->db->verbose = switches;
 
