@@ -223,16 +223,14 @@ static zend_object_value krisp_object_new_main (zend_class_entry * class_type TS
 	krisp_object_new (class_type, &krisp_object_handlers, &retval TSRMLS_CC);
 	return retval;
 }
-/* Class API }}} */
 
-/* Exception API */
 static zend_object_value krisp_object_new_exception (zend_class_entry * class_type TSRMLS_DC) {
 	zend_object_value retval;
 
 	krisp_object_new (class_type, &krisp_object_handlers_exception, &retval TSRMLS_CC);
 	return retval;
 }
-/* Exception API end }}} */
+/* Class API }}} */
 
 /* {{{ PHP_MINIT_FUNCTION
  */
@@ -392,7 +390,7 @@ PHP_FUNCTION(krisp_search)
 	}
 
 	if ( object ) {
-		obj = (KROBJ *) zend_object_store_get_object(object TSRMLS_CC);
+		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
 		if ( ! kr || kr->db == NULL ) {
 			php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
@@ -472,9 +470,12 @@ PHP_FUNCTION(krisp_search_ex)
 
 	}
 
-	if ( ZEND_NUM_ARGS () == 2 ) {
-		table = "krisp";
-		table_len = 5;
+	{
+		int arglen = object ? 1 : 2;
+		if ( ZEND_NUM_ARGS () == arglen ) {
+			table = "krisp";
+			table_len = 5;
+		}
 	}
 
 	if ( table_len == 0 )
@@ -488,7 +489,7 @@ PHP_FUNCTION(krisp_search_ex)
 	}
 
 	if ( object ) {
-		obj = (KROBJ *) zend_object_store_get_object(object TSRMLS_CC);
+		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
 		if ( ! kr || kr->db == NULL ) {
 			php_error_docref (NULL TSRMLS_CC, E_WARNING, "No KRISP object available");
@@ -560,17 +561,17 @@ PHP_FUNCTION(krisp_close)
 	zval      * object = getThis ();
 
 	if ( object ) {
-		KROBJ * obj = (KROBJ *) zend_object_store_get_object(object TSRMLS_CC);
+		KROBJ * obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
-		if ( kr && kr->db != NULL )
-			kr_close (&kr->db);
+		if ( ! kr || kr->db != NULL )
+			RETURN_TRUE;
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r", &krisp_link) == FAILURE)
 			return;
-
-		ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
-		zend_list_delete(Z_RESVAL_P(krisp_link));
 	}
+
+	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+	zend_list_delete(Z_RESVAL_P(krisp_link));
 
 	RETURN_TRUE;
 }
@@ -713,7 +714,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 			return;
 		}
 
-		obj = (KROBJ *) zend_object_store_get_object(object TSRMLS_CC);
+		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rl", &krisp_link, &sec) == FAILURE ) {
@@ -755,7 +756,7 @@ PHP_FUNCTION(krisp_set_debug)
 			return;
 		}
 
-		obj = (KROBJ *) zend_object_store_get_object(object TSRMLS_CC);
+		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r|l", &krisp_link, &switches) == FAILURE ) {
