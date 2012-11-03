@@ -559,19 +559,20 @@ PHP_FUNCTION(krisp_close)
 	KRISP_API *	kr;
 
 	zval      * object = getThis ();
+	KROBJ     * obj;
 
 	if ( object ) {
-		KROBJ * obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
+		obj = (KROBJ *) zend_object_store_get_object (object TSRMLS_CC);
 		kr = obj->u.db;
 		if ( ! kr || kr->db != NULL )
 			RETURN_TRUE;
+		zend_list_delete (obj->u.db->rsrc);
 	} else {
 		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r", &krisp_link) == FAILURE)
 			return;
+		ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
+		zend_list_delete(Z_RESVAL_P(krisp_link));
 	}
-
-	ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
-	zend_list_delete(Z_RESVAL_P(krisp_link));
 
 	RETURN_TRUE;
 }
