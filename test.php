@@ -2,14 +2,14 @@
 <?php
 /* $Id$ */
 
-	if ( ! extension_loaded ('krisp') ) {
-		if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {
-			dl ('krisp.so');
-		} else {
-			fprintf (STDERR, "KRISP extension is not loaded\n");
-			exit (1);
-		}
+if ( ! extension_loaded ('krisp') ) {
+	if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {
+		dl ('krisp.so');
+	} else {
+		fprintf (STDERR, "KRISP extension is not loaded\n");
+		exit (1);
 	}
+}
 
 $searches = array ('oops.org', 'kornet.net', 'yahoo.com', 'kldp.org');
 
