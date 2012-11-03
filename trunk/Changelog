@@ -5,6 +5,10 @@ $Id$
 * 2.1.2
 --------------------------------------------------------------------------------
 
+Sat Nov  3 2012
+by JoungKyun.Kim <http://oops.org>
+	- suport KRISPException on oop mode
+
 Fri Nov  2 2012
 by JoungKyun.Kim <http://oops.org>
 	- support PHP 5.4

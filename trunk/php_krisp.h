@@ -85,6 +85,29 @@ typedef struct krisp_info {
 
 ulong krisp_format_convert (char *);
 
+/* Exception declear {{{
+ *
+ */
+#if PHP_MAJOR_VERSION >= 5
+#if defined(HAVE_SPL) && ((PHP_MAJOR_VERSION > 5) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 1))
+extern PHPAPI zend_class_entry *spl_ce_RuntimeException;
+extern PHPAPI zend_class_entry *spl_ce_Countable;
+#endif
+
+#define KRISP_REPLACE_ERROR_HANDLING \
+	zend_replace_error_handling ( \
+		object ? EH_THROW : EH_NORMAL, \
+		krisp_ce_exception, \
+		&error_handling TSRMLS_CC \
+	)
+
+#define KRISP_RESTORE_ERROR_HANDLING zend_restore_error_handling (&error_handling TSRMLS_CC)
+#else
+#define KRISP_REPLACE_ERROR_HANDLIN0 int krisp_error_dummy_handing = 1
+#define KRISP_RESTORE_ERROR_HANDLING krisp_error_dummy_handing = 0
+#endif
+/* }}} */
+
 #endif	/* PHP_KRISP_H */
 
 /*
