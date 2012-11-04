@@ -9,7 +9,7 @@
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <http://oops.org>
- * @copyright   1997-2010 OOPS.org
+ * @copyright   2012 OOPS.org
  * @license     LGPL
  * @version     CVS: $Id$
  * @link        http://pear.oops.org/package/krisp
@@ -52,6 +52,8 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_krisp_open, 0, 0, 0)
 	ZEND_ARG_INFO(1, error)
 ZEND_END_ARG_INFO()
 
+#include "php_krisp_class.h"
+
 /* {{{ krisp_functions[]
  *
  * Every user visible function must have an entry in krisp_functions[].
@@ -74,70 +76,6 @@ const zend_function_entry krisp_functions[] = {
 	{NULL, NULL, NULL}
 };
 /* }}} */
-
-/* {{{ krisp_deps[]
- *
- * KRISP dependancies
- */
-const zend_module_dep krisp_deps[] = {
-#if defined(HAVE_SPL) && ((PHP_MAJOR_VERSION > 5) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 1))
-	ZEND_MOD_REQUIRED("spl")
-#endif
-	{NULL, NULL, NULL}
-};
-/* }}} */
-
-/* {{{ For Class declears */
-#define REGISTER_KRISP_CLASS(parent) { \
-	zend_class_entry ce; \
-	INIT_CLASS_ENTRY (ce, "KRISP", krisp_methods); \
-	ce.create_object = krisp_object_new_main; \
-	krisp_ce = zend_register_internal_class_ex (&ce, parent, NULL TSRMLS_CC); \
-	memcpy(&krisp_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-	krisp_object_handlers.clone_obj = NULL; \
-	krisp_ce->ce_flags |= ZEND_ACC_FINAL_CLASS; \
-}
-
-
-#define REGISTER_KRISP_PER_CLASS(name, c_name, parent) { \
-	zend_class_entry ce; \
-	INIT_CLASS_ENTRY(ce, "KRISP" # name, krisp_methods_ ## c_name); \
-	ce.create_object = krisp_object_new_ ## c_name; \
-	krisp_ce_ ## c_name = zend_register_internal_class_ex(&ce, parent, NULL TSRMLS_CC); \
-	memcpy(&krisp_object_handlers_ ## c_name, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-	krisp_object_handlers_ ## c_name.clone_obj = NULL; \
-	krisp_ce_ ## c_name->ce_flags |= ZEND_ACC_FINAL_CLASS; \
-}
-
-zend_class_entry * krisp_ce;
-zend_class_entry * krisp_ce_exception;
-static zend_object_handlers krisp_object_handlers;
-static zend_object_handlers krisp_object_handlers_exception;
-
-typedef struct _krisp_object {
-	zend_object     std;
-	union {
-		KRISP_API * db;
-		void      * ptr;
-	} u;
-} KROBJ;
-
-const zend_function_entry krisp_methods[] = {
-	PHP_ME_MAPPING (__construct,   krisp_open,               arginfo_krisp_open, ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (close,         krisp_close,              NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (search,        krisp_search,             NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (searchEx,      krisp_search_ex,          NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (mtimeInterval, krisp_set_mtime_interval, NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (debug,         krisp_set_debug,          NULL,               ZEND_ACC_PUBLIC)
-	{NULL, NULL, NULL}
-};
-
-/* {{{ Exception entry */
-const zend_function_entry krisp_methods_exception[] = {
-	{NULL, NULL, NULL}
-};
-/* }}} */
-/* For Class declears }}} */
 
 /* {{{ krisp_module_entry
  */
@@ -174,63 +112,9 @@ static void _close_krisp_link(zend_rsrc_list_entry * rsrc TSRMLS_DC)
 	free (kr);
 }
 
-/* {{{ Class API */
-
-static int krisp_free_persistent (zend_rsrc_list_entry * le, void * ptr TSRMLS_DC) {
-	return le->ptr == ptr ? ZEND_HASH_APPLY_REMOVE : ZEND_HASH_APPLY_KEEP;
-}
-
-static void krisp_object_free_storage (void * object TSRMLS_DC) {
-	KROBJ * intern = (KROBJ *) object;
-
-	zend_object_std_dtor (&intern->std TSRMLS_CC);
-
-	if ( intern->u.ptr ) {
-		if ( intern->u.db->rsrc ) {
-			zend_list_delete (intern->u.db->rsrc);
-			zend_hash_apply_with_argument (
-					&EG(persistent_list),
-					(apply_func_arg_t) krisp_free_persistent,
-					&intern->u.ptr TSRMLS_CC
-			);
-		}
-	}
-
-	efree(object);
-}
-
-static void krisp_object_new (zend_class_entry *class_type, zend_object_handlers *handlers, zend_object_value *retval TSRMLS_DC)
-{
-	KROBJ * intern;
-	zval  * tmp;
-
-	intern = emalloc (sizeof (KROBJ));
-	memset (intern, 0, sizeof (KROBJ));
-
-	zend_object_std_init (&intern->std, class_type TSRMLS_CC);
-	retval->handle = zend_objects_store_put(
-		intern,
-		(zend_objects_store_dtor_t) zend_objects_destroy_object,
-		(zend_objects_free_object_storage_t) krisp_object_free_storage,
-		NULL TSRMLS_CC
-	);
-	retval->handlers = handlers;
-}
-
-static zend_object_value krisp_object_new_main (zend_class_entry * class_type TSRMLS_DC) {
-	zend_object_value retval;
-
-	krisp_object_new (class_type, &krisp_object_handlers, &retval TSRMLS_CC);
-	return retval;
-}
-
-static zend_object_value krisp_object_new_exception (zend_class_entry * class_type TSRMLS_DC) {
-	zend_object_value retval;
-
-	krisp_object_new (class_type, &krisp_object_handlers_exception, &retval TSRMLS_CC);
-	return retval;
-}
-/* Class API }}} */
+/* {{{ INCLUDE KRISP Classify API */
+#include "php_krisp_class.c"
+/* }}} */
 
 /* {{{ PHP_MINIT_FUNCTION
  */
