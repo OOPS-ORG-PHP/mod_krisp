@@ -131,13 +131,13 @@ const zend_function_entry krisp_methods[] = {
 	PHP_ME_MAPPING (debug,         krisp_set_debug,          NULL,               ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
-/* For Class declears }}} */
 
 /* {{{ Exception entry */
 const zend_function_entry krisp_methods_exception[] = {
 	{NULL, NULL, NULL}
 };
 /* }}} */
+/* For Class declears }}} */
 
 /* {{{ krisp_module_entry
  */
