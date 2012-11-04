@@ -5,15 +5,15 @@
 #ifndef PHP_KRISP_CLASS_H
 #define PHP_KRISP_CLASS_H
 
-/* Exception declear {{{
- *
- */
 /* {{{ Exception entry */
 const zend_function_entry krisp_methods_exception[] = {
 	{NULL, NULL, NULL}
 };
 /* }}} */
 
+/* Exception declear {{{
+ *
+ */
 #if PHP_MAJOR_VERSION >= 5
 #if defined(HAVE_SPL) && ((PHP_MAJOR_VERSION > 5) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 1))
 extern PHPAPI zend_class_entry *spl_ce_RuntimeException;
