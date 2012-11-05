@@ -4,15 +4,14 @@
  *
  * Copyright (c) 1997-2010 JoungKyun.Kim
  *
- * LICENSE: LGPL
+ * LICENSE: GPL
  *
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <http://oops.org>
  * @copyright   2012 OOPS.org
- * @license     LGPL
+ * @license     GPL
  * @version     CVS: $Id$
- * @link        http://pear.oops.org/package/krisp
  * @since       File available since release 0.0.1
  */
 

@@ -1,6 +1,6 @@
 /*
  * $Id$
-*/
+ */
 
 #ifndef PHP_KRISP_H
 #define PHP_KRISP_H
