@@ -86,6 +86,9 @@ typedef struct krisp_info {
 
 ulong krisp_format_convert (char *);
 
+#define krisp_parameters(...) \
+	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
+
 #endif	/* PHP_KRISP_H */
 
 /*
