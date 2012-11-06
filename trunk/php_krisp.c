@@ -191,7 +191,7 @@ PHP_FUNCTION(krisp_open)
 	zend_error_handling error_handling;
 
 	KRISP_REPLACE_ERROR_HANDLING;
-	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "|sz", &database, &database_len, &error) == FAILURE ) {
+	if ( krisp_parameters ("|sz", &database, &database_len, &error) == FAILURE ) {
 		KRISP_RESTORE_ERROR_HANDLING;
 		return;
 	}
@@ -255,12 +255,12 @@ PHP_FUNCTION(krisp_search)
 
 	KRISP_REPLACE_ERROR_HANDLING;
 	if ( object ) {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "s", &host, &host_len) == FAILURE) {
+		if ( krisp_parameters ("s", &host, &host_len) == FAILURE) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 	} else {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs", &krisp_link, &host, &host_len) == FAILURE) {
+		if ( krisp_parameters ("rs", &krisp_link, &host, &host_len) == FAILURE) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
@@ -341,12 +341,12 @@ PHP_FUNCTION(krisp_search_ex)
 
 	KRISP_REPLACE_ERROR_HANDLING;
 	if ( object ) {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "s|s", &host, &host_len, &table, &table_len) == FAILURE) {
+		if ( krisp_parameters ("s|s", &host, &host_len, &table, &table_len) == FAILURE) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 	} else {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rs|s", &krisp_link, &host, &host_len, &table, &table_len) == FAILURE) {
+		if ( krisp_parameters ("rs|s", &krisp_link, &host, &host_len, &table, &table_len) == FAILURE) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
@@ -451,7 +451,7 @@ PHP_FUNCTION(krisp_close)
 			RETURN_TRUE;
 		zend_list_delete (obj->u.db->rsrc);
 	} else {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r", &krisp_link) == FAILURE)
+		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
 			return;
 		ZEND_FETCH_RESOURCE (kr, KRISP_API *, &krisp_link, -1, "KRISP database", le_krisp);
 		zend_list_delete(Z_RESVAL_P(krisp_link));
@@ -474,7 +474,7 @@ PHP_FUNCTION(krisp_netmask)
 	ulong	lend;
 	ulong	mask;
 
-	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &start, &start_len, &end, &end_len) == FAILURE )
+	if ( krisp_parameters ("ss", &start, &start_len, &end, &end_len) == FAILURE )
 		return;
 
 	if ( start_len == 0 ) {
@@ -511,7 +511,7 @@ static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool typ
 	ulong	lmask;
 	char	rip[16];
 
-	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "ss", &ip, &ip_len, &mask, &mask_len) == FAILURE )
+	if ( krisp_parameters ("ss", &ip, &ip_len, &mask, &mask_len) == FAILURE )
 		return;
 
 	if ( ip_len == 0) {
@@ -558,7 +558,7 @@ PHP_FUNCTION(krisp_prefix2mask)
 	short	prefix;
 	char	rip[16];
 
-	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "l", &prefix) == FAILURE )
+	if ( krisp_parameters ("l", &prefix) == FAILURE )
 		return;
 
 	RETURN_STRING (long2ip_r (prefix2long (prefix), rip), 1);
@@ -572,7 +572,7 @@ PHP_FUNCTION(krisp_mask2prefix)
 	char *	mask;
 	int		mask_len;
 
-	if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "s", &mask, &mask_len) == FAILURE )
+	if ( krisp_parameters ("s", &mask, &mask_len) == FAILURE )
 		return;
 
 	RETURN_LONG (long2prefix (ip2long (mask)));
@@ -593,7 +593,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 	KRISP_REPLACE_ERROR_HANDLING;
 
 	if ( object) {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "l", &sec) == FAILURE ) {
+		if ( krisp_parameters ("l", &sec) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
@@ -606,7 +606,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 			RETURN_FALSE;
 		}
 	} else {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "rl", &krisp_link, &sec) == FAILURE ) {
+		if ( krisp_parameters ("rl", &krisp_link, &sec) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
@@ -635,7 +635,7 @@ PHP_FUNCTION(krisp_set_debug)
 	KRISP_REPLACE_ERROR_HANDLING;
 
 	if ( object) {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "l", &switches) == FAILURE ) {
+		if ( krisp_parameters ("l", &switches) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
@@ -648,7 +648,7 @@ PHP_FUNCTION(krisp_set_debug)
 			RETURN_FALSE;
 		}
 	} else {
-		if ( zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, "r|l", &krisp_link, &switches) == FAILURE ) {
+		if ( krisp_parameters ("r|l", &krisp_link, &switches) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
