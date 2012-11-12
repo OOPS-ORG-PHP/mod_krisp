@@ -1,15 +1,9 @@
 #!/usr/bin/php
-<?php
-/* $Id$ */
+<?
+/* $Id: test.php,v 1.10 2010-09-10 18:10:39 oops Exp $ */
 
-if ( ! extension_loaded ('krisp') ) {
-	if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {
-		dl ('krisp.so');
-	} else {
-		fprintf (STDERR, "KRISP extension is not loaded\n");
-		exit (1);
-	}
-}
+if ( ! extension_loaded ('krisp') )
+	dl ('krisp.so');
 
 $searches = array ('oops.org', 'kornet.net', 'yahoo.com', 'kldp.org');
 
@@ -54,6 +48,7 @@ foreach ( $searches as $v ) {
  * close krisp database 
  */
 krisp_close ($c);
+
 
 echo "Get subnet mask with 192.168.10.44 - 192.168.10.58 => ";
 $mask = krisp_netmask ('192.168.10.44', '192.168.10.58');
