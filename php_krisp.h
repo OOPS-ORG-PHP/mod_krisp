@@ -1,6 +1,22 @@
 /*
- * $Id$
- */
+  +----------------------------------------------------------------------+
+  | PHP Version 5                                                        |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 1997-2006 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 3.0 of the PHP license,       |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available at through the world-wide-web at                           |
+  | http://www.php.net/license/3_0.txt.                                  |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Author: JoungKyun.Kim <http://www.oops.org>                          |
+  +----------------------------------------------------------------------+
+
+  $Id: php_krisp.h,v 1.16 2010-07-02 18:46:34 oops Exp $
+*/
 
 #ifndef PHP_KRISP_H
 #define PHP_KRISP_H
@@ -36,19 +52,15 @@ PHP_FUNCTION(krisp_network);
 PHP_FUNCTION(krisp_broadcast);
 PHP_FUNCTION(krisp_prefix2mask);
 PHP_FUNCTION(krisp_mask2prefix);
-PHP_FUNCTION(krisp_set_mtime_interval);
-PHP_FUNCTION(krisp_set_debug);
 
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     
  */
 
-/*
 ZEND_BEGIN_MODULE_GLOBALS(krisp)
 	char err[1024];
 ZEND_END_MODULE_GLOBALS(krisp)
-*/
 
 /* In every utility function you add that needs to use variables 
    in php_krisp_globals, call TSRM_FETCH(); after declaring other 
@@ -66,7 +78,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.2"
+#define BUILDNO "2.0.0"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -75,19 +87,12 @@ ZEND_END_MODULE_GLOBALS(krisp)
  * KRISP library header
  */
 
-#include <ipcalc.h>
 #include <krisp.h>
 
 typedef struct krisp_info {
-	KR_API *	db;
-	// for Class
-	int			rsrc;
+	KR_API *db;
+	int rsrc;
 } KRISP_API;
-
-ulong krisp_format_convert (char *);
-
-#define krisp_parameters(...) \
-	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
 
 #endif	/* PHP_KRISP_H */
 
