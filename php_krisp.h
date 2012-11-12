@@ -1,6 +1,6 @@
 /*
  * $Id$
- */
+*/
 
 #ifndef PHP_KRISP_H
 #define PHP_KRISP_H
@@ -66,7 +66,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.2"
+#define BUILDNO "2.1.0"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -80,14 +80,10 @@ ZEND_END_MODULE_GLOBALS(krisp)
 
 typedef struct krisp_info {
 	KR_API *	db;
-	// for Class
 	int			rsrc;
 } KRISP_API;
 
 ulong krisp_format_convert (char *);
-
-#define krisp_parameters(...) \
-	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
 
 #endif	/* PHP_KRISP_H */
 
