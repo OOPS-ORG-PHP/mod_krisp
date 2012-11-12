@@ -1,6 +1,22 @@
 /*
- * $Id$
- */
+  +----------------------------------------------------------------------+
+  | PHP Version 5                                                        |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 1997-2006 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 3.0 of the PHP license,       |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available at through the world-wide-web at                           |
+  | http://www.php.net/license/3_0.txt.                                  |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Author: JoungKyun.Kim <http://www.oops.org>                          |
+  +----------------------------------------------------------------------+
+
+  $Id: php_krisp.h,v 1.3 2006-06-22 04:41:06 oops Exp $
+*/
 
 #ifndef PHP_KRISP_H
 #define PHP_KRISP_H
@@ -30,23 +46,15 @@ PHP_FUNCTION(krisp_uversion);
 PHP_FUNCTION(krisp_open);
 PHP_FUNCTION(krisp_close);
 PHP_FUNCTION(krisp_search);
-PHP_FUNCTION(krisp_search_ex);
-PHP_FUNCTION(krisp_netmask);
-PHP_FUNCTION(krisp_network);
-PHP_FUNCTION(krisp_broadcast);
-PHP_FUNCTION(krisp_prefix2mask);
-PHP_FUNCTION(krisp_mask2prefix);
-PHP_FUNCTION(krisp_set_mtime_interval);
-PHP_FUNCTION(krisp_set_debug);
+PHP_FUNCTION(krisp_error);
 
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     
- */
 
-/*
 ZEND_BEGIN_MODULE_GLOBALS(krisp)
-	char err[1024];
+	int   global_value;
+	char *global_string;
 ZEND_END_MODULE_GLOBALS(krisp)
 */
 
@@ -66,7 +74,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.2"
+#define BUILDNO "1.0.1"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -75,19 +83,82 @@ ZEND_END_MODULE_GLOBALS(krisp)
  * KRISP library header
  */
 
-#include <ipcalc.h>
-#include <krisp.h>
+#include <krversion.h>
+extern char dberr[1024];
+
+#if defined(HAVE_LIBSQLITE3)
+#include <sqlite3.h>
+#else
+#include <sqlite.h>
+#endif
+
+/* GeoIP extension start */
+#ifdef HAVE_LIBGEOIP
+#include <GeoIP.h>
+#define INCLUDE_GEOIP_HEADER_OK
+#endif
+
+#ifndef INCLUDE_GEOIP_HEADER_OK
+typedef struct GeoIPTag {
+	FILE *GeoIPDatabase;
+	char *file_path;
+	unsigned char *cache;
+	unsigned char *index_cache;
+	unsigned int *databaseSegments;
+	char databaseType;
+	time_t mtime;
+	int flags;
+	char record_length;
+	int record_iter; /* used in GeoIP_next_record */
+} GeoIP;
+
+#define GEOIP_API
+GEOIP_API GeoIP* GeoIP_new(int flags);
+
+typedef enum {
+	GEOIP_STANDARD = 0,
+	GEOIP_MEMORY_CACHE = 1,
+	GEOIP_CHECK_CACHE = 2,
+	GEOIP_INDEX_CACHE = 4,
+} GeoIPOptions;
+#endif
+/* GeoIP extension end */
+
+typedef struct db_argument {
+#if defined(HAVE_LIBSQLITE3)
+	sqlite3         *c;     /* db resource */
+	sqlite3_stmt    *vm;    /* sqlite vm */
+#else
+	sqlite          *c;     /* db resource */
+	sqlite_vm       *vm;    /* sqlite vm */
+#endif
+	int             r;      /* execute result code */
+	int             rows;   /* vm rows */
+	int             cols;   /* number of columns */
+	char *          err;    /* vm error message */
+	const char **   rowdata;
+	const char **   colname;
+	GeoIP *         gi;     /* GeoIP resource */
+} KR_API;
+
+typedef struct netinfos {
+	char            key[16];
+	char            ip[256];
+	char            netmask[16];
+	char            network[16];
+	char            broadcast[16];
+	char            icode[128];
+	char            iname[128];
+#ifdef HAVE_LIBGEOIP
+	char            gcode[4];
+	char            gname[128];
+#endif
+} KRNET_API;
 
 typedef struct krisp_info {
-	KR_API *	db;
-	// for Class
-	int			rsrc;
+	KR_API *db;
+	int rsrc;
 } KRISP_API;
-
-ulong krisp_format_convert (char *);
-
-#define krisp_parameters(...) \
-	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
 
 #endif	/* PHP_KRISP_H */
 
