@@ -1,17 +1,8 @@
 #!/usr/bin/php
-<?php
-/* $Id$ */
+<?
 
-if ( ! extension_loaded ('krisp') ) {
-	if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {
-		dl ('krisp.so');
-	} else {
-		fprintf (STDERR, "KRISP extension is not loaded\n");
-		exit (1);
-	}
-}
-
-$searches = array ('oops.org', 'kornet.net', 'yahoo.com', 'kldp.org');
+#dl ("../../../local/src/mycvs/php/mod_krisp/modules/krisp.so");
+$searches = array ('oops.org', 'kornet.net', 'yahoo.com');
 
 /*
  * open krips database
@@ -20,53 +11,50 @@ $searches = array ('oops.org', 'kornet.net', 'yahoo.com', 'kldp.org');
  *
  * if failed, return FALSE
  */
-#$c = krisp_open ("/usr/share/krisp/krisp.dat", $err);
-#$c = krisp_open ('asdf', $err);
-#$c = krisp_open ('', $err);
-#$c = krisp_open (NULL, $err);
-$c = krisp_open ();
+$c = krisp_open ("/usr/share/krisp/krisp.dat");
 
-if ( $c === false ) {
-	echo "ERROR: {$err}\n";
+if ( $c === FALSE ) {
+    /*
+     * print krisp error message
+     *
+     * string krisp_error (void)
+     */
+	echo krisp_error () . "\n";
 	return 1;
 }
 
-#krisp_set_mtime_interval ($c, 0);
-#krisp_set_debug ($c);
-
-foreach ( $searches as $v ) {
+foreach ( $searches as $v ) :
     /*
      * search krsip database
      *
-     * object krisp_search (krsip resource, host)
-     * object krisp_search_ex (krsip resource, host[, table='krisp'])
+     * array krisp_search (krsip hdandl, host)
+     *   return :
+     *       array (
+     *               key,
+     *               ip,
+     *               netmask,
+     *               network,
+     *               broadcast,
+     *               org,        // ISP code
+     *               serv,       // ISP name
+     *               code,       // GeoIP nation code
+     *               nation,     // GeoIP nation name
+     *             );
      */
 	$r = krisp_search ($c, $v);
+	$err = krisp_error ();
 
-	if ( $r === false )
+	if ( $r === FALSE || $err ) :
+		echo "ERROR: $err\n";
 		continue;
+	endif;
 
 	print_r ($r);
-	break;
-}
+
+endforeach;
 
 /*
  * close krisp database 
  */
 krisp_close ($c);
-
-echo "Get subnet mask with 192.168.10.44 - 192.168.10.58 => ";
-$mask = krisp_netmask ('192.168.10.44', '192.168.10.58');
-echo "{$mask->mask} : {$mask->prefix}\n";
-echo " * network address   : " . krisp_network ('192.168.10.44', $mask->mask) . "\n";
-echo " * broadcast address : " . krisp_broadcast('192.168.10.44', $mask->mask) . "\n";
-
-echo "\nNetmask <-> Prefix\n";
-unset ($mask);
-$mask = '255.255.255.128';
-echo " * Given Mask : {$mask}\n";
-$prefix = krisp_mask2prefix ($mask);
-echo " * Prefix     : {$prefix}\n";
-$mask = krisp_prefix2mask ($prefix);
-echo " * Mask       : {$mask}\n";
 ?>
