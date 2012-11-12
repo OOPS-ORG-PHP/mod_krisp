@@ -1,6 +1,6 @@
 /*
- * $Id$
- */
+ * $Id: php_krisp.h,v 1.21 2010-09-06 05:47:00 oops Exp $
+*/
 
 #ifndef PHP_KRISP_H
 #define PHP_KRISP_H
@@ -36,8 +36,6 @@ PHP_FUNCTION(krisp_network);
 PHP_FUNCTION(krisp_broadcast);
 PHP_FUNCTION(krisp_prefix2mask);
 PHP_FUNCTION(krisp_mask2prefix);
-PHP_FUNCTION(krisp_set_mtime_interval);
-PHP_FUNCTION(krisp_set_debug);
 
 /* 
   	Declare any global variables you may need between the BEGIN
@@ -66,7 +64,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.2"
+#define BUILDNO "2.0.2"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -79,15 +77,9 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #include <krisp.h>
 
 typedef struct krisp_info {
-	KR_API *	db;
-	// for Class
-	int			rsrc;
+	KR_API *db;
+	int rsrc;
 } KRISP_API;
-
-ulong krisp_format_convert (char *);
-
-#define krisp_parameters(...) \
-	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
 
 #endif	/* PHP_KRISP_H */
 
