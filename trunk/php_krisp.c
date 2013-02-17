@@ -152,7 +152,7 @@ PHP_MINFO_FUNCTION(krisp)
 }
 /* }}} */
 
-/* {{{ proto string krisp_buildver (void)
+/* {{{ proto (string) krisp_buildver (void)
  *  print krisp extension build number */
 PHP_FUNCTION(krisp_buildver)
 {
@@ -160,7 +160,7 @@ PHP_FUNCTION(krisp_buildver)
 }
 /* }}} */
 
-/* {{{ proto string krisp_version (void)
+/* {{{ proto (string) krisp_version (void)
  *  print krisp library version */
 PHP_FUNCTION(krisp_version)
 {
@@ -168,7 +168,7 @@ PHP_FUNCTION(krisp_version)
 }
 /* }}} */
 
-/* {{{ proto string krisp_uversion (void)
+/* {{{ proto (string) krisp_uversion (void)
  *  print krisp library uversion */
 PHP_FUNCTION(krisp_uversion)
 {
@@ -176,7 +176,7 @@ PHP_FUNCTION(krisp_uversion)
 }
 /* }}} */
 
-/* {{{ proto resource krisp_open (char datafile)
+/* {{{ proto (resource) krisp_open (string datafile)
  *  return krisp database open resource */
 PHP_FUNCTION(krisp_open)
 {
@@ -235,7 +235,7 @@ PHP_FUNCTION(krisp_open)
 }
 /* }}} */
 
-/* {{{ proto object krisp_search (resource, char *host)
+/* {{{ proto (object|false) krisp_search (resource link, string host)
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
@@ -317,7 +317,7 @@ PHP_FUNCTION(krisp_search)
 }
 /* }}} */
 
-/* {{{ proto object krisp_search_ex (resource, char *host)
+/* {{{ proto (object|false) krisp_search_ex (resource link, string host)
  *  return isp information array */
 PHP_FUNCTION(krisp_search_ex)
 {
@@ -434,7 +434,7 @@ PHP_FUNCTION(krisp_search_ex)
 }
 /* }}} */
 
-/* {{{ proto void krisp_close (resource)
+/* {{{ proto (bool) krisp_close (resource link)
  *  close krisp database */
 PHP_FUNCTION(krisp_close)
 {
@@ -461,7 +461,7 @@ PHP_FUNCTION(krisp_close)
 }
 /* }}} */
 
-/* {{{ proto object krisp_netmask (start, end)
+/* {{{ proto (object) krisp_netmask (string start, string end)
  *  return netmask and prefix about given ip range */
 PHP_FUNCTION(krisp_netmask)
 {
@@ -535,7 +535,7 @@ static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool typ
 	);
 } // }}}
 
-/* {{{ proto string krisp_network (ip, mask)
+/* {{{ proto (string|false) krisp_network (string ip, string mask)
  *  reuturn network address about given ip and network mask */
 PHP_FUNCTION(krisp_network)
 {
@@ -543,7 +543,7 @@ PHP_FUNCTION(krisp_network)
 }
 /* }}} */
 
-/* {{{ proto string krisp_broadcast (ip, mask)
+/* {{{ proto (string|false) krisp_broadcast (string ip, string mask)
  *  reuturn broadcast address about given ip and network mask */
 PHP_FUNCTION(krisp_broadcast)
 {
@@ -551,7 +551,7 @@ PHP_FUNCTION(krisp_broadcast)
 }
 /* }}} */
 
-/* {{{ proto string krisp_prefix2mask (prefix)
+/* {{{ proto (string) krisp_prefix2mask (int prefix)
  *  return unsigned long value for given network prefix */
 PHP_FUNCTION(krisp_prefix2mask)
 {
@@ -565,7 +565,7 @@ PHP_FUNCTION(krisp_prefix2mask)
 }
 /* }}} */
 
-/* {{{ proto short krisp_mask2prefix (mask)
+/* {{{ proto (int) krisp_mask2prefix (string mask)
  *  return short network prefix for given long network mask */
 PHP_FUNCTION(krisp_mask2prefix)
 {
@@ -579,7 +579,7 @@ PHP_FUNCTION(krisp_mask2prefix)
 }
 /* }}} */
 
-/* {{{ proto void krisp_set_mtime_interval (resoruce, sec)
+/* {{{ proto (bool) krisp_set_mtime_interval (resoruce link, int sec)
  *  set krisp database mtime check interval */
 PHP_FUNCTION(krisp_set_mtime_interval)
 {
@@ -621,7 +621,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 }
 /* }}} */
 
-/* {{{ proto void krisp_set_debug (resoruce[, switch = true])
+/* {{{ proto (bool) krisp_set_debug (resoruce link[, int switch = true])
  *  print libkrisp debug messages */
 PHP_FUNCTION(krisp_set_debug)
 {
