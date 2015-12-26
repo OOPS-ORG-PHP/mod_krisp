@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-/* $Id$ */
+/* $Id: test-oop.php 76 2012-11-05 05:24:43Z oops $ */
 
 /*
  * KRISP OOP style test file
@@ -31,7 +31,7 @@ try {
 	#$kr = new KRISP (NULL, $err);
 	$kr = new KRISP ();
 
-	#$kr->mtimeInterval (0);
+	#$kr->mtime_interval (0);
 	#$kr->debug ();
 
 	foreach ( $searches as $v ) {

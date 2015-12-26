@@ -1,4 +1,4 @@
-dnl $Id$
+dnl $Id: config.m4 60 2012-02-27 08:39:49Z oops $
 dnl config.m4 for extension krisp
 
 dnl Comments in this file start with the string 'dnl'.

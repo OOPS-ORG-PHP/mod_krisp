@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?
-/* $Id$ */
+/* $Id: bench.php 58 2011-05-01 15:54:36Z oops $ */
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: php_krisp.h 77 2012-11-06 12:31:00Z oops $
  */
 
 #ifndef PHP_KRISP_H
@@ -66,7 +66,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.3"
+#define BUILDNO "2.1.2"
 
 #define phpext_krisp_ptr krisp_module_ptr
 

@@ -2,16 +2,16 @@
  * Project: mod_krisp :: KRISP database php extension
  * File:    php_krisp_class.c
  *
- * Copyright (c) 2015 JoungKyun.Kim
+ * Copyright (c) 2012 JoungKyun.Kim
  *
  * LICENSE: GPL
  *
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <http://oops.org>
- * @copyright   2015 OOPS.org
+ * @copyright   2012 OOPS.org
  * @license     GPL
- * @version     SVN: $Id$
+ * @version     SVN: $Id: php_krisp_class.c 76 2012-11-05 05:24:43Z oops $
  * @since       File available since release 0.0.1
  */
 

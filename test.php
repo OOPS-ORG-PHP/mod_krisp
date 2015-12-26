@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-/* $Id$ */
+/* $Id: test.php 68 2012-11-03 14:05:49Z oops $ */
 
 if ( ! extension_loaded ('krisp') ) {
 	if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: php_krisp_class.h 76 2012-11-05 05:24:43Z oops $
  */
 
 #ifndef PHP_KRISP_CLASS_H
