@@ -31,8 +31,8 @@ if ( $c === false ) {
 	return 1;
 }
 
-#krisp_set_mtime_interval ($c, 0);
-#krisp_set_debug ($c);
+krisp_set_mtime_interval ($c, 0);
+krisp_set_debug ($c);
 
 foreach ( $searches as $v ) {
     /*
@@ -47,7 +47,8 @@ foreach ( $searches as $v ) {
 		continue;
 
 	print_r ($r);
-	break;
+	krisp_set_debug ($c, false);
+	//break;
 }
 
 /*

@@ -31,8 +31,8 @@ try {
 	#$kr = new KRISP (NULL, $err);
 	$kr = new KRISP ();
 
-	#$kr->mtimeInterval (0);
-	#$kr->debug ();
+	$kr->mtimeInterval (0);
+	$kr->debug ();
 
 	foreach ( $searches as $v ) {
 		/*
@@ -47,6 +47,7 @@ try {
 			continue;
 
 		print_r ($r);
+		$kr->debug (false);
 		#break;
 	}
 
