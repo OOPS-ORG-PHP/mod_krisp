@@ -1,0 +1,26 @@
+*krisp_mask2prefix* -- return short network prefix for given long network mask
+
+  (int) krisp_mask2prefix (string netmask)~
+
+|krisp_mask2prefix| 함수는 주어진 32bit netmask를 network prefix로
+반환한다.
+
+{prefix} 32bit network mask
+
+
+다음은 |krisp_mask2prefix| 함수의 출력 결과를 보여준다.
+
+<?php >
+  echo "netmaks 255.255.255.240 => prefix ";
+  echo krisp_mask2prefix ('255.255.255.240') . "\n";
+?>
+
+위의 예제의 결과는 다음과 같다:
+
+  netmask 255.255.255.240 => prefix 28
+
+
+|krisp_netmask| |krisp_network| |krisp_broadcast| |krisp_prefix2mask|
+
+
+vim:ft=help:
