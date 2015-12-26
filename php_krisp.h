@@ -66,7 +66,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "2.1.3"
+#define BUILDNO "3.0.0"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
@@ -79,15 +79,20 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #include <krisp.h>
 
 typedef struct krisp_info {
-	KR_API *	db;
 	// for Class
-	int			rsrc;
+	zend_resource * rsrc;
+	KR_API *	db;
 } KRISP_API;
 
 ulong krisp_format_convert (char *);
 
 #define krisp_parameters(...) \
-	zend_parse_parameters (ZEND_NUM_ARGS () TSRMLS_CC, __VA_ARGS__)
+	zend_parse_parameters (ZEND_NUM_ARGS (), __VA_ARGS__)
+
+#define KR_FETCH_RESOURCE(a,b,c,d,e) \
+	if ( (a = (b) zend_fetch_resource_ex (c, d, e)) == NULL ) { \
+		RETURN_FALSE; \
+	}
 
 #endif	/* PHP_KRISP_H */
 
