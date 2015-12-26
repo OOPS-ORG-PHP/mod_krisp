@@ -1,0 +1,28 @@
+*krisp_netmask* -- return netmask and prefix about given ip range
+
+  (object|false) krisp_netmask (string start, string end)~
+
+|krisp_netmask| 함수는 시작 IP와 마지막 IP를 포함한 최소의 netmask와
+network prefix를 반환한다.
+
+{start} 시작 주소
+{end}   마지막 주소
+
+
+다음은 |krisp_netmask| 함수의 출력 결과를 보여준다.
+
+<?php >
+  echo "1.1.1.5에서 1.1.1.11을 포함한 최소의 netmask : ";
+  $mask = krisp_netmask ('1.1.1.5', '1.1.1.11');
+  echo $mask->mask . '(/' . $mask->prefix . ")\n";
+?>
+
+위의 예제의 결과는 다음과 같다:
+
+  1.1.1.5에서 1.1.1.11을 포함한 최소의 netmask : 255.255.255.240(/28)
+
+
+|krisp_network| |krisp_broadcast| |krisp_prefix2mask| |krisp_mask2prefix|
+
+
+vim:ft=help:
