@@ -187,11 +187,17 @@ PHP_FUNCTION(krisp_open)
 	zend_string       * database = NULL;
 	zval              * error = NULL;
 	KRISP_API         * kr;
+	KROBJ             * obj;
 	char              * db;
 	char                err[1024];
 
 	zval              * object = getThis ();
 	zend_error_handling error_handling;
+
+	if ( object ) {
+		obj = Z_KRISP_P (object);
+		obj->u.ptr = NULL;
+	}
 
 	KRISP_REPLACE_ERROR_HANDLING;
 	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
@@ -213,11 +219,8 @@ PHP_FUNCTION(krisp_open)
 
 	kr = (KRISP_API *) malloc (sizeof (KRISP_API));
 
-	if ( object ) {
-		KROBJ * obj;
-		obj = Z_KRISP_P (object);
+	if ( object )
 		obj->u.db = kr;
-	}
 
 	if ( kr_open_safe (&kr->db, db, err) == false ) {
 		php_error_docref (NULL, E_WARNING, "%s", err);
