@@ -113,12 +113,14 @@ ZEND_GET_MODULE(krisp)
 
 static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
 {
-	KRISP_API * kr = (KRISP_API *) rsrc->ptr;
+	if ( rsrc->ptr ) {
+		KRISP_API * kr = (KRISP_API *) rsrc->ptr;
 
-	if ( GC_REFCOUNT (rsrc) == 2 ) {
-		if ( kr->db != NULL )
-			kr_close (&kr->db);
-		safe_efree (kr);
+		if ( GC_REFCOUNT (rsrc) == 2 ) {
+			if ( kr->db != NULL )
+				kr_close (&kr->db);
+			safe_efree (kr);
+		}
 	}
 }
 
