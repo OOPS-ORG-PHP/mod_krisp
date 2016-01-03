@@ -149,7 +149,6 @@ PHP_MINIT_FUNCTION(krisp)
 	/* Register KRISP Exception Class */
 	memcpy(&krisp_object_handlers_exception, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	INIT_CLASS_ENTRY(cex, "KRISPException", krisp_methods_exception);
-	cex.create_object = krisp_object_new_exception;
 #if defined(HAVE_SPL)
 	krisp_ce_exception = zend_register_internal_class_ex(&cex, spl_ce_RuntimeException);
 #else
