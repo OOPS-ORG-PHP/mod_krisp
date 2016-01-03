@@ -144,6 +144,7 @@ PHP_MINIT_FUNCTION(krisp)
 	krisp_object_handlers.clone_obj = NULL;
 	krisp_object_handlers.free_obj = (zend_object_free_obj_t) krisp_object_free_storage;
 	krisp_ce = zend_register_internal_class(&ce);
+	ce.ce_flags |= ZEND_ACC_FINAL;
 
 	/* Register KRISP Exception Class */
 	memcpy(&krisp_object_handlers_exception, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
@@ -154,7 +155,7 @@ PHP_MINIT_FUNCTION(krisp)
 #else
 	krisp_ce_exception = zend_register_internal_class_ex(&cex, zend_ce_exception);
 #endif
-	zend_declare_property_long(krisp_ce_exception, "code", sizeof("code")-1, 0, ZEND_ACC_PUBLIC);
+	cex.ce_flags |= ZEND_ACC_FINAL;
 
 	return SUCCESS;
 }
@@ -215,13 +216,12 @@ PHP_FUNCTION(krisp_open)
 	zend_error_handling error_handling;
 
 	if ( object ) {
+		KRISP_REPLACE_ERROR_HANDLING;
 		obj = Z_KRISP_P (object);
 		obj->u.ptr = NULL;
 	}
 
-	KRISP_REPLACE_ERROR_HANDLING;
 	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
-		KRISP_RESTORE_ERROR_HANDLING;
 		return;
 	}
 
@@ -232,7 +232,6 @@ PHP_FUNCTION(krisp_open)
 
 	if ( db != NULL ) {
 		if ( php_check_open_basedir (db) ) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			RETURN_FALSE;
 		}
 	}
@@ -250,14 +249,11 @@ PHP_FUNCTION(krisp_open)
 		}
 		safe_efree (kr);
 		kr = NULL;
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
 	kr->rsrc = zend_register_resource (kr, le_krisp);
 	RETVAL_RES (kr->rsrc);
-
-	KRISP_RESTORE_ERROR_HANDLING;
 }
 /* }}} */
 
@@ -278,22 +274,19 @@ PHP_FUNCTION(krisp_search)
 	KROBJ             * obj;
 	zend_error_handling error_handling;
 
-	KRISP_REPLACE_ERROR_HANDLING;
 	if ( object ) {
+		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S", &host) == FAILURE) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 	} else {
 		if ( krisp_parameters ("rS", &krisp_link, &host) == FAILURE) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 	}
 
 	if ( ZSTR_LEN (host) == 0 ) {
 		php_error_docref (NULL, E_WARNING, "Expects the value of host");
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
@@ -304,7 +297,6 @@ PHP_FUNCTION(krisp_search)
 			if ( ! kr )
 				kr = NULL;
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
-			KRISP_RESTORE_ERROR_HANDLING;
 			RETURN_FALSE;
 		}
 	} else
@@ -315,13 +307,11 @@ PHP_FUNCTION(krisp_search)
 
 	if ( kr_search (&isp, kr->db) ) {
 		php_error_docref (NULL, E_WARNING, "%s", isp.err);
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
 	if ( object_init (return_value) == FAILURE ) {
 		php_error_docref (NULL, E_WARNING, "Failure object initialize");
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
@@ -339,8 +329,6 @@ PHP_FUNCTION(krisp_search)
 	add_property_string (return_value, "iname", isp.iname);
 	add_property_string (return_value, "ccode", isp.ccode);
 	add_property_string (return_value, "cname", isp.cname);
-
-	KRISP_RESTORE_ERROR_HANDLING;
 }
 /* }}} */
 
@@ -365,16 +353,14 @@ PHP_FUNCTION(krisp_search_ex)
 	KROBJ             * obj;
 	zend_error_handling error_handling;
 
-	KRISP_REPLACE_ERROR_HANDLING;
 	if ( object ) {
+		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S|S", &host, &table) == FAILURE) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 
 	} else {
 		if ( krisp_parameters ("rS|S", &krisp_link, &host, &table) == FAILURE) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 	}
@@ -386,7 +372,6 @@ PHP_FUNCTION(krisp_search_ex)
 
 	if ( ZSTR_LEN (host) == 0) {
 		php_error_docref (NULL, E_WARNING, "Expects the value of host");
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
@@ -395,7 +380,6 @@ PHP_FUNCTION(krisp_search_ex)
 		kr = obj->u.db;
 		if ( ! kr || kr->db == NULL ) {
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
-			KRISP_RESTORE_ERROR_HANDLING;
 			RETURN_FALSE;
 		}
 	} else
@@ -407,7 +391,6 @@ PHP_FUNCTION(krisp_search_ex)
 
 	if ( kr_search_ex (&isp, kr->db) ) {
 		php_error_docref (NULL, E_WARNING, isp.err);
-		KRISP_RESTORE_ERROR_HANDLING;
 		initStruct_ex (&isp, true);
 		RETURN_FALSE;
 	}
@@ -415,14 +398,12 @@ PHP_FUNCTION(krisp_search_ex)
 	if ( object_init (return_value) == FAILURE ) {
 		initStruct_ex (&isp, true);
 		php_error_docref (NULL, E_WARNING, "Failure object initialize");
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
 	if ( array_init (&dummy) == FAILURE ) {
 		initStruct_ex (&isp, true);
 		php_error_docref (NULL, E_WARNING, "Failure array initialize");
-		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
 	}
 
@@ -607,11 +588,9 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 	KRISP_API         * kr;
 	zend_error_handling error_handling;
 
-	KRISP_REPLACE_ERROR_HANDLING;
-
 	if ( object) {
+		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("l", &sec) == FAILURE ) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 
@@ -624,13 +603,11 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 		}
 	} else {
 		if ( krisp_parameters ("rl", &krisp_link, &sec) == FAILURE ) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 	}
-	KRISP_RESTORE_ERROR_HANDLING;
 
 	kr->db->db_time_stamp_interval = sec;
 
@@ -649,11 +626,9 @@ PHP_FUNCTION(krisp_set_debug)
 	KRISP_API         * kr;
 	zend_error_handling error_handling;
 
-	KRISP_REPLACE_ERROR_HANDLING;
-
 	if ( object) {
+		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("|l", &switches) == FAILURE ) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 
@@ -666,7 +641,6 @@ PHP_FUNCTION(krisp_set_debug)
 		}
 	} else {
 		if ( krisp_parameters ("r|l", &krisp_link, &switches) == FAILURE ) {
-			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
 
@@ -675,7 +649,6 @@ PHP_FUNCTION(krisp_set_debug)
 
 	kr->db->verbose = switches;
 
-	KRISP_RESTORE_ERROR_HANDLING;
 	RETURN_TRUE;
 }
 /* }}} */
