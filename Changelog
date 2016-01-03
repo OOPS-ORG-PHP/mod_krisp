@@ -4,6 +4,10 @@ $Id$
 
 * 3.0.1
 --------------------------------------------------------------------------------
+Sun Jan  3 2016
+by JoungKyun.Kim <http://oops.org>
+	- fixed wrong destruction problem
+
 Sun Dec 28 2015
 by JoungKyun.Kim <http://oops.org>
 	- fixed segfault

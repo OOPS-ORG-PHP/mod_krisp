@@ -34,20 +34,35 @@ static int krisp_free_persistent (zend_resource * le, void * ptr) {
 static void krisp_object_free_storage (zend_object * object) {
 	KROBJ * intern = (KROBJ *) krisp_fetch_object (object);
 
-	zend_object_std_dtor (&intern->std);
+	if ( ! intern )
+		return;
 
 	if ( intern->u.ptr ) {
+		zend_hash_apply_with_argument (
+				&EG(persistent_list),
+				(apply_func_arg_t) krisp_free_persistent,
+				&intern->u.ptr
+		);
+	}
+
+	if ( intern->u.db != NULL ) {
 		if ( intern->u.db->rsrc ) {
-			zend_list_delete (intern->u.db->rsrc);
-			zend_hash_apply_with_argument (
-					&EG(persistent_list),
-					(apply_func_arg_t) krisp_free_persistent,
-					&intern->u.ptr
-			);
+			// close krisp handler
+			zend_list_close (intern->u.db->rsrc);
+		}
+
+		if ( intern->u.db != NULL ) {
+			if ( intern->u.db->db != NULL ) {
+				kr_close (&intern->u.db->db);
+				intern->u.db->db = NULL;
+			}
+			safe_efree (intern->u.db);
 		}
 	}
 
-	efree(object);
+	zend_object_std_dtor (&intern->std);
+
+	safe_efree(object);
 }
 
 static void krisp_object_new (zend_class_entry *class_type, zend_object_handlers *handlers, zend_object **retval TSRMLS_DC)
