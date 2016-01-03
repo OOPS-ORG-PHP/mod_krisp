@@ -466,17 +466,16 @@ PHP_FUNCTION(krisp_close)
 		if ( ! kr || kr->db == NULL )
 			RETURN_TRUE;
 
-		zend_list_delete (obj->u.db->rsrc);
+		zend_list_close (obj->u.db->rsrc);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
 			return;
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 
-		if ( GC_REFCOUNT (kr->rsrc) == 2 ) {
-			// call the _close_krisp_link
-			zend_list_close (Z_RES_P(krisp_link));
-			//zend_list_close (kr->rsrc); // this is OK too
-		}
+		/* call the _close_krisp_link
+		 * Z_RES_P(krisp_link) sames kr->rsrc
+		 */
+		zend_list_close (Z_RES_P(krisp_link));
 	}
 
 	RETURN_TRUE;
