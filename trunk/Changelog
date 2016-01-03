@@ -4,6 +4,10 @@ $Id$
 
 * 3.0.1
 --------------------------------------------------------------------------------
+Mon Jan  4 2016
+by JoungKyun.Kim <http://oops.org>
+	- fixed segfault when reuse construct variable
+
 Sun Jan  3 2016
 by JoungKyun.Kim <http://oops.org>
 	- fixed wrong destruction problem
