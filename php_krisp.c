@@ -232,7 +232,7 @@ PHP_FUNCTION(krisp_open)
 			zval_dtor (error);
 			ZVAL_STRING (error, err);
 		}
-		free (kr);
+		safe_efree (kr);
 		kr = NULL;
 		KRISP_RESTORE_ERROR_HANDLING;
 		RETURN_FALSE;
