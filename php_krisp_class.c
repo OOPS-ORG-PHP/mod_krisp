@@ -57,12 +57,11 @@ static void krisp_object_free_storage (zend_object * object) {
 				intern->u.db->db = NULL;
 			}
 			safe_efree (intern->u.db);
+			intern->u.db = NULL;
 		}
 	}
 
 	zend_object_std_dtor (&intern->std);
-
-	safe_efree(object);
 }
 
 static void krisp_object_new (zend_class_entry *class_type, zend_object_handlers *handlers, zend_object **retval TSRMLS_DC)
