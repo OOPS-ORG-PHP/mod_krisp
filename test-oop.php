@@ -29,7 +29,7 @@ try {
 	#$kr = new KRISP ('asdf', $err);
 	#$kr = new KRISP ('', $err);
 	#$kr = new KRISP (NULL, $err);
-	$kr = new KRISP ();
+	#$kr = new KRISP ();
 
 	$kr->mtimeInterval (0);
 	$kr->debug ();
