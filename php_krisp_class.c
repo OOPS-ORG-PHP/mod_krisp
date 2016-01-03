@@ -63,17 +63,6 @@ static zend_object * krisp_object_new (zend_class_entry *class_type) {
 	return &intern->std;
 }
 
-static zend_object * krisp_object_new_exception (zend_class_entry *class_type) {
-	KROBJ * intern;
-
-	intern = ecalloc (1, sizeof (KROBJ) + zend_object_properties_size (class_type));
-	zend_object_std_init (&intern->std,class_type TSRMLS_CC);
-	object_properties_init(&intern->std, class_type);
-	intern->std.handlers = &krisp_object_handlers_exception;
-
-	return &intern->std;
-}
-
 /* Class API }}} */
 
 /*
