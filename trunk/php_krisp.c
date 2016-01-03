@@ -114,8 +114,12 @@ ZEND_GET_MODULE(krisp)
 static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
 {
 	KRISP_API * kr = (KRISP_API *) rsrc->ptr;
-	kr_close (&kr->db);
-	free (kr);
+
+	if ( GC_REFCOUNT (rsrc) == 2 ) {
+		if ( kr->db != NULL )
+			kr_close (&kr->db);
+		safe_efree (kr);
+	}
 }
 
 /* {{{ INCLUDE KRISP Classify API */
@@ -126,7 +130,7 @@ static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
  */
 PHP_MINIT_FUNCTION(krisp)
 {
-	le_krisp = zend_register_list_destructors_ex (NULL, _close_krisp_link, "krisp link", module_number);
+	le_krisp = zend_register_list_destructors_ex (_close_krisp_link, NULL, "krisp link", module_number);
 
 	REGISTER_KRISP_CLASS(NULL);
 
@@ -186,7 +190,7 @@ PHP_FUNCTION(krisp_open)
 {
 	zend_string       * database = NULL;
 	zval              * error = NULL;
-	KRISP_API         * kr;
+	KRISP_API         * kr = NULL;
 	KROBJ             * obj;
 	char              * db;
 	char                err[1024];
@@ -217,7 +221,7 @@ PHP_FUNCTION(krisp_open)
 		}
 	}
 
-	kr = (KRISP_API *) malloc (sizeof (KRISP_API));
+	kr = (KRISP_API *) emalloc (sizeof (KRISP_API));
 
 	if ( object )
 		obj->u.db = kr;
@@ -444,14 +448,21 @@ PHP_FUNCTION(krisp_close)
 	if ( object ) {
 		obj = Z_KRISP_P (object);
 		kr = obj->u.db;
-		if ( ! kr || kr->db != NULL )
+
+		if ( ! kr || kr->db == NULL )
 			RETURN_TRUE;
+
 		zend_list_delete (obj->u.db->rsrc);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
 			return;
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
-		zend_list_delete(Z_RES_P(krisp_link));
+
+		if ( GC_REFCOUNT (kr->rsrc) == 2 ) {
+			// call the _close_krisp_link
+			zend_list_close (Z_RES_P(krisp_link));
+			//zend_list_close (kr->rsrc); // this is OK too
+		}
 	}
 
 	RETURN_TRUE;

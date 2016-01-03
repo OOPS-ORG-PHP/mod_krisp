@@ -94,6 +94,10 @@ ulong krisp_format_convert (char *);
 		RETURN_FALSE; \
 	}
 
+#ifndef safe_efree
+#define safe_efree(x) if (x!=NULL) efree (x)
+#endif
+
 #endif	/* PHP_KRISP_H */
 
 /*

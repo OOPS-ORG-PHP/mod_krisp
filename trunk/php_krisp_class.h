@@ -59,7 +59,7 @@ const zend_function_entry krisp_methods[] = {
 	zend_class_entry ce; \
 	INIT_CLASS_ENTRY (ce, "KRISP", krisp_methods); \
 	ce.create_object = krisp_object_new_main; \
-	krisp_ce = zend_register_internal_class_ex (&ce, parent); \
+	krisp_ce = zend_register_internal_class_ex(&ce, parent); \
 	memcpy(&krisp_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
 	krisp_object_handlers.clone_obj = NULL; \
 	krisp_ce->ce_flags |= ZEND_ACC_FINAL; \
