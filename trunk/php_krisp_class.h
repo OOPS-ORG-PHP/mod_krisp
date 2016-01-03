@@ -55,27 +55,6 @@ const zend_function_entry krisp_methods[] = {
 	{NULL, NULL, NULL}
 };
 
-#define REGISTER_KRISP_CLASS(parent) { \
-	zend_class_entry ce; \
-	INIT_CLASS_ENTRY (ce, "KRISP", krisp_methods); \
-	ce.create_object = krisp_object_new_main; \
-	krisp_ce = zend_register_internal_class_ex(&ce, parent); \
-	memcpy(&krisp_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-	krisp_object_handlers.clone_obj = NULL; \
-	krisp_ce->ce_flags |= ZEND_ACC_FINAL; \
-}
-
-
-#define REGISTER_KRISP_PER_CLASS(name, c_name, parent) { \
-	zend_class_entry ce; \
-	INIT_CLASS_ENTRY(ce, "KRISP" # name, krisp_methods_ ## c_name); \
-	ce.create_object = krisp_object_new_ ## c_name; \
-	krisp_ce_ ## c_name = zend_register_internal_class_ex(&ce, parent); \
-	memcpy(&krisp_object_handlers_ ## c_name, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-	krisp_object_handlers_ ## c_name.clone_obj = NULL; \
-	krisp_ce_ ## c_name->ce_flags |= ZEND_ACC_FINAL; \
-}
-
 #define krisp_method_parameters(...) \
 	zend_parse_parameters (ZEND_NUM_ARGS (), getThis (), __VA_ARGS__)
 

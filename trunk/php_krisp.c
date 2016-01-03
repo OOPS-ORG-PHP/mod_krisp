@@ -130,15 +130,29 @@ static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
  */
 PHP_MINIT_FUNCTION(krisp)
 {
+	zend_class_entry ce;
+	zend_class_entry cex;
 	le_krisp = zend_register_list_destructors_ex (_close_krisp_link, NULL, "krisp link", module_number);
 
-	REGISTER_KRISP_CLASS(NULL);
+	/* Register KRISP Class */
+	memcpy(&krisp_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	INIT_CLASS_ENTRY (ce, "KRISP", krisp_methods);
+	ce.create_object = krisp_object_new;
+	krisp_object_handlers.offset = XtOffsetOf(KROBJ, std);
+	krisp_object_handlers.clone_obj = NULL;
+	krisp_object_handlers.free_obj = (zend_object_free_obj_t) krisp_object_free_storage;
+	krisp_ce = zend_register_internal_class(&ce);
 
+	/* Register KRISP Exception Class */
+	memcpy(&krisp_object_handlers_exception, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	INIT_CLASS_ENTRY(cex, "KRISPException", krisp_methods_exception);
+	cex.create_object = krisp_object_new_exception;
 #if defined(HAVE_SPL)
-	REGISTER_KRISP_PER_CLASS(Exception, exception, spl_ce_RuntimeException);
+	krisp_ce_exception = zend_register_internal_class_ex(&cex, spl_ce_RuntimeException);
 #else
-	REGISTER_KRISP_PER_CLASS(Exception, exception, zend_exception_get_default(TSRMLS_C));
+	krisp_ce_exception = zend_register_internal_class_ex(&cex, zend_ce_exception);
 #endif
+	zend_declare_property_long(krisp_ce_exception, "code", sizeof("code")-1, 0, ZEND_ACC_PUBLIC);
 
 	return SUCCESS;
 }
