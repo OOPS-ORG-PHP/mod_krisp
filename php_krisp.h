@@ -81,7 +81,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 typedef struct krisp_info {
 	// for Class
 	zend_resource * rsrc;
-	KR_API *	db;
+	KR_API *	handler;
 } KRISP_API;
 
 ulong krisp_format_convert (char *);
@@ -95,7 +95,18 @@ ulong krisp_format_convert (char *);
 	}
 
 #ifndef safe_efree
-#define safe_efree(x) if (x!=NULL) efree (x)
+#define safe_efree(x) if (x!=NULL) { efree (x); x = NULL; }
+#endif
+
+//#define KR_DEBUG
+#ifdef  KR_DEBUG
+#	define PRINT_CALL_API_NAME php_printf ("*** ---------------> Call %s (%s:%d)\n", __func__, __FILE__, __LINE__);
+#	define kr_printf(...) \
+		php_printf ("    "); \
+		php_printf (__VA_ARGS__)
+#else
+#	define PRINT_CALL_API_NAME
+#	define kr_printf
 #endif
 
 #endif	/* PHP_KRISP_H */
