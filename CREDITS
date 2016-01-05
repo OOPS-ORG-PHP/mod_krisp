@@ -6,3 +6,7 @@ JoungKyun.Kim <http://oops.org>
 * write libkrisp php extension
 JoungKyun.Kim <http://oops.org>
 
+* For test without installation
+
+	export TEST_PHP_EXECUTABLE=/usr/bin/php
+	php -dextension=modules/krisp.so __PHPSCRIPTS__
