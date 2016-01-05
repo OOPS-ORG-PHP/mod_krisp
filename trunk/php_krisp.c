@@ -111,17 +111,17 @@ zend_module_entry krisp_module_entry = {
 ZEND_GET_MODULE(krisp)
 #endif
 
-static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
+static void _close_krisp_link(zend_resource * res)
 {
 	PRINT_CALL_API_NAME;
 
-	if ( ! rsrc )
+	if ( ! res )
 		return;
 
-	//kr_printf ("GC_REFCOUNT(rsrc)             --> %d\n", GC_REFCOUNT(rsrc));
-	kr_printf ("rsrc->handle                  --> %d\n", rsrc->handle);
-	if ( rsrc->ptr ) {
-		KRISP_API * kr = (KRISP_API *) rsrc->ptr;
+	//kr_printf ("GC_REFCOUNT(res)             --> %d\n", GC_REFCOUNT(res));
+	kr_printf ("res->handle                   --> %d\n", res->handle);
+	if ( res->ptr ) {
+		KRISP_API * kr = (KRISP_API *) res->ptr;
 
 		kr_printf ("kr befer free ------------------> %d\n", kr);
 
