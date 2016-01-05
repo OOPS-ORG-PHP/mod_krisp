@@ -39,7 +39,7 @@ const zend_module_dep krisp_deps[] = {
 #if defined(HAVE_SPL)
 	ZEND_MOD_REQUIRED("spl")
 #endif
-	{NULL, NULL, NULL}
+	ZEND_MOD_END
 };
 /* }}} */
 
@@ -63,11 +63,8 @@ static zend_object_handlers krisp_object_handlers;
 static zend_object_handlers krisp_object_handlers_exception;
 
 typedef struct _krisp_object {
-	zend_object     std;
-	union {
-		KRISP_API * db;
-		void      * ptr;
-	} u;
+	KRISP_API   * db;
+	zend_object   std;
 } KROBJ;
 
 /* For Class declears }}} */

@@ -79,7 +79,7 @@ const zend_function_entry krisp_functions[] = {
 	PHP_FE(krisp_mask2prefix,        NULL)
 	PHP_FE(krisp_set_mtime_interval, NULL)
 	PHP_FE(krisp_set_debug,          NULL)
-	{NULL, NULL, NULL}
+	PHP_FE_END
 };
 /* }}} */
 
@@ -113,14 +113,22 @@ ZEND_GET_MODULE(krisp)
 
 static void _close_krisp_link(zend_resource * rsrc TSRMLS_DC)
 {
+	PRINT_CALL_API_NAME;
+
+	if ( ! rsrc )
+		return;
+
+	//kr_printf ("GC_REFCOUNT(rsrc)             --> %d\n", GC_REFCOUNT(rsrc));
+	kr_printf ("rsrc->handle                  --> %d\n", rsrc->handle);
 	if ( rsrc->ptr ) {
 		KRISP_API * kr = (KRISP_API *) rsrc->ptr;
 
-		if ( GC_REFCOUNT (rsrc) == 2 ) {
-			if ( kr->db != NULL )
-				kr_close (&kr->db);
-			safe_efree (kr);
-		}
+		kr_printf ("kr befer free ------------------> %d\n", kr);
+
+		if ( kr->handler != NULL )
+			kr_close (&kr->handler);
+		safe_efree (kr);
+		kr_printf ("kr after free ------------------> %d\n", kr);
 	}
 }
 
@@ -214,10 +222,11 @@ PHP_FUNCTION(krisp_open)
 	zval              * object = getThis ();
 	zend_error_handling error_handling;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object ) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		obj = Z_KRISP_P (object);
-		obj->u.ptr = NULL;
 	}
 
 	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
@@ -236,23 +245,27 @@ PHP_FUNCTION(krisp_open)
 	}
 
 	kr = (KRISP_API *) emalloc (sizeof (KRISP_API));
+	kr_printf ("kr        ------------------------> %d\n", kr);
 
-	if ( object )
-		obj->u.db = kr;
+	if ( object ) {
+		obj->db = kr;
+		kr_printf ("obj->db   ------------------------> %d\n", obj->db);
+	}
 
-	if ( kr_open_safe (&kr->db, db, err) == false ) {
+	if ( kr_open_safe (&kr->handler, db, err) == false ) {
 		php_error_docref (NULL, E_WARNING, "%s", err);
 		if ( error ) {
 			zval_dtor (error);
 			ZVAL_STRING (error, err);
 		}
 		safe_efree (kr);
-		kr = NULL;
 		RETURN_FALSE;
 	}
 
 	kr->rsrc = zend_register_resource (kr, le_krisp);
-	RETVAL_RES (kr->rsrc);
+	if ( ! object ) {
+		RETVAL_RES (kr->rsrc);
+	}
 }
 /* }}} */
 
@@ -273,6 +286,8 @@ PHP_FUNCTION(krisp_search)
 	KROBJ             * obj;
 	zend_error_handling error_handling;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object ) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S", &host) == FAILURE) {
@@ -291,8 +306,10 @@ PHP_FUNCTION(krisp_search)
 
 	if ( object ) {
 		obj = Z_KRISP_P (object);
-		kr = obj->u.db;
-		if ( ! kr || kr->db == NULL ) {
+		kr_printf ("obj->db   ------------------------> %d\n", obj->db);
+
+		kr = obj->db;
+		if ( ! kr || kr->handler == NULL ) {
 			if ( ! kr )
 				kr = NULL;
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
@@ -302,9 +319,9 @@ PHP_FUNCTION(krisp_search)
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 
 	SAFECPY_256 (isp.ip, ZSTR_VAL (host));
-	isp.verbose = kr->db->verbose;
+	isp.verbose = kr->handler->verbose;
 
-	if ( kr_search (&isp, kr->db) ) {
+	if ( kr_search (&isp, kr->handler) ) {
 		php_error_docref (NULL, E_WARNING, "%s", isp.err);
 		RETURN_FALSE;
 	}
@@ -352,6 +369,8 @@ PHP_FUNCTION(krisp_search_ex)
 	KROBJ             * obj;
 	zend_error_handling error_handling;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object ) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S|S", &host, &table) == FAILURE) {
@@ -376,8 +395,8 @@ PHP_FUNCTION(krisp_search_ex)
 
 	if ( object ) {
 		obj = Z_KRISP_P (object);
-		kr = obj->u.db;
-		if ( ! kr || kr->db == NULL ) {
+		kr = obj->db;
+		if ( ! kr || kr->handler == NULL ) {
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
 			RETURN_FALSE;
 		}
@@ -385,10 +404,10 @@ PHP_FUNCTION(krisp_search_ex)
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 
 	SAFECPY_256 (isp.ip, ZSTR_VAL (host));
-	isp.verbose = kr->db->verbose;
-	kr->db->table = otable;
+	isp.verbose = kr->handler->verbose;
+	kr->handler->table = otable;
 
-	if ( kr_search_ex (&isp, kr->db) ) {
+	if ( kr_search_ex (&isp, kr->handler) ) {
 		php_error_docref (NULL, E_WARNING, isp.err);
 		initStruct_ex (&isp, true);
 		RETURN_FALSE;
@@ -441,14 +460,25 @@ PHP_FUNCTION(krisp_close)
 	zval      * object = getThis ();
 	KROBJ     * obj;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object ) {
 		obj = Z_KRISP_P (object);
-		kr = obj->u.db;
+		kr_printf ("obj->db   ------------------------> %d\n", obj->db);
 
-		if ( ! kr || kr->db == NULL )
+		if ( ! obj->db || obj->db->handler == NULL ) {
 			RETURN_TRUE;
+		}
 
-		zend_list_close (obj->u.db->rsrc);
+		kr_close (&obj->db->handler);
+		obj->db->handler = NULL;
+
+		zend_list_close (obj->db->rsrc);
+		obj->db->rsrc = NULL;
+
+		kr_printf ("obj->db before free   ------------> %d\n", obj->db);
+		safe_efree (obj->db);
+		kr_printf ("obj->db after free   -------------> %d\n", obj->db);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
 			return;
@@ -587,6 +617,8 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 	KRISP_API         * kr;
 	zend_error_handling error_handling;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("l", &sec) == FAILURE ) {
@@ -594,9 +626,9 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 		}
 
 		obj = Z_KRISP_P (object);
-		kr = obj->u.db;
+		kr = obj->db;
 
-		if ( ! kr || kr->db == NULL ) {
+		if ( ! kr || kr->handler == NULL ) {
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
 			RETURN_FALSE;
 		}
@@ -608,7 +640,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 	}
 
-	kr->db->db_time_stamp_interval = sec;
+	kr->handler->db_time_stamp_interval = sec;
 
 	RETURN_TRUE;
 }
@@ -625,6 +657,8 @@ PHP_FUNCTION(krisp_set_debug)
 	KRISP_API         * kr;
 	zend_error_handling error_handling;
 
+	PRINT_CALL_API_NAME;
+
 	if ( object) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("|l", &switches) == FAILURE ) {
@@ -632,9 +666,9 @@ PHP_FUNCTION(krisp_set_debug)
 		}
 
 		obj = Z_KRISP_P (object);
-		kr = obj->u.db;
+		kr = obj->db;
 
-		if ( ! kr || kr->db == NULL ) {
+		if ( ! kr || kr->handler == NULL ) {
 			php_error_docref (NULL, E_WARNING, "No KRISP object available");
 			RETURN_FALSE;
 		}
@@ -646,7 +680,7 @@ PHP_FUNCTION(krisp_set_debug)
 		KR_FETCH_RESOURCE (kr, KRISP_API *, krisp_link, "KRISP database", le_krisp);
 	}
 
-	kr->db->verbose = switches;
+	kr->handler->verbose = switches;
 
 	RETURN_TRUE;
 }
@@ -656,7 +690,7 @@ PHP_FUNCTION(krisp_set_debug)
  * Internal APIs
  */
 
-ulong krisp_format_convert (char * v) {
+PHP_KRISP_API ulong krisp_format_convert (char * v) {
 	if ( strchr (v, '.') == NULL )
 		return (ulong) strtoul (v, NULL, 10);
 	return ip2long (v);
