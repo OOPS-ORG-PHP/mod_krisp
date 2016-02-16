@@ -66,7 +66,7 @@ ZEND_END_MODULE_GLOBALS(krisp)
 #define KRISP_G(v) (krisp_globals.v)
 #endif
 
-#define BUILDNO "3.0.2"
+#define BUILDNO "3.0.3"
 
 #define phpext_krisp_ptr krisp_module_ptr
 
