@@ -38,16 +38,26 @@ static void krisp_object_free_storage (zend_object * object) {
 
 	if ( intern->db != NULL ) {
 		kr_printf ("intern->db    --------------------> %d\n", intern->db);
+		kr_printf ("intern->db->rsrc    --------------> %d\n", intern->db->rsrc);
 		if ( intern->db->rsrc ) {
 			//kr_printf ("GC_REFCOUNT(intern->db->rsrc) --> %d\n", GC_REFCOUNT(intern->db->rsrc));
 			// close krisp handler
+			kr_printf ("intern->db->rsrc->ptr    ---------> %d\n", intern->db->rsrc->ptr);
+			kr_printf ("intern->db->rsrc->type   ---------> %d\n", intern->db->rsrc->type);
+
 			zend_list_close (intern->db->rsrc);
+
+			kr_printf ("intern->db->rsrc->ptr    ---------> %d\n", intern->db->rsrc->ptr);
+			kr_printf ("intern->db->rsrc->type   ---------> %d\n", intern->db->rsrc->type);
 		}
 
+		kr_printf ("intern->db->handler --------------> %d\n", intern->db->handler);
 		if ( intern->db->handler != NULL ) {
 			kr_close (&intern->db->handler);
 			intern->db->handler = NULL;
 		}
+		kr_printf ("intern->db->handler --------------> %d\n", intern->db->handler);
+
 		kr_printf ("intern->db before free   ---------> %d\n", intern->db);
 		safe_efree (intern->db);
 		intern->db = NULL;
