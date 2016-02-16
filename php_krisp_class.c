@@ -38,29 +38,21 @@ static void krisp_object_free_storage (zend_object * object) {
 
 	if ( intern->db != NULL ) {
 		kr_printf ("intern->db    --------------------> %d\n", intern->db);
-		kr_printf ("intern->db->rsrc    --------------> %d\n", intern->db->rsrc);
+		kr_printf ("intern->db->rsrc         ---------> %d\n", intern->db->rsrc);
 		if ( intern->db->rsrc ) {
 			//kr_printf ("GC_REFCOUNT(intern->db->rsrc) --> %d\n", GC_REFCOUNT(intern->db->rsrc));
 			// close krisp handler
 			kr_printf ("intern->db->rsrc->ptr    ---------> %d\n", intern->db->rsrc->ptr);
 			kr_printf ("intern->db->rsrc->type   ---------> %d\n", intern->db->rsrc->type);
 
+			// if call zend_list_close,
+			// calling zend_register_list_destructors_ex (_close_krisp_link on this source) too.
 			zend_list_close (intern->db->rsrc);
-
-			kr_printf ("intern->db->rsrc->ptr    ---------> %d\n", intern->db->rsrc->ptr);
-			kr_printf ("intern->db->rsrc->type   ---------> %d\n", intern->db->rsrc->type);
 		}
 
-		kr_printf ("intern->db->handler --------------> %d\n", intern->db->handler);
-		if ( intern->db->handler != NULL ) {
-			kr_close (&intern->db->handler);
-			intern->db->handler = NULL;
-		}
-		kr_printf ("intern->db->handler --------------> %d\n", intern->db->handler);
-
-		kr_printf ("intern->db before free   ---------> %d\n", intern->db);
-		kr_safe_efree (intern->db);
-		kr_printf ("intern->db after free    ---------> %d\n", intern->db);
+		// free'd intern->db in _close_krisp_link, so set NULL in here.
+		intern->db = NULL;
+		kr_printf ("intern->db    --------------------> %d\n", intern->db);
 	}
 
 	kr_printf ("...\n");

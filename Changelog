@@ -9,6 +9,7 @@ by JoungKyun.Kim <http://oops.org>
 	- fixed duplicated condition check
 	- fixed invalid write at zval resource
 	- enhanced efree processing
+	- fixed memory leaks and access invalid address
 
 
 * 3.0.1

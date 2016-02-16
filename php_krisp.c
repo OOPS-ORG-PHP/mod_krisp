@@ -118,17 +118,20 @@ static void _close_krisp_link(zend_resource * res)
 	if ( ! res )
 		return;
 
-	//kr_printf ("GC_REFCOUNT(res)             --> %d\n", GC_REFCOUNT(res));
-	kr_printf ("res->handle                   --> %d\n", res->handle);
+	//kr_printf ("GC_REFCOUNT(res)              --> %d\n", GC_REFCOUNT(res));
+	kr_printf ("res                            --> %d\n", res);
 	if ( res->ptr ) {
 		KRISP_API * kr = (KRISP_API *) res->ptr;
 
-		kr_printf ("kr befer free ------------------> %d\n", kr);
 
+		kr_printf ("kr handler    -------------------> %d\n", kr->handler);
 		if ( kr->handler != NULL )
 			kr_close (&kr->handler);
+		kr_printf ("kr handler    -------------------> %d\n", kr->handler);
+
+		kr_printf ("kr befer free -------------------> %d\n", kr);
 		kr_safe_efree (kr);
-		kr_printf ("kr after free ------------------> %d\n", kr);
+		kr_printf ("kr after free -------------------> %d\n", kr);
 	}
 }
 
@@ -263,6 +266,7 @@ PHP_FUNCTION(krisp_open)
 	}
 
 	kr->rsrc = zend_register_resource (kr, le_krisp);
+	kr_printf ("kr->rsrc  ------------------------> %d\n", kr->rsrc);
 	if ( ! object ) {
 		RETVAL_RES (kr->rsrc);
 	}
@@ -466,24 +470,20 @@ PHP_FUNCTION(krisp_close)
 		obj = Z_KRISP_P (object);
 		kr_printf ("obj->db   ------------------------> %d\n", obj->db);
 
-		if ( ! obj->db || obj->db->handler == NULL ) {
+		if ( ! obj->db ) {
 			RETURN_TRUE;
 		}
 
-		kr_close (&obj->db->handler);
-		obj->db->handler = NULL;
-
-		kr_printf ("obj->db->rsrc->ptr    ---------> %d\n", obj->db->rsrc->ptr);
-		kr_printf ("obj->db->rsrc->type   ---------> %d\n", obj->db->rsrc->type);
-
+		kr_printf ("obj->db->rsrc          -----------> %d\n", obj->db->rsrc);
+		kr_printf ("obj->db->rsrc->ptr     -----------> %d\n", obj->db->rsrc->ptr);
+		kr_printf ("obj->db->rsrc->type    -----------> %d\n", obj->db->rsrc->type);
+		// if call zend_list_close,
+		// calling zend_register_list_destructors_ex (_close_krisp_link on this source) too.
 		zend_list_close (obj->db->rsrc);
 
-		kr_printf ("obj->db->rsrc->ptr    ---------> %d\n", obj->db->rsrc->ptr);
-		kr_printf ("obj->db->rsrc->type   ---------> %d\n", obj->db->rsrc->type);
-
-		kr_printf ("obj->db before free   ------------> %d\n", obj->db);
-		kr_safe_efree (obj->db);
-		kr_printf ("obj->db after free   -------------> %d\n", obj->db);
+		// free'd obj->db in _close_krisp_link, so set NULL in here.
+		obj->db = NULL;
+		kr_printf ("obj->db   ------------------------> %d\n", obj->db);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
 			return;
