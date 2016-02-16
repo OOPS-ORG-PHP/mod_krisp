@@ -94,8 +94,8 @@ ulong krisp_format_convert (char *);
 		RETURN_FALSE; \
 	}
 
-#ifndef safe_efree
-#define safe_efree(x) if (x!=NULL) { efree (x); x = NULL; }
+#ifndef kr_safe_efree
+#define kr_safe_efree(x) do { if (x!=NULL) { efree (x); x = NULL; } } while (0)
 #endif
 
 //#define KR_DEBUG
