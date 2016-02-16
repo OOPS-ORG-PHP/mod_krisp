@@ -473,8 +473,13 @@ PHP_FUNCTION(krisp_close)
 		kr_close (&obj->db->handler);
 		obj->db->handler = NULL;
 
+		kr_printf ("obj->db->rsrc->ptr    ---------> %d\n", obj->db->rsrc->ptr);
+		kr_printf ("obj->db->rsrc->type   ---------> %d\n", obj->db->rsrc->type);
+
 		zend_list_close (obj->db->rsrc);
-		obj->db->rsrc = NULL;
+
+		kr_printf ("obj->db->rsrc->ptr    ---------> %d\n", obj->db->rsrc->ptr);
+		kr_printf ("obj->db->rsrc->type   ---------> %d\n", obj->db->rsrc->type);
 
 		kr_printf ("obj->db before free   ------------> %d\n", obj->db);
 		safe_efree (obj->db);
