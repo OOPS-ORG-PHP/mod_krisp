@@ -478,7 +478,6 @@ PHP_FUNCTION(krisp_close)
 
 		kr_printf ("obj->db before free   ------------> %d\n", obj->db);
 		safe_efree (obj->db);
-		obj->db = NULL;
 		kr_printf ("obj->db after free   -------------> %d\n", obj->db);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
