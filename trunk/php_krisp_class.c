@@ -59,8 +59,7 @@ static void krisp_object_free_storage (zend_object * object) {
 		kr_printf ("intern->db->handler --------------> %d\n", intern->db->handler);
 
 		kr_printf ("intern->db before free   ---------> %d\n", intern->db);
-		safe_efree (intern->db);
-		intern->db = NULL;
+		kr_safe_efree (intern->db);
 		kr_printf ("intern->db after free    ---------> %d\n", intern->db);
 	}
 

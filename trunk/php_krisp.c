@@ -127,7 +127,7 @@ static void _close_krisp_link(zend_resource * res)
 
 		if ( kr->handler != NULL )
 			kr_close (&kr->handler);
-		safe_efree (kr);
+		kr_safe_efree (kr);
 		kr_printf ("kr after free ------------------> %d\n", kr);
 	}
 }
@@ -258,7 +258,7 @@ PHP_FUNCTION(krisp_open)
 			zval_dtor (error);
 			ZVAL_STRING (error, err);
 		}
-		safe_efree (kr);
+		kr_safe_efree (kr);
 		RETURN_FALSE;
 	}
 
@@ -482,7 +482,7 @@ PHP_FUNCTION(krisp_close)
 		kr_printf ("obj->db->rsrc->type   ---------> %d\n", obj->db->rsrc->type);
 
 		kr_printf ("obj->db before free   ------------> %d\n", obj->db);
-		safe_efree (obj->db);
+		kr_safe_efree (obj->db);
 		kr_printf ("obj->db after free   -------------> %d\n", obj->db);
 	} else {
 		if ( krisp_parameters ("r", &krisp_link) == FAILURE)
