@@ -1,0 +1,24 @@
+*krisp_debug* -- print libkrisp debug messages
+*KRISP->debug* -- print libkrisp debug messages
+
+  (bool) krisp_debug (resource link[, bool switch = true])~
+
+|krisp_debug| 함수는 krisp 확장의 debug message 출력 여부를 전환한다.
+
+{link}  krisp_open의 반환 값
+{siwth} true를 지정하면 출력이 되고, false를 지정하면 출력하지 않는다.
+
+
+<?php >
+  $kr = krisp_open ();
+  krisp_debug ($kr, true);
+
+  $kr = new KRISP;
+  $kr->debug (true);
+?>
+
+
+|krisp_open|
+
+
+vim:ft=help:

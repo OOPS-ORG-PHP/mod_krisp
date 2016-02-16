@@ -1,0 +1,30 @@
+*krisp_open* -- Get libkrisp handle
+*KRISP->__construct* -- Initialize krisp extension
+
+  (resource|false) krisp_open ([string path[, string &error]])~
+
+|krisp_open| 함수는 libkrisp handle을 resource로 반환한다.
+
+성공시에 resource를 반환하고, 실패시에 FALSE를 반환한다.
+
+{path}  libkrisp database 파일의 경로를 지정한다. 생략할 경우 libkrisp
+        library의 경로를 사용한다.
+{error} 내부 에러 발생시에, 에러 메시지를 저장한다.
+
+
+|krisp_open| 함수의 예제는 다음과 같다.
+
+<?php >
+  if ( is_reousrce ($kr = krisp_open ()) ) {
+      krisp_close ($kr);
+  }
+
+  $kr = new KRISP;
+  $kr->close ();
+?>
+
+
+|krisp_close|
+
+
+vim:ft=help:
