@@ -21,10 +21,10 @@ To install this extension type the following:
 
 This module requires these libraries:
 
-[libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
+ * PHP >= 7
+  * If you want to PHP <= 5, use v2 branch.
+ * [libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
 
-If you use [libkrisp](https://github.com/Joungkyun/libkrisp) 3.0 or before, use v2 branch. Head branch is
-required 3.1 or after.
 
 ## USAGE
 
