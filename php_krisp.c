@@ -8,7 +8,7 @@
  *
  * @category    Database
  * @package     mod_krisp
- * @author      JoungKyun.Kim <http://oops.org>
+ * @author      JoungKyun.Kim <https://joungkyun.github.com>
  * @copyright   2015 OOPS.org
  * @license     GPL
  * @version     CVS: $Id$
@@ -43,7 +43,7 @@
 #error "************ PHP version dependency problems *******************"
 #error "This package requires over php 7.0.0 !!"
 #error "If you build with php under 7.0.0, use mod_krisp 2.x version"
-#error "You can download mod_krisp 2.x at http://mirror.oops.org/pub/oops/libkrisp/APIs/php/"
+#error "You can download mod_krisp 2.x at https://github.com/OOPS-ORG-PHP/mod_krisp/releases"
 #endif
 
 /* If you declare any globals in php_krisp.h uncomment this:
@@ -178,7 +178,7 @@ PHP_MINFO_FUNCTION(krisp)
 	php_info_print_table_start ();
 	php_info_print_table_colspan_header (2, "krisp extension support");
 	php_info_print_table_row (2, "Summary", "Get Korea ISP Information");
-	php_info_print_table_row (2, "URL", "http://devel.oops.org/");
+	php_info_print_table_row (2, "URL", "http://github.com/OOPS-ORG-PHP/mod_krisp");
 	php_info_print_table_row (2, "Build version", BUILDNO);
 	php_info_print_table_row (2, "Library version", KRISP_VERSION);
 	php_info_print_table_colspan_header (2, "Library support");

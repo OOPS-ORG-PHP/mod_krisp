@@ -1,6 +1,6 @@
 " Vim mod_krisp syntax file
 " Language: PHP 5
-" Maintainer: JoungKyun.Kim <http://oops.org>
+" Maintainer: JoungKyun.Kim <http://joungkyun.github.com>
 " Last Change: 2013.02.17
 
 " mod_krisp

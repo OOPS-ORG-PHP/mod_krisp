@@ -5,13 +5,13 @@ $Id$
 * 3.0.3
 --------------------------------------------------------------------------------
 Wed Feb 17 2016
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 
 
 * 3.0.2
 --------------------------------------------------------------------------------
 Wed Feb 17 2016
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed duplicated condition check
 	- fixed invalid write at zval resource
 	- enhanced efree processing
@@ -21,28 +21,28 @@ by JoungKyun.Kim <http://oops.org>
 * 3.0.1
 --------------------------------------------------------------------------------
 Tue Jan  5 2016
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed memory reak when don't call close api
 	- fixed setfulat wher reuse construct variable
 
 Mon Jan  4 2016
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed segfault when reuse construct variable
 	- fixed "Warning:  Unknown list entry type (0)"
 
 Sun Jan  3 2016
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed wrong destruction problem
 
 Sun Dec 28 2015
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed segfault
 
 
 * 3.0.0
 --------------------------------------------------------------------------------
 Sun Dec 27 2015
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- support PHP 7
 	- unsupport under PHP 7
 
@@ -51,7 +51,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Mon Feb 18 2013
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- add vim files
 
 
@@ -59,11 +59,11 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Sat Nov  3 2012
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- suport KRISPException on oop mode
 
 Fri Nov  2 2012
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- support PHP 5.4
 	- OOP suport KRISP::(__construct,search,searchEx,close,mtimeInterval,debug)
 
@@ -72,7 +72,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Mon Feb 27 2012
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- release 2.1.1
 	- changed header value with krisp-config --cppflags on config.m4
 	- fixed libkrisp link error
@@ -83,7 +83,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Sat Sep 11 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- release 2.1.0
 	- linked over libkrisp 3.1.x
 	- add krisp_set_mtime_interval function
@@ -95,7 +95,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Mon Sep  6 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- support over php 5.3
 	- fixed build error that undeclare 'second_arg_force_ref'
 	- chagend deprecated zend_get_parameters_ex to zend_parse_parameters
@@ -106,7 +106,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Mon Aug  9 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- linked with over libkrisp 3.0.2
 	- removed unused geoip variables
 	- fix license to LGPL current and old versions
@@ -116,16 +116,16 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Sat Jul  3 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- changed krisp_long2prefix to krisp_mask2prefix
 	- changed krisp_prefix2long to krisp_prefix2mask
 
 Fri Jul  1 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- enhanced build environment
 
 Fri Jun 18 2010
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- changed link libkrisp library version. require over libkrisp 3.0.0
 	- add new function
 	  krisp_search_ex
@@ -140,11 +140,11 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Wed Nov 29 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- support userdb and changed hostip database usage
 
 Sun Nov 26 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- support hostip database
 	- if krisp_open hasn't any arguments, database file set default KRISP database
 	- required over libkrisp 2.1.0
@@ -154,7 +154,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Fri Oct 13 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- changed memory allocation to malloc from emalloc when krisp_open
 
 
@@ -162,7 +162,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Thu Sep 14 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- add second argument in kr_open function
 	  array : key
 	          (string) geocity => whether search GeoIPCity database. default 0
@@ -175,7 +175,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Sat Sep  9 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- fixed wrong use of GeoIP link
 
 
@@ -183,7 +183,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Thu Sep  7 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- update 1.1.0
 	- required over libkrisp 2.0.0
 	  if you have libkrisp 1.x, then use mod_krisp 1.0.x
@@ -196,7 +196,7 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Thu Jun 22 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- changed name of isp structure member
 
 
@@ -204,6 +204,6 @@ by JoungKyun.Kim <http://oops.org>
 --------------------------------------------------------------------------------
 
 Sun Jun 19 2006
-by JoungKyun.Kim <http://oops.org>
+by JoungKyun.Kim <https://joungkyun.github.com>
 	- first build with linked libkrisp
 

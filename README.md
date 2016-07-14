@@ -33,7 +33,7 @@ See also [wiki](https://github.com/OOPS-ORG-PHP/mod_krisp/wiki) pages.
 
 ## COPYRIGHT AND LICENCE
 
-Copyright (C) 2016 by JoungKyun.Kim &lt;http://oops.org&gt;
+Copyright (C) 2016 by JoungKyun.Kim &lt;https://joungkyun.github.com&gt;
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

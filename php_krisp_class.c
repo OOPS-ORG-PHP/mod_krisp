@@ -8,7 +8,7 @@
  *
  * @category    Database
  * @package     mod_krisp
- * @author      JoungKyun.Kim <http://oops.org>
+ * @author      JoungKyun.Kim <https://joungkyun.github.com>
  * @copyright   2015 OOPS.org
  * @license     GPL
  * @version     SVN: $Id$
