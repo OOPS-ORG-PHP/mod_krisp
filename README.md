@@ -6,6 +6,8 @@ mod_krisp PHP extension
 This is php extension that is [libkrisp](https://github.com/Joungkyun/libkrisp) PHP frontend.
 See also [libkrisp](https://github.com/Joungkyun/libkrisp) project.
 
+***mod_krisp*** extension provides network calcluration and searching isp/country information
+for given ip address.
 
 ## INSTALLATION
 
