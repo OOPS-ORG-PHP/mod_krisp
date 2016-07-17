@@ -27,6 +27,7 @@ This module requires these libraries:
   * If you want to PHP <= 5, use [v2 branch](https://github.com/OOPS-ORG-PHP/mod_krisp/tree/v2).
  * [libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
 
+If you don't want to external library, you can choose [pear_KRISP](https://github.com/OOPS-ORG-PHP/krisp) that is written by pure php cdoe.
 
 ## USAGE
 
