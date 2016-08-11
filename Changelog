@@ -4,8 +4,9 @@ $Id$
 
 * 3.0.3
 --------------------------------------------------------------------------------
-Wed Feb 17 2016
+Wed Aug 11 2016
 by JoungKyun.Kim <https://joungkyun.github.com>
+	- #2 add .gitignore
 
 
 * 3.0.2
