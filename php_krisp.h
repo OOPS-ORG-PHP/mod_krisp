@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2016 by JoungKyun.Kim <https://joungkyun.github.com>
+ *    all rights resolved.
+ *
+ * This file is part of libkrisp
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

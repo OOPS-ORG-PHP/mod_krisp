@@ -1,15 +1,36 @@
+/*
+ * Copyright (C) 2016 by JoungKyun.Kim <https://joungkyun.github.com>
+ *    all rights resolved.
+ *
+ * This file is part of libkrisp
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 /**
  * Project: mod_krisp :: KRISP database php extension
  * File:    php_krisp_class.c
  *
- * Copyright (c) 2015 JoungKyun.Kim
+ * Copyright (c) 2016 JoungKyun.Kim
  *
  * LICENSE: GPL
  *
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <https://joungkyun.github.com>
- * @copyright   2015 OOPS.org
+ * @copyright   2016 OOPS.org
  * @license     GPL
  * @version     SVN: $Id$
  * @since       File available since release 0.0.1
