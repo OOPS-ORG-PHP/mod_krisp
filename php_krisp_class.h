@@ -40,6 +40,13 @@ extern PHPAPI zend_class_entry *spl_ce_Countable;
 		&error_handling \
 	)
 
+#define KRISP_RESTORE_ERROR_HANDLING_IF \
+	if (object) \
+		zend_restore_error_handling (&error_handling)
+
+#define KRISP_RESTORE_ERROR_HANDLING \
+	zend_restore_error_handling (&error_handling)
+
 #define KRISP_THROW_EXCEPTION(msg) \
 	if (object) \
 		zend_throw_exception(krisp_ce_exception, msg, 0)

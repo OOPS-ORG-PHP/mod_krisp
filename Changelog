@@ -4,9 +4,13 @@ $Id$
 
 * 3.0.3
 --------------------------------------------------------------------------------
+Wed Aug 12 2016
+by JoungKyun.Kim <https://joungkyun.github.com>
+	- fixed #1 can't restore error handling 
+
 Wed Aug 11 2016
 by JoungKyun.Kim <https://joungkyun.github.com>
-	- #2 add .gitignore
+	- fixed #2 add .gitignore
 
 
 * 3.0.2

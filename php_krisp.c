@@ -227,13 +227,13 @@ PHP_FUNCTION(krisp_open)
 
 	PRINT_CALL_API_NAME;
 
+	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
+		return;
+	}
+
 	if ( object ) {
 		KRISP_REPLACE_ERROR_HANDLING;
 		obj = Z_KRISP_P (object);
-	}
-
-	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
-		return;
 	}
 
 	if ( database )
@@ -267,9 +267,10 @@ PHP_FUNCTION(krisp_open)
 
 	kr->rsrc = zend_register_resource (kr, le_krisp);
 	kr_printf ("kr->rsrc  ------------------------> %d\n", kr->rsrc);
-	if ( ! object ) {
+
+	KRISP_RESTORE_ERROR_HANDLING_IF;
+	if ( ! object )
 		RETVAL_RES (kr->rsrc);
-	}
 }
 /* }}} */
 
@@ -293,10 +294,10 @@ PHP_FUNCTION(krisp_search)
 	PRINT_CALL_API_NAME;
 
 	if ( object ) {
-		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S", &host) == FAILURE) {
 			return;
 		}
+		KRISP_REPLACE_ERROR_HANDLING;
 	} else {
 		if ( krisp_parameters ("rS", &krisp_link, &host) == FAILURE) {
 			return;
@@ -349,6 +350,8 @@ PHP_FUNCTION(krisp_search)
 	add_property_string (return_value, "iname", isp.iname);
 	add_property_string (return_value, "ccode", isp.ccode);
 	add_property_string (return_value, "cname", isp.cname);
+
+	KRISP_RESTORE_ERROR_HANDLING_IF;
 }
 /* }}} */
 
@@ -376,11 +379,10 @@ PHP_FUNCTION(krisp_search_ex)
 	PRINT_CALL_API_NAME;
 
 	if ( object ) {
-		KRISP_REPLACE_ERROR_HANDLING;
 		if ( krisp_parameters ("S|S", &host, &table) == FAILURE) {
 			return;
 		}
-
+		KRISP_REPLACE_ERROR_HANDLING;
 	} else {
 		if ( krisp_parameters ("rS|S", &krisp_link, &host, &table) == FAILURE) {
 			return;
@@ -451,6 +453,8 @@ PHP_FUNCTION(krisp_search_ex)
 
 	add_property_zval (return_value, "data", &dummy);
 	initStruct_ex (&isp, true);
+
+	KRISP_RESTORE_ERROR_HANDLING_IF;
 }
 /* }}} */
 
@@ -647,6 +651,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 
 	kr->handler->db_time_stamp_interval = sec;
 
+	KRISP_RESTORE_ERROR_HANDLING_IF;
 	RETURN_TRUE;
 }
 /* }}} */
@@ -687,6 +692,7 @@ PHP_FUNCTION(krisp_set_debug)
 
 	kr->handler->verbose = switches;
 
+	KRISP_RESTORE_ERROR_HANDLING_IF;
 	RETURN_TRUE;
 }
 /* }}} */
