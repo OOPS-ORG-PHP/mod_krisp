@@ -446,11 +446,15 @@ PHP_FUNCTION(krisp_search_ex)
 		RETURN_FALSE;
 	}
 
+#if PHP_VERSION_ID < 70300
 	if ( array_init (&dummy) == FAILURE ) {
 		initStruct_ex (&isp, true);
 		php_error_docref (NULL, E_WARNING, "Failure array initialize");
 		RETURN_FALSE;
 	}
+#else
+	array_init (&dummy);
+#endif
 
 	netmask = guess_netmask (isp.start, isp.end);
 	networkv = network (isp.start, netmask);
