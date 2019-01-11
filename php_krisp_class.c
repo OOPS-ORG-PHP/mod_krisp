@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 by JoungKyun.Kim <https://joungkyun.github.com>
+ * Copyright (C) 2019 by JoungKyun.Kim <https://joungkyun.github.com>
  *    all rights resolved.
  *
  * This file is part of libkrisp
@@ -23,14 +23,14 @@
  * Project: mod_krisp :: KRISP database php extension
  * File:    php_krisp_class.c
  *
- * Copyright (c) 2016 JoungKyun.Kim
+ * Copyright (c) 2019 JoungKyun.Kim
  *
  * LICENSE: GPL
  *
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <https://joungkyun.github.com>
- * @copyright   2016 OOPS.org
+ * @copyright   2019 OOPS.org
  * @license     GPL
  * @version     SVN: $Id$
  * @since       File available since release 0.0.1

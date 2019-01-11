@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 by JoungKyun.Kim <https://joungkyun.github.com>
+ * Copyright (C) 2019 by JoungKyun.Kim <https://joungkyun.github.com>
  *    all rights resolved.
  *
  * This file is part of libkrisp
