@@ -1,5 +1,11 @@
 mod_krisp PHP extension
 ===
+[![GPL2 license](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+![GitHub download](https://img.shields.io/github/downloads/OOPS-ORG-PHP/mod_krisp/total.svg)
+[![GitHub last release](https://img.shields.io/github/release/OOPS-ORG-PHP/mod_krisp.svg)](https://github.com/OOPS-ORG-PHP/mod_krisp/releases)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/OOPS-ORG-PHP/mod_krisp.svg)](https://github.com/OOPS-ORG-PHP/mod_krisp/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/OOPS-ORG-PHP/mod_krisp.svg)](https://github.com/OOPS-ORG-PHP/mod_krisp/pulls?q=is%3Apr+is%3Aclosed)
+
 
 ## DESCRIPTION
 
