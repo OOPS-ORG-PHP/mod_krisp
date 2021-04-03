@@ -635,7 +635,7 @@ PHP_FUNCTION(krisp_set_debug)
 	KRISP_REPLACE_ERROR_HANDLING;
 
 	if ( object) {
-		if ( krisp_parameters ("l", &switches) == FAILURE ) {
+		if ( krisp_parameters ("|l", &switches) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
