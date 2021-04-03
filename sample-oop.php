@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-/* $Id$ */
 
 /*
  * KRISP OOP style test file

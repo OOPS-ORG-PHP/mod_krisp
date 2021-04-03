@@ -1,6 +1,5 @@
 #!/usr/bin/php
-<?
-/* $Id$ */
+<?php
 
 if ( ! extension_loaded ('krisp') )
 	dl ('krisp.so');

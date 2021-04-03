@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-/* $Id$ */
 
 if ( ! extension_loaded ('krisp') ) {
 	if ( version_compare (PHP_VERSION, '5.4.0', '<') ) {

@@ -1,5 +1,17 @@
-/*
- * $Id$
+/**
+ * Project: mod_krisp :: KRISP database php extension
+ * File:    php_krisp.h
+ *
+ * Copyright 2021. JoungKyun.Kim all rights reserved.
+ *
+ * LICENSE: GPL
+ *
+ * @category    Database
+ * @package     mod_krisp
+ * @author      JoungKyun.Kim <http://oops.org>
+ * @copyright   2021. JoungKyun.Kim
+ * @license     PHP 3.01
+ * @since       File available since release 0.0.1
  */
 
 #ifndef PHP_KRISP_H
