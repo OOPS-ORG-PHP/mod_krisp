@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package packagerversion="1.10.6" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
-	<name>krsip</name>
+	<name>krisp</name>
 	<channel>pecl.php.net</channel>
 	<summary>krisp - network calculration an searching</summary>
 	<description>network calculration and searching isp/country information for given ip address
@@ -31,9 +31,10 @@
 		<dir name="/">
 			<file md5sum="@README.md@" name="README.md" role="doc" />
 			<file md5sum="@config.m4@" name="config.m4" role="src" />
-			<file md5sum="@php_krisp.c@" name=""php_krisp.c role="src" />
+			<file md5sum="@php_krisp.c@" name="php_krisp.c" role="src" />
 			<file md5sum="@php_krisp.h@" name="php_krisp.h" role="src" />
-			<file md5sum="@php_krisp_class.c@" name=""php_krisp_class.c role="src" />
+			<file md5sum="@php_krisp_arginfo.h@" name="php_krisp_arginfo.h" role="src" />
+			<file md5sum="@php_krisp_class.c@" name="php_krisp_class.c" role="src" />
 			<file md5sum="@php_krisp_class.h@" name="php_krisp_class.h" role="src" />
 			<file md5sum="@sample-oop.php@" name="sample-oop.php" role="src" />
 			<file md5sum="@sample.php@" name="sample.php" role="src" />
@@ -43,6 +44,11 @@
 				<file md5sum="@tests/002-class-test.phpt@" name="002-class-test.phpt" role="test" />
 				<file md5sum="@tests/003-function-multiple-open.phpt@" name="003-function-multiple-open.phpt" role="test" />
 				<file md5sum="@tests/004-class-multiple-open.phpt@" name="004-class-multiple-open.phpt" role="test" />
+				<file md5sum="@tests/005-krisp_netmask.phpt@" name="005-krisp_netmask.phpt" role="test" />
+				<file md5sum="@tests/006-krisp_network.phpt@" name="006-krisp_network.phpt" role="test" />
+				<file md5sum="@tests/007-krisp_broadcast.phpt@" name="007-krisp_broadcast.phpt" role="test" />
+				<file md5sum="@tests/008-krisp_mask2prefix.phpt@" name="008-krisp_mask2prefix.phpt" role="test" />
+				<file md5sum="@tests/009-krisp_prefix2mask.phpt@" name="009-krisp_prefix2mask.phpt" role="test" />
 			</dir>
 		</dir> <!-- / -->
 	</contents>
