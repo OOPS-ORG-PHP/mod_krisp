@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.10.6" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+	<name>krsip</name>
+	<channel>pecl.php.net</channel>
+	<summary>krisp - network calculration an searching</summary>
+	<description>network calculration and searching isp/country information for given ip address
+	</description>
+	<lead>
+		<name>JoungKyun.Kim</name>
+		<user>joungkyun</user>
+		<email>joungkyun@daum.net</email>
+		<active>yes</active>
+	</lead>
+	<date>@curdate@</date>
+	<time>@curtime@</time>
+	<version>
+		<release>3.0.5</release>
+		<api>2.1.2</api>
+	</version>
+	<stability>
+		<release>stable</release>
+		<api>stable</api>
+	</stability>
+	<license uri="http://www.php.net/license">PHP</license>
+	<notes>
+		- Change license to PHP v3.0.1
+	</notes>
+	<contents>
+		<dir name="/">
+			<file md5sum="@README.md@" name="README.md" role="doc" />
+			<file md5sum="@config.m4@" name="config.m4" role="src" />
+			<file md5sum="@php_krisp.c@" name=""php_krisp.c role="src" />
+			<file md5sum="@php_krisp.h@" name="php_krisp.h" role="src" />
+			<file md5sum="@php_krisp_class.c@" name=""php_krisp_class.c role="src" />
+			<file md5sum="@php_krisp_class.h@" name="php_krisp_class.h" role="src" />
+			<file md5sum="@sample-oop.php@" name="sample-oop.php" role="src" />
+			<file md5sum="@sample.php@" name="sample.php" role="src" />
+
+			<dir name="tests">
+				<file md5sum="@tests/001-function-test.phpt@" name="001-function-test.phpt" role="test" />
+				<file md5sum="@tests/002-class-test.phpt@" name="002-class-test.phpt" role="test" />
+				<file md5sum="@tests/003-function-multiple-open.phpt@" name="003-function-multiple-open.phpt" role="test" />
+				<file md5sum="@tests/004-class-multiple-open.phpt@" name="004-class-multiple-open.phpt" role="test" />
+			</dir>
+		</dir> <!-- / -->
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>7.0.0</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.3</min>
+			</pearinstaller>
+		</required>
+	</dependencies>
+	<providesextension>krisp</providesextension>
+	<extsrcrelease />
+	<changelog>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.5</release><api>2.1.2</api></version>
+			<date>@curdate@</date>
+			<notes>
+				- Change license to PHP v3.0.1
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.4</release><api>2.1.2</api></version>
+			<date>2019-01-12</date>
+			<notes>
+				- support PHP 7.3
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.3</release><api>2.1.2</api></version>
+			<date>2016-08-12</date>
+			<notes>
+				- fixed #1 can't restore error handling
+				- fixed #2 add .gitignore
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.2</release><api>2.1.2</api></version>
+			<date>2016-02-17</date>
+			<notes>
+				- fixed duplicated condition check
+				- fixed invalid write at zval resource
+				- enhanced efree processing
+				- fixed memory leaks and access invalid address
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.1</release><api>2.1.2</api></version>
+			<date>2016-01-05</date>
+			<notes>
+				- fixed memory reak when don't call close api
+				- fixed setfulat wher reuse construct variable
+				- fixed segfault when reuse construct variable
+				- fixed "Warning:  Unknown list entry type (0)"
+				- fixed wrong destruction problem
+				- fixed segfault
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>3.0.0</release><api>2.1.2</api></version>
+			<date>2015-12-27</date>
+			<notes>
+				- support PHP 7
+				- unsupport under PHP 7
+			</notes>
+		</release>
+	</changelog>
+</package>

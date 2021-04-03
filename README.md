@@ -1,6 +1,6 @@
 mod_krisp PHP extension
 ===
-[![GPL2 license](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![PHP v3.01](https://img.shields.io/badge/license-php_v3.01-blue.svg)](http://www.php.net/license)
 ![GitHub download](https://img.shields.io/github/downloads/OOPS-ORG-PHP/mod_krisp/total.svg)
 [![GitHub last release](https://img.shields.io/github/release/OOPS-ORG-PHP/mod_krisp.svg)](https://github.com/OOPS-ORG-PHP/mod_krisp/releases)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/OOPS-ORG-PHP/mod_krisp.svg)](https://github.com/OOPS-ORG-PHP/mod_krisp/issues?q=is%3Aissue+is%3Aclosed)
@@ -42,18 +42,12 @@ See also [wiki](https://github.com/OOPS-ORG-PHP/mod_krisp/wiki) pages.
 
 ## COPYRIGHT AND LICENCE
 
-Copyright (C) 2019 by JoungKyun.Kim &lt;https://joungkyun.github.com&gt;
+Copyright 2021. JoungKyun.Kim all rights reserved.
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+This source file is subject to version 3.01 of the PHP license, that is bundled with this package in the file LICENSE, and is available through the world-wide-web at the following url:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    [http://www.php.net/license/3_01.txt](http://www.php.net/license/3_01.txt)
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+If you did not receive a copy of the PHP license and are unable to obtain it through the world-wide-web, please send a note to license@php.net so we can mail you a copy immediately.
+
+Also, legacy versions of GPL also change to PHP V3.01.
