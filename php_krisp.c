@@ -54,13 +54,6 @@
 
 #include "php_krisp.h"
 
-#if PHP_API_VERSION < 20151012
-#error "************ PHP version dependency problems *******************"
-#error "This package requires over php 7.0.0 !!"
-#error "If you build with php under 7.0.0, use mod_krisp 2.x version"
-#error "You can download mod_krisp 2.x at https://github.com/OOPS-ORG-PHP/mod_krisp/releases"
-#endif
-
 /* If you declare any globals in php_krisp.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(krisp)
  */
