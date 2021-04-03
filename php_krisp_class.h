@@ -63,15 +63,17 @@ const zend_module_dep krisp_deps[] = {
 /* }}} */
 
 /* {{{ For Class declears */
+/* {{{ const zend_function_entry krisp_methods[] */
 const zend_function_entry krisp_methods[] = {
-	PHP_ME_MAPPING (__construct,   krisp_open,               arginfo_krisp_open, ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (close,         krisp_close,              NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (search,        krisp_search,             NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (searchEx,      krisp_search_ex,          NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (mtimeInterval, krisp_set_mtime_interval, NULL,               ZEND_ACC_PUBLIC)
-	PHP_ME_MAPPING (debug,         krisp_set_debug,          NULL,               ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (__construct,   krisp_open,               arginfo_class_KRISP___construct,   ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (search,        krisp_search,             arginfo_class_KRISP_search,        ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (searchEx,      krisp_search_ex,          arginfo_class_KRISP_search_ex,     ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (close,         krisp_close,              arginfo_class_KRISP_close,         ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (mtimeInterval, krisp_set_mtime_interval, arginfo_class_KRISP_mtimeInterval, ZEND_ACC_PUBLIC)
+	PHP_ME_MAPPING (debug,         krisp_set_debug,          arginfo_class_KRISP_debug,         ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
+/* }}} */
 
 #define krisp_method_parameters(...) \
 	zend_parse_parameters (ZEND_NUM_ARGS (), getThis (), __VA_ARGS__)

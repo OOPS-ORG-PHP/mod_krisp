@@ -147,6 +147,20 @@ case "${mode}" in
 
 		exit $?
 		;;
+	stub)
+		# stub tagging
+		# /** @generate-function-entries **/ build with function entryies
+		# /** @generate-legacy-arginfo **/   build with legacy style
+		if [[ ! -f build/gen_stub.php ]]; then
+			cat <<-EOL
+				ERROR: execute before PHP 8 build environment or before execute phpize
+			EOL
+			exit 1
+		fi
+		phpcmd="/usr/bin/php80"
+		perl -pi -e 's/ext_functions/korean_functions/g' build/gen_stub.php
+		${phpcmd} build/gen_stub.php -f *.stub.php
+		;;
 	*)
 		errmsg "Unsupport mode '${1}'"
 		exit 1

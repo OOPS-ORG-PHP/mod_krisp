@@ -68,11 +68,7 @@ ZEND_DECLARE_MODULE_GLOBALS(krisp)
 /* True global resources - no need for thread safety here */
 static int le_krisp;
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_krisp_open, 0, 0, 0)
-	ZEND_ARG_INFO(0, database)
-	ZEND_ARG_INFO(1, error)
-ZEND_END_ARG_INFO()
-
+#include "php_krisp_arginfo.h"
 #include "php_krisp_class.h"
 
 /* {{{ krisp_functions[]
@@ -80,20 +76,20 @@ ZEND_END_ARG_INFO()
  * Every user visible function must have an entry in krisp_functions[].
  */
 const zend_function_entry krisp_functions[] = {
-	PHP_FE(krisp_buildver,           NULL)
-	PHP_FE(krisp_version,            NULL)
-	PHP_FE(krisp_uversion,           NULL)
+	PHP_FE(krisp_buildver,           arginfo_krisp_buildver)
+	PHP_FE(krisp_version,            arginfo_krisp_version)
+	PHP_FE(krisp_uversion,           arginfo_krisp_uversion)
 	PHP_FE(krisp_open,               arginfo_krisp_open)
-	PHP_FE(krisp_search,             NULL)
-	PHP_FE(krisp_search_ex,          NULL)
-	PHP_FE(krisp_close,              NULL)
-	PHP_FE(krisp_netmask,            NULL)
-	PHP_FE(krisp_network,            NULL)
-	PHP_FE(krisp_broadcast,          NULL)
-	PHP_FE(krisp_prefix2mask,        NULL)
-	PHP_FE(krisp_mask2prefix,        NULL)
-	PHP_FE(krisp_set_mtime_interval, NULL)
-	PHP_FE(krisp_set_debug,          NULL)
+	PHP_FE(krisp_search,             arginfo_krisp_search)
+	PHP_FE(krisp_search_ex,          arginfo_krisp_search_ex)
+	PHP_FE(krisp_close,              arginfo_krisp_close)
+	PHP_FE(krisp_netmask,            arginfo_krisp_netmask)
+	PHP_FE(krisp_network,            arginfo_krisp_netmask)
+	PHP_FE(krisp_broadcast,          arginfo_krisp_broadcast)
+	PHP_FE(krisp_prefix2mask,        arginfo_krisp_prefix2mask)
+	PHP_FE(krisp_mask2prefix,        arginfo_krisp_mask2prefix)
+	PHP_FE(krisp_set_mtime_interval, arginfo_krisp_set_mtime_interval)
+	PHP_FE(krisp_set_debug,          arginfo_krisp_set_debug)
 	PHP_FE_END
 };
 /* }}} */
@@ -202,7 +198,7 @@ PHP_MINFO_FUNCTION(krisp)
 }
 /* }}} */
 
-/* {{{ proto (string) krisp_buildver (void)
+/* {{{ proto krisp_buildver (void): string
  *  print krisp extension build number */
 PHP_FUNCTION(krisp_buildver)
 {
@@ -210,7 +206,7 @@ PHP_FUNCTION(krisp_buildver)
 }
 /* }}} */
 
-/* {{{ proto (string) krisp_version (void)
+/* {{{ proto krisp_version (void): string
  *  print krisp library version */
 PHP_FUNCTION(krisp_version)
 {
@@ -218,7 +214,7 @@ PHP_FUNCTION(krisp_version)
 }
 /* }}} */
 
-/* {{{ proto (string) krisp_uversion (void)
+/* {{{ proto krisp_uversion (void): string
  *  print krisp library uversion */
 PHP_FUNCTION(krisp_uversion)
 {
@@ -226,7 +222,7 @@ PHP_FUNCTION(krisp_uversion)
 }
 /* }}} */
 
-/* {{{ proto (resource) krisp_open (string datafile)
+/* {{{ proto krisp_open (string datafile): resource
  *  return krisp database open resource */
 PHP_FUNCTION(krisp_open)
 {
@@ -289,7 +285,7 @@ PHP_FUNCTION(krisp_open)
 }
 /* }}} */
 
-/* {{{ proto (object|false) krisp_search (resource link, string host)
+/* {{{ proto krisp_search (resource link, string host): object|false
  *  return isp information array */
 PHP_FUNCTION(krisp_search)
 {
@@ -367,7 +363,7 @@ PHP_FUNCTION(krisp_search)
 }
 /* }}} */
 
-/* {{{ proto (object|false) krisp_search_ex (resource link, string host)
+/* {{{ proto krisp_search_ex (resource link, string host): object|false
  *  return isp information array */
 PHP_FUNCTION(krisp_search_ex)
 {
@@ -470,7 +466,7 @@ PHP_FUNCTION(krisp_search_ex)
 }
 /* }}} */
 
-/* {{{ proto (bool) krisp_close (resource link)
+/* {{{ proto krisp_close (resource link): bool
  *  close krisp database */
 PHP_FUNCTION(krisp_close)
 {
@@ -515,7 +511,7 @@ PHP_FUNCTION(krisp_close)
 }
 /* }}} */
 
-/* {{{ proto (object) krisp_netmask (string start, string end)
+/* {{{ proto krisp_netmask (string start, string end): object
  *  return netmask and prefix about given ip range */
 PHP_FUNCTION(krisp_netmask)
 {
@@ -581,7 +577,7 @@ static void krisp_network_broadcast (INTERNAL_FUNCTION_PARAMETERS, zend_bool typ
 	);
 } // }}}
 
-/* {{{ proto (string|false) krisp_network (string ip, string mask)
+/* {{{ proto krisp_network (string ip, string mask): string|false
  *  reuturn network address about given ip and network mask */
 PHP_FUNCTION(krisp_network)
 {
@@ -589,7 +585,7 @@ PHP_FUNCTION(krisp_network)
 }
 /* }}} */
 
-/* {{{ proto (string|false) krisp_broadcast (string ip, string mask)
+/* {{{ proto krisp_broadcast (string ip, string mask): string|false
  *  reuturn broadcast address about given ip and network mask */
 PHP_FUNCTION(krisp_broadcast)
 {
@@ -597,7 +593,7 @@ PHP_FUNCTION(krisp_broadcast)
 }
 /* }}} */
 
-/* {{{ proto (string) krisp_prefix2mask (int prefix)
+/* {{{ proto krisp_prefix2mask (int prefix): string
  *  return unsigned long value for given network prefix */
 PHP_FUNCTION(krisp_prefix2mask)
 {
@@ -611,7 +607,7 @@ PHP_FUNCTION(krisp_prefix2mask)
 }
 /* }}} */
 
-/* {{{ proto (int) krisp_mask2prefix (string mask)
+/* {{{ proto krisp_mask2prefix (string mask): long
  *  return short network prefix for given long network mask */
 PHP_FUNCTION(krisp_mask2prefix)
 {
@@ -624,7 +620,7 @@ PHP_FUNCTION(krisp_mask2prefix)
 }
 /* }}} */
 
-/* {{{ proto (bool) krisp_set_mtime_interval (resoruce link, int sec)
+/* {{{ proto krisp_set_mtime_interval (resource link, int sec): bool
  *  set krisp database mtime check interval */
 PHP_FUNCTION(krisp_set_mtime_interval)
 {
@@ -665,7 +661,7 @@ PHP_FUNCTION(krisp_set_mtime_interval)
 }
 /* }}} */
 
-/* {{{ proto (bool) krisp_set_debug (resoruce link[, int switch = true])
+/* {{{ proto krisp_set_debug (resource link, int switch = true): bool
  *  print libkrisp debug messages */
 PHP_FUNCTION(krisp_set_debug)
 {

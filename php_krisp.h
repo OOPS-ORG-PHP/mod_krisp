@@ -86,9 +86,24 @@ ZEND_END_MODULE_GLOBALS(krisp)
  * Compatible legacy version
  */
 #if PHP_VERSION_ID >= 80000
-#	define TSRMLS_CC
+#  define TSRMLS_CC
+#else
+#  undef ZEND_ARG_OBJ_INFO
+#  define ZEND_ARG_OBJ_INFO(a,b,c,d) ZEND_ARG_TYPE_INFO(a,b,IS_RESOURCE,d)
+#  define ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(a,b,c,d) ZEND_BEGIN_ARG_INFO_EX(a,0,b,c)
+#  define ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(a,b,c,d,e) ZEND_ARG_TYPE_INFO(a,b,c,d)
 #endif
 
+#if PHP_VERSION_ID < 70400
+#  ifdef ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX
+#    undef ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX
+#  endif
+#  define ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(a,b,c,d,e) ZEND_BEGIN_ARG_INFO_EX(a,0,b,c)
+#endif
+
+#if PHP_VERSION_ID < 70200
+#  define ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(a,b,c,d,e) ZEND_BEGIN_ARG_INFO_EX(a,0,b,c)
+#endif
 
 /*
  * KRISP library header
