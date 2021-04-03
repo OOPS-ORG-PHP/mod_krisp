@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.10.6" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+	<name>krisp</name>
+	<channel>pecl.php.net</channel>
+	<summary>krisp - network calculration an searching</summary>
+	<description>network calculration and searching isp/country information for given ip address
+	</description>
+	<lead>
+		<name>JoungKyun.Kim</name>
+		<user>joungkyun</user>
+		<email>joungkyun@daum.net</email>
+		<active>yes</active>
+	</lead>
+	<date>@curdate@</date>
+	<time>@curtime@</time>
+	<version>
+		<release>2.1.3</release>
+		<api>2.1.2</api>
+	</version>
+	<stability>
+		<release>stable</release>
+		<api>stable</api>
+	</stability>
+	<license uri="http://www.php.net/license">PHP</license>
+	<notes>
+		- add vim files
+	</notes>
+	<contents>
+		<dir name="/">
+			<file md5sum="@README.md@" name="README.md" role="doc" />
+			<file md5sum="@config.m4@" name="config.m4" role="src" />
+			<file md5sum="@php_krisp.c@" name="php_krisp.c" role="src" />
+			<file md5sum="@php_krisp.h@" name="php_krisp.h" role="src" />
+			<file md5sum="@php_krisp_class.c@" name="php_krisp_class.c" role="src" />
+			<file md5sum="@php_krisp_class.h@" name="php_krisp_class.h" role="src" />
+			<file md5sum="@sample-oop.php@" name="sample-oop.php" role="src" />
+			<file md5sum="@sample.php@" name="sample.php" role="src" />
+
+			<dir name="tests">
+				<file md5sum="@tests/001-function-test.phpt@" name="001-function-test.phpt" role="test" />
+				<file md5sum="@tests/002-class-test.phpt@" name="002-class-test.phpt" role="test" />
+				<file md5sum="@tests/003-function-multiple-open.phpt@" name="003-function-multiple-open.phpt" role="test" />
+				<file md5sum="@tests/004-class-multiple-open.phpt@" name="004-class-multiple-open.phpt" role="test" />
+				<file md5sum="@tests/005-krisp_netmask.phpt@" name="005-krisp_netmask.phpt" role="test" />
+				<file md5sum="@tests/006-krisp_network.phpt@" name="006-krisp_network.phpt" role="test" />
+				<file md5sum="@tests/007-krisp_broadcast.phpt@" name="007-krisp_broadcast.phpt" role="test" />
+				<file md5sum="@tests/008-krisp_mask2prefix.phpt@" name="008-krisp_mask2prefix.phpt" role="test" />
+				<file md5sum="@tests/009-krisp_prefix2mask.phpt@" name="009-krisp_prefix2mask.phpt" role="test" />
+			</dir>
+		</dir> <!-- / -->
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>4.2.0</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.3</min>
+			</pearinstaller>
+		</required>
+	</dependencies>
+	<providesextension>krisp</providesextension>
+	<extsrcrelease />
+	<changelog>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.1.3</release><api>2.1.2</api></version>
+			<date>@curdate@</date>
+			<notes>
+				- add vim files
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.1.2</release><api>2.1.2</api></version>
+			<date>2012-11-03</date>
+			<notes>
+				- support PHP 5.4
+				- OOP suport KRISP::(__construct,search,searchEx,close,mtimeInterval,debug)
+				- suport KRISPException on oop mode
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.1.1</release><api>2.1.0</api></version>
+			<date>2012-02-27</date>
+			<notes>
+				- changed header value with krisp-config --cppflags on config.m4
+				- fixed libkrisp link error
+				- fixed wrong internal api type
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.1.0</release><api>2.1.0</api></version>
+			<date>2010-09-11</date>
+			<notes>
+				- linked over libkrisp 3.1.x
+				- add krisp_set_mtime_interval function
+				- add krisp_set_debug function
+				- changed interanl api to krisp_format_convert
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.0.2</release><api>2.0.1</api></version>
+			<date>2010-09-06</date>
+			<notes>
+				- support over php 5.3
+				- fixed build error that undeclare 'second_arg_force_ref'
+				- chagend deprecated zend_get_parameters_ex to zend_parse_parameters
+				- remove global extension variable api for compat with 5.1
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.0.1</release><api>2.0.1</api></version>
+			<date>2010-08-09</date>
+			<notes>
+				- linked with over libkrisp 3.0.2
+				- removed unused geoip variables
+				- fix license to LGPL current and old versions
+			</notes>
+		</release>
+		<release>
+			<stability><release>stable</release><api>stable</api></stability>
+			<version><release>2.0.0</release><api>2.0.0</api></version>
+			<date>2010-07-03</date>
+			<notes>
+				- changed link libkrisp library version. require over libkrisp 3.0.0
+				- add new function
+				  krisp_search_ex
+				  krisp_netmask
+				  krisp_network
+				  krisp_broadcast
+				  krisp_prefix2long
+				  krisp_long2prefix
+				- enhanced build environment
+				- changed krisp_long2prefix to krisp_mask2prefix
+				- changed krisp_prefix2long to krisp_prefix2mask
+			</notes>
+		</release>
+	</changelog>
+</package>
