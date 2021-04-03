@@ -346,10 +346,7 @@ PHP_FUNCTION(krisp_search)
 		RETURN_FALSE;
 	}
 
-	if ( object_init (return_value) == FAILURE ) {
-		php_error_docref (NULL, E_WARNING, "Failure object initialize");
-		RETURN_FALSE;
-	}
+	object_init (return_value);
 
 	networkv = network (isp.start, isp.netmask);
 	broadcastv = broadcast (isp.start, isp.netmask);
@@ -434,11 +431,7 @@ PHP_FUNCTION(krisp_search_ex)
 		RETURN_FALSE;
 	}
 
-	if ( object_init (return_value) == FAILURE ) {
-		initStruct_ex (&isp, true);
-		php_error_docref (NULL, E_WARNING, "Failure object initialize");
-		RETURN_FALSE;
-	}
+	object_init (return_value);
 
 #if PHP_VERSION_ID < 70300
 	if ( array_init (&dummy) == FAILURE ) {
@@ -549,10 +542,7 @@ PHP_FUNCTION(krisp_netmask)
 	lstart = krisp_format_convert (ZSTR_VAL (start));
 	lend   = krisp_format_convert (ZSTR_VAL (end));
 
-	if ( object_init (return_value) == FAILURE ) {
-		php_error_docref (NULL, E_WARNING, "Failure object initialize");
-		RETURN_FALSE;
-	}
+	object_init (return_value);
 
 	mask = guess_netmask (lstart, lend);
 	add_property_string (return_value, "mask", long2ip_r (mask, rip));

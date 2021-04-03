@@ -82,6 +82,13 @@ ZEND_END_MODULE_GLOBALS(krisp)
 
 #define phpext_krisp_ptr krisp_module_ptr
 
+/*
+ * Compatible legacy version
+ */
+#if PHP_VERSION_ID >= 80000
+#	define TSRMLS_CC
+#endif
+
 
 /*
  * KRISP library header
