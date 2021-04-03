@@ -648,7 +648,7 @@ PHP_FUNCTION(krisp_set_debug)
 			RETURN_FALSE;
 		}
 	} else {
-		if ( krisp_parameters ("r|l", &krisp_link, &switches) == FAILURE ) {
+		if ( krisp_parameters ("r|b", &krisp_link, &switches) == FAILURE ) {
 			KRISP_RESTORE_ERROR_HANDLING;
 			return;
 		}
