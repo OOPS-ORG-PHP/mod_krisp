@@ -20,13 +20,13 @@
  *
  * Copyright 2021. JoungKyun.Kim all rights reserved.
  *
- * LICENSE: PHP v3.0.1
+ * LICENSE: PHP v3.01
  *
  * @category    Database
  * @package     mod_krisp
  * @author      JoungKyun.Kim <https://joungkyun.github.com>
  * @copyright   2021. JoungKyun.Kim
- * @license     PHP v3.0.1
+ * @license     PHP v3.01
  * @since       File available since release 0.0.1
  */
 
