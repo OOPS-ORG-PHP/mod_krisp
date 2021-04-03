@@ -126,9 +126,9 @@ PHP_MINIT_FUNCTION(krisp)
 	krisp_ce->ce_flags &= ~ZEND_ACC_FINAL_CLASS;
 	krisp_ce->constructor->common.fn_flags |= ZEND_ACC_FINAL;
 
-#if defined(HAVE_SPL) && ((PHP_MAJOR_VERSION > 5) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 1))
+#if defined(HAVE_SPL)
 	REGISTER_KRISP_PER_CLASS(Exception, exception, spl_ce_RuntimeException);
-#elif PHP_MAJOR_VERSION >= 5
+#else
 	REGISTER_KRISP_PER_CLASS(Exception, exception, zend_exception_get_default(TSRMLS_C));
 #endif
 

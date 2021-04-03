@@ -39,7 +39,7 @@ case "${mode}" in
 	clean)
 		cat <<-EOL
 			${bwhite}[ -f Makefile ] && make distclean
-			rm -rf autom4te.cache build include modules
+			rm -rf autom4te.cache build include modules config.log
 			rm -f .deps Makefile* ac*.m4 dyn*.m4 compile *.loT
 			rm -f config.h* config.nice configure* config.sub config.guess
 			rm -f install-sh ltmain.sh missing mkinstalldirs run-tests.php
@@ -51,7 +51,7 @@ case "${mode}" in
 		EOL
 
 		[ -f Makefile ] && make distclean
-		rm -rf autom4te.cache build include modules
+		rm -rf autom4te.cache build include modules config.log
 		rm -f .deps Makefile* ac*.m4 dyn*.m4 compile *.loT
 		rm -f config.h* config.nice configure* config.sub config.guess
 		rm -f install-sh ltmain.sh missing mkinstalldirs run-tests.php
@@ -88,6 +88,9 @@ case "${mode}" in
 		PHP_OPT="-n"
 		LEGACY_TEST=0
 
+		${PHPBIN} -i | grep -q "^safe_mode =>"
+		[[ $? == 0 ]] && PHP_OPT+=" -d 'safe_mode=0'"
+
 		if [[ $# == 2 ]]; then
 			./manage.sh clean
 			echo "${PHPIZE} && ./configure"
@@ -96,7 +99,7 @@ case "${mode}" in
 
 		if [[ ! -f ./run-tests.php ]]; then
 			LEGACY_TEST=1
-			PHP_OPT="-d 'enable_dl=1' -d 'safe_mode=0' -d 'disable_error=0'"
+			PHP_OPT="-d 'enable_dl=1' -d 'disable_error=0'"
 		fi
 		PHP_OPT+=" -d 'extension_dir=./modules/' -d 'extension=${mod_name}.so'"
 

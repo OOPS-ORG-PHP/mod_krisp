@@ -17,6 +17,20 @@ if test "$PHP_KRISP" != "no"; then
 	PHP_SUBST(LDFLAGS)
 	PHP_SUBST(CPPFLAGS)
 
+	AC_MSG_CHECKING([check the PHP mininum version for krisp (>=5.3.0)])
+	PHP_CHKVER=`
+		awk '/^#define PHP_VERSION_ID/ { print $NF; }' $phpincludedir/main/php_version.h 2> /dev/null
+	`
+	PHP_CURVER=`
+		awk '/^#define PHP_VERSION /  { print gensub(/\"/, "", "g", $NF); }' \
+			$phpincludedir/main/php_version.h 2> /dev/null
+	`
+	AC_MSG_RESULT([$PHP_CURVER])
+
+	if test -z $PHP_CHKVER || test $PHP_CHKVER -lt 50300 ; then
+		AC_MSG_ERROR([The krisp extension is unsupported PHP $PHP_CURVER. Use PHP 5.3.0 or after!])
+	fi
+
 	AC_MSG_CHECKING(check the krisp-config path)
 	KRISPCONFIG=
 	if test -f "$PHP_KRISP"; then

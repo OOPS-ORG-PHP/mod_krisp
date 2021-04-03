@@ -15,6 +15,25 @@
 #include "TSRM.h"
 #endif
 
+/* PHP_VERSION_ID is supported from 5.2 */
+#ifndef PHP_VERSION_ID
+#  if ZEND_MODULE_API_NO > 20050922
+#    define PHP_VERSION_ID 50100
+#  elif ZEND_MODULE_API_NO > 20041030
+#    define PHP_VERSION_ID 50000
+#  elif ZEND_MODULE_API_NO > 20020429
+#    define PHP_VERSION_ID 40400
+#  elif ZEND_MODULE_API_NO > 20020429
+#    define PHP_VERSION_ID 40300
+#  elif ZEND_MODULE_API_NO > 20010901
+#    define PHP_VERSION_ID 40200
+#  elif ZEND_MODULE_API_NO > 20001222
+#    define PHP_VERSION_ID 40100
+#  elif ZEND_MODULE_API_NO == 20001222
+#    define PHP_VERSION_ID 40000
+#  endif
+#endif
+
 extern zend_module_entry krisp_module_entry;
 #define krisp_module_ptr &krisp_module_entry
 
