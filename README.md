@@ -29,7 +29,7 @@ To install this extension type the following:
 
 This module requires these libraries:
 
- * PHP <= 8.0
+ * PHP >= 7
   * If you want to PHP <= 5, use [v2 branch](https://github.com/OOPS-ORG-PHP/mod_krisp/tree/v2).
  * [libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
 

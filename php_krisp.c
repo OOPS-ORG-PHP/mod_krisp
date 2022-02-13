@@ -231,7 +231,7 @@ PHP_FUNCTION(krisp_open)
 
 	PRINT_CALL_API_NAME;
 
-	if ( krisp_parameters ("|Sz/", &database, &error) == FAILURE ) {
+	if ( krisp_parameters ("|S!z/", &database, &error) == FAILURE ) {
 		return;
 	}
 
